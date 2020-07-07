@@ -1,0 +1,11 @@
+create tablespace panaderia
+datafile 'd:\bd\panaderia.dbf'
+size 5m
+autoextend on next 1m;
+
+alter session set "_ORACLE_SCRIPT"=true;
+
+create user panaderia identified by 1234
+default tablespace panaderia;
+
+grant dba to panaderia;

@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>panaderia-frontend</artifactId>
+	<name>panaderia-frontend</name>
+	<description>Frontend panaderia</description>
+
+	<parent>
+		<groupId>com.besoft</groupId>
+		<artifactId>panaderia-app</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<profiles>
+		<profile>
+			<id>Windows</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<script.extension>.bat</script.extension>
+			</properties>
+		</profile>
+		<profile>
+			<id>unix</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<properties>
+				<script.extension>.sh</script.extension>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<!-- <version>1.6.0</version> -->
+				<executions>
+					<execution>
+						<id>npm-build</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>src/main/panaderia-frontend</workingDirectory>
+							<executable>${basedir}/src/main/panaderia-frontend/npm-build${script.extension}</executable>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>target/panaderia-frontend</directory>
+				<targetPath>static</targetPath>
+			</resource>
+		</resources>
+	</build>
+</project>

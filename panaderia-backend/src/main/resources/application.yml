@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    active: '@spring.profiles.active@'
+swagger:
+  api:
+    title: "Spring Boot REST API"
+    description: "Clientes REST API"
+    license: "Apache 2.0"
+    termsOfServiceUrl: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    version: 1.0.0
+    controller:
+      basepackage: com.besoft.panaderia.controller
+    contact:
+      nombres : "Nerio Baez"
+      web : "http://besoft-ti.blogspot.com"
+      email: "nbaez001@gmail.com"
+---
+server:
+  port: 8080
+  servlet:
+    context-path: /panaderia-backend
+spring:
+  profiles: dev
+  application:
+    name: panaderia-backend
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: "jdbc:oracle:thin:@localhost:1521:orcl"
+    password: "1234"
+    username: "panaderia"
+    testOnBorrow: true
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: SELECT 1
+    max-active: 15
+    max-idle: 10
+    max-wait: 8000
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 60000
+---
+spring:
+  profiles: qa
+  application:
+    name: panaderia-backend
+  datasource:
+    jndi-name: java:/PanaderiaNoXADS
+    testOnBorrow: true
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: SELECT 1
+    max-active: 15
+    max-idle: 10
+    max-wait: 8000
