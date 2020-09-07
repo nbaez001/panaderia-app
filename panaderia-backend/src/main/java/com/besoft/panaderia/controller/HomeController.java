@@ -9,7 +9,7 @@ import io.swagger.annotations.Api;
 
 @Controller
 @RequestMapping("/home")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @Api(value = "API home")
 public class HomeController {
 

@@ -1,5 +1,5 @@
 create tablespace panaderia
-datafile 'd:\bd\panaderia.dbf'
+datafile 'd:\BD\panaderia.dbf'
 size 5m
 autoextend on next 1m;
 

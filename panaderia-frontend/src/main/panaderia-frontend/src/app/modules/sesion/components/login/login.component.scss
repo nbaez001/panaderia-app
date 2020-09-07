@@ -1,0 +1,38 @@
+.login-card {
+    margin: 10% auto 0%;
+    width: 300px;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0px 0px 10px 2px #888888;
+    mat-card-header {
+        display: flex !important;
+        justify-content: center !important;
+    }
+    form {
+        mat-grid-tile {
+            mat-form-field {
+                margin: auto 5%;
+                width: 100%;
+            }
+            mat-checkbox {
+                margin: auto 2%;
+                width: 100%;
+                text-align: left;
+            }
+            button {
+                width: 90%;
+            }
+        }
+    }
+}
+
+::ng-deep .login-card-header-image {
+    background-image: url("../../../../../assets/images/icons/icono-perficon.png");
+    background-size: cover;
+    height: 60px !important;
+    width: 60px !important;
+}
+
+mat-checkbox {
+    padding-left: 10px;
+}
