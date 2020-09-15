@@ -8,3 +8,21 @@ body {
 body {
     margin: 0;
 }
+
+// SNACKBAR STYLES
+::ng-deep .success-snackbar {
+    background: #2aaf49;
+}
+
+::ng-deep .error-snackbar {
+    background: #e24d53;
+}
+
+::ng-deep .warning-snackbar {
+    background-color: orange;
+}
+
+::ng-deep .info-snackbar {
+    background: #00b1ea;
+}
+//END - SNACKBAR STYLES

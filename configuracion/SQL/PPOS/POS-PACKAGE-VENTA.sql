@@ -1,0 +1,133 @@
+CREATE OR REPLACE TYPE T_DETALLE_VENTA AS OBJECT(
+ID_PRODUCTO INTEGER,
+CANTIDAD DECIMAL(6,1),
+PRECIO DECIMAL(8,1),
+SUBTOTAL DECIMAL(8,1),
+FLG_ACTIVO NUMBER(1)
+);
+/
+CREATE OR REPLACE TYPE TB_DETALLE_VENTA IS TABLE OF T_DETALLE_VENTA;
+/
+create or replace PACKAGE PCK_PPOS_VENTA AS
+
+    PROCEDURE SP_I_VENTA (
+		I_SERIE           		IN      VARCHAR2,
+		I_NUMERO  				IN      VARCHAR2,
+		I_TOTAL		 			IN 		DECIMAL,
+		I_FLG_ACTIVO 			IN 		NUMBER,
+        I_ID_USUARIO_CREA       IN      NUMBER,
+        I_FEC_USUARIO_CREA      IN      VARCHAR2,
+		L_DETALLE_VENTA        	IN      TB_DETALLE_VENTA,
+        R_ID                    OUT     NUMBER,
+        R_CODIGO                OUT     NUMBER,
+        R_MENSAJE               OUT     VARCHAR2
+    );
+
+    PROCEDURE SP_L_VENTA (
+        R_LISTA               OUT     SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    );
+
+END PCK_PPOS_VENTA;
+/
+create or replace PACKAGE BODY PCK_PPOS_VENTA AS
+
+    PROCEDURE SP_I_VENTA (
+		I_SERIE           		IN      VARCHAR2,
+		I_NUMERO  				IN      VARCHAR2,
+		I_TOTAL		 			IN 		DECIMAL,
+		I_FLG_ACTIVO 			IN 		NUMBER,
+        I_ID_USUARIO_CREA       IN      NUMBER,
+        I_FEC_USUARIO_CREA      IN      VARCHAR2,
+		L_DETALLE_VENTA        	IN      TB_DETALLE_VENTA,
+        R_ID                    OUT     NUMBER,
+        R_CODIGO                OUT     NUMBER,
+        R_MENSAJE               OUT     VARCHAR2
+    ) AS
+    V_SER_COMPROBANTE 	NUMBER;
+    BEGIN
+        SELECT SEQ_VENTA.NEXTVAL INTO R_ID FROM DUAL;
+
+        INSERT INTO VENTA(
+        ID,
+		SERIE,
+        NUMERO,
+		TOTAL,
+        FLG_ACTIVO,
+        ID_USUARIO_CREA,
+        FEC_USUARIO_CREA)
+        VALUES(
+        R_ID,
+		I_SERIE,
+        I_NUMERO,
+		I_TOTAL,
+        I_FLG_ACTIVO,
+        I_ID_USUARIO_CREA,
+        TO_DATE(I_FEC_USUARIO_CREA,'DD/MM/YYYY'));
+
+        FOR I IN 1..L_DETALLE_VENTA.COUNT
+        LOOP
+            INSERT INTO DETALLE_VENTA(
+			ID,
+			ID_VENTA,
+			ID_PRODUCTO,
+			CANTIDAD,
+			PRECIO,
+			SUBTOTAL,
+			FLG_ACTIVO)
+            VALUES(
+			SEQ_DETALLE_VENTA.NEXTVAL,
+			R_ID,
+			L_DETALLE_VENTA(I).ID_PRODUCTO,
+			L_DETALLE_VENTA(I).CANTIDAD,
+			L_DETALLE_VENTA(I).PRECIO,
+			L_DETALLE_VENTA(I).SUBTOTAL,
+			L_DETALLE_VENTA(I).FLG_ACTIVO);
+            COMMIT;
+        END LOOP;
+
+        COMMIT;
+
+        R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+	END SP_I_VENTA;
+
+    PROCEDURE SP_L_VENTA (
+        R_LISTA               OUT     SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    ) AS
+        V_SQL VARCHAR2(30000);
+    BEGIN
+        V_SQL := 'SELECT
+		C.ID,
+		C.SERIE,
+		C.NUMERO,
+		C.TOTAL,
+		C.FLG_ACTIVO,
+		C.ID_USUARIO_CREA,
+		C.FEC_USUARIO_CREA,
+		C.ID_USUARIO_MOD,
+		C.FEC_USUARIO_MOD
+        FROM VENTA C
+        WHERE 1=1
+		ORDER BY C.ID DESC';
+
+        OPEN R_LISTA FOR V_SQL;
+
+        R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+    END SP_L_VENTA;
+
+END PCK_PPOS_VENTA;

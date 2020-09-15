@@ -24,9 +24,10 @@
                     <mat-checkbox>Recordar</mat-checkbox>
                 </mat-grid-tile>
                 <mat-grid-tile [ResponsiveRows]="{xs:12, sm:12, md:12, lg:12, xl:12}">
-                    <button mat-raised-button color="primary" (click)="autenticar()">Ingresar</button>
+                    <button [class.spinner]="ingresar" [disabled]="ingresar" mat-raised-button color="primary" (click)="autenticar()">Ingresar</button>
                 </mat-grid-tile>
             </mat-grid-list>
+            <span class="login-error" *ngIf="showMessage">{{errorMessage}}</span>
         </form>
     </mat-card-content>
 </mat-card>

@@ -5,6 +5,7 @@ import { SesionRoutingModule } from './sesion-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { MaterialModule } from '../material.module';
 import { SharedModule } from '../shared.module';
+import { SharedService } from '../intranet/services/shared.service';
 
 
 @NgModule({
@@ -16,6 +17,9 @@ import { SharedModule } from '../shared.module';
     SesionRoutingModule,
     SharedModule,
     MaterialModule,
+  ],
+  providers:[
+    ...SharedService
   ]
 })
 export class SesionModule { }

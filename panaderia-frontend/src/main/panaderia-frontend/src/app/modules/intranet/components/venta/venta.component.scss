@@ -1,0 +1,44 @@
+@import "../../../../../assets/styles/scss/views/table";
+
+.table-container {
+    max-height: 400px;
+}
+
+@include mat-table-columns(
+    (
+        id: (
+            width: 2rem,
+        ),
+        nombre: (
+            width: 8rem,
+        ),
+        precio: (
+            width: 6rem,
+        ),
+        subtotal: (
+            width: 6rem,
+        ),
+        opt: (
+            width: 2.5rem,
+        ),
+    )
+);
+
+.venta {
+    width: 45%;
+    height: 60% !important;
+    display: inline-block;
+    mat-card {
+        // margin-top: 0px !important;
+        // height: 60% !important;
+    }
+}
+
+.det-venta {
+    width: 55%;
+    height: 90% !important;
+    display: inline-block;
+    mat-card {
+        height: 90% !important;
+    }
+}

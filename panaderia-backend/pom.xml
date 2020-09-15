@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>panaderia-backend</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>panaderia-backend</name>
 	<description>Backend panaderia</description>
-	
+
 	<parent>
 		<groupId>com.besoft</groupId>
 		<artifactId>panaderia-app</artifactId>
@@ -55,7 +55,26 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.boot</groupId> -->
+<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
+<!-- 		</dependency> -->
+		<!-- Dependencias Spring Security -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security.oauth</groupId> -->
+<!-- 			<artifactId>spring-security-oauth2</artifactId> -->
+<!-- 			<version>2.3.4.RELEASE</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security</groupId> -->
+<!-- 			<artifactId>spring-security-jwt</artifactId> -->
+<!-- 			<version>1.1.0.RELEASE</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.security.oauth.boot</groupId> -->
+<!-- 			<artifactId>spring-security-oauth2-autoconfigure</artifactId> -->
+<!-- 			<version>2.1.0.RELEASE</version> -->
+<!-- 		</dependency> -->
 		<!-- ADICIONAL DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

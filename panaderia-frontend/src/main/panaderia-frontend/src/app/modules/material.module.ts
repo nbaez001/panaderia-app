@@ -12,6 +12,15 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTableModule } from "@angular/material/table";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [],
@@ -29,6 +38,15 @@ import { MatTableModule } from "@angular/material/table";
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatListModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatButtonModule,
@@ -43,6 +61,15 @@ import { MatTableModule } from "@angular/material/table";
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatListModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatAutocompleteModule,
   ]
 })
 export class MaterialModule { }

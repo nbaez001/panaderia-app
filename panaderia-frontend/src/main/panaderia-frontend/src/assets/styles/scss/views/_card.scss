@@ -1,19 +1,58 @@
+// CARD Y EXPANSION PANEL
 mat-card {
-  margin: 15px;
+  margin: 10px;
+  padding: 15px 24px 24px 24px !important;
+  mat-card-title {
+    font-size: 15px !important;
+    font-weight: bold !important;
+    margin-bottom: 8px !important;
+  }
+  .mat-card-header-text {
+    margin: 0px !important;
+  }
 }
 
-.button-separate {
-  margin-left: 10px !important;
+mat-expansion-panel {
+  margin: 10px !important;
+  mat-expansion-panel-header {
+    font-size: 15px !important;
+    font-weight: bold !important;
+  }
 }
 
-table {
-  width: 100%;
-}
-
+//FORMS
 mat-form-field {
   width: 100%;
   margin: auto 10px;
   textarea {
     height: 100%;
+  }
+}
+
+//PANEL ACTIONS
+@media screen and (min-width: 600px) {
+  .panel-actions {
+    margin-top: 10px;
+    direction: initial; //PARA ALINEAR LOS BOTONES A LA DERECHA
+    display: flex; //PARA ALINEAR LOS BOTONES A LA DERECHA --> REDUCE EL TAMAÑO DE BOTONES AL MINIMO
+    justify-content: flex-end; //PARA ALINEAR LOS BOTONES A LA DERECHA
+    button {
+      margin-right: 6px;
+      min-width: 64px !important;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .panel-actions {
+    margin-top: 10px;
+    button {
+      display: block;
+      margin-bottom: 8px;
+      width: 100% !important;
+    }
+    button:nth-last-of-type(1) { //ULTIMO
+      margin-bottom: 0px;
+    }
   }
 }

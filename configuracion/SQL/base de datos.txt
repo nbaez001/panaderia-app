@@ -1,0 +1,14 @@
+alter session set "_ORACLE_SCRIPT"=true;
+
+drop tablespace ppos including contents and datafiles cascade constraints;
+drop user ppos cascade;
+
+create tablespace ppos
+datafile 'D:\BD\ppos.dbf'
+size 4m
+autoextend on next 1m;
+
+create user ppos identified by 1234
+default tablespace ppos;
+
+grant dba to ppos;

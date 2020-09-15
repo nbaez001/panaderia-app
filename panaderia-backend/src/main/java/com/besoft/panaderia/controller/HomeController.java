@@ -1,15 +1,13 @@
 package com.besoft.panaderia.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 
-@Controller
+@RestController
 @RequestMapping("/home")
-@CrossOrigin(origins = "*")
 @Api(value = "API home")
 public class HomeController {
 

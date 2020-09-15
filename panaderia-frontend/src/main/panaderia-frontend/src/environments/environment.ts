@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  WsPanaderiaBackend: 'http://localhost:8080/panaderia-backend',
+  WsPanaderiaAuthorizer: 'http://localhost:8081/panaderia-authorizer',
+  clientId: 'pseg',
+  clientSecret: 'pseg@2020'
 };
 
 /*

@@ -17,6 +17,11 @@
         <mat-icon>home</mat-icon> Home
       </a>
 
+      <a mat-list-item [routerLink]="['/intranet/venta']" routerLinkActive="active-list-item"
+        [ngClass]="{'selected':showSubmenu3}" (click)="showSubmenu3 = !showSubmenu3">
+        <mat-icon>add_shopping_cart</mat-icon> Venta
+      </a>
+
       <a mat-list-item routerLinkActive="active-list-item" [ngClass]="{'selected':showSubmenu2}"
         (click)="showSubmenu2 = !showSubmenu2">
         <mat-icon>assignment</mat-icon> Administracion
@@ -32,7 +37,7 @@
         <a mat-list-item [routerLink]="['/intranet/administracion/maestras']" routerLinkActive="active-list-item"
           [ngStyle]="{'padding-left': '20px'}">
           <span class="child-link"></span>
-          Maestras
+          Parametros
         </a>
       </div>
     </mat-nav-list>
@@ -46,7 +51,7 @@
       <span>Gestor ventas</span>
       <span class="spacer"></span>
       <button mat-button [matMenuTriggerFor]="usuario">
-        AMILCAR
+        {{user.getNombre}}
         <!-- <span>(Jefe Unidad Territorial)</span> -->
         <mat-icon>expand_more</mat-icon>
       </button>
