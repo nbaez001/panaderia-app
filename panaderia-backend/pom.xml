@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>panaderia-backend</artifactId>
-	<packaging>jar</packaging>
+	<packaging>${packaging.type}</packaging>
 	<name>panaderia-backend</name>
 	<description>Backend panaderia</description>
 
@@ -55,26 +55,26 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.boot</groupId> -->
-<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.boot</groupId> -->
+		<!-- <artifactId>spring-boot-starter-security</artifactId> -->
+		<!-- </dependency> -->
 		<!-- Dependencias Spring Security -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.security.oauth</groupId> -->
-<!-- 			<artifactId>spring-security-oauth2</artifactId> -->
-<!-- 			<version>2.3.4.RELEASE</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.security</groupId> -->
-<!-- 			<artifactId>spring-security-jwt</artifactId> -->
-<!-- 			<version>1.1.0.RELEASE</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.security.oauth.boot</groupId> -->
-<!-- 			<artifactId>spring-security-oauth2-autoconfigure</artifactId> -->
-<!-- 			<version>2.1.0.RELEASE</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.security.oauth</groupId> -->
+		<!-- <artifactId>spring-security-oauth2</artifactId> -->
+		<!-- <version>2.3.4.RELEASE</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.security</groupId> -->
+		<!-- <artifactId>spring-security-jwt</artifactId> -->
+		<!-- <version>1.1.0.RELEASE</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.security.oauth.boot</groupId> -->
+		<!-- <artifactId>spring-security-oauth2-autoconfigure</artifactId> -->
+		<!-- <version>2.1.0.RELEASE</version> -->
+		<!-- </dependency> -->
 		<!-- ADICIONAL DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -132,6 +132,7 @@
 			<properties>
 				<spring.profiles.active>dev</spring.profiles.active>
 				<logging.level>INFO</logging.level>
+				<packaging.type>jar</packaging.type>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -148,6 +149,7 @@
 			<properties>
 				<spring.profiles.active>qa</spring.profiles.active>
 				<logging.level>INFO</logging.level>
+				<packaging.type>war</packaging.type>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -159,6 +161,20 @@
 							<artifactId>spring-boot-starter-tomcat</artifactId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<spring.profiles.active>prd</spring.profiles.active>
+				<logging.level>INFO</logging.level>
+				<packaging.type>jar</packaging.type>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
 				</dependency>
 			</dependencies>
 		</profile>

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>panaderia-authorizer</artifactId>
-	<packaging>jar</packaging>
+	<packaging>${packaging.type}</packaging>
 	<name>panaderia-authorizer</name>
 	<description>Panaderia Oauth2 Authorizer</description>
 
@@ -94,6 +94,7 @@
 			<properties>
 				<spring.profiles.active>dev</spring.profiles.active>
 				<logging.level>INFO</logging.level>
+				<packaging.type>jar</packaging.type>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -110,6 +111,7 @@
 			<properties>
 				<spring.profiles.active>qa</spring.profiles.active>
 				<logging.level>INFO</logging.level>
+				<packaging.type>war</packaging.type>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -121,6 +123,20 @@
 							<artifactId>spring-boot-starter-tomcat</artifactId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<spring.profiles.active>prd</spring.profiles.active>
+				<logging.level>INFO</logging.level>
+				<packaging.type>jar</packaging.type>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
 				</dependency>
 			</dependencies>
 		</profile>

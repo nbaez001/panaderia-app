@@ -15,7 +15,7 @@ public class ConexionUtil {
 	public ConexionUtil() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			url = "jdbc:oracle:thin:@localhost:1521:orcl";
+			url = "jdbc:oracle:thin:@192.168.8.115:1521:orcl";
 			conexion = DriverManager.getConnection(url, "ppos", "1234");
 			System.out.println("Conexion a Base de Datos " + url + " . . . . .Ok");
 		} catch (SQLException | ClassNotFoundException ex) {

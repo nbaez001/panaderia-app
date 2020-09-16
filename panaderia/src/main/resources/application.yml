@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: '@spring.profiles.active@'
+---
+server:
+  port: 8080
+  servlet:
+    context-path: /panaderia
+spring:
+  profiles: dev
+  application:
+    name: panaderia
+---
+spring:
+  profiles: qa
+  application:
+    name: siserp-pos
+---
+server:
+  port: 8080
+  servlet:
+    context-path: /panaderia
+spring:
+  profiles: prd
+  application:
+    name: panaderia

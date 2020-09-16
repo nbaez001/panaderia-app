@@ -1,6 +1,6 @@
-package com.besoft.panaderia.dto.request;
+package com.besoft.panaderia.dto.response;
 
-public class DetalleVentaRequest {
+public class DetalleVentaResponse {
 	private Long id;
 	private Long idProducto;
 	private String nomProducto;

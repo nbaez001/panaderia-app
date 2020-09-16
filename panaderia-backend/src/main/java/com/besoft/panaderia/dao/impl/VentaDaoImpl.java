@@ -17,6 +17,7 @@ import com.besoft.panaderia.dto.request.DetalleVentaRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.request.array.DetalleVentaArray;
 import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.dto.response.mapper.VentaResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
@@ -75,6 +76,22 @@ public class VentaDaoImpl implements VentaDao {
 				resp.setFecUsuarioCrea(c.getFecUsuarioCrea());
 				resp.setIdUsuarioMod(c.getIdUsuarioMod());
 				resp.setFecUsuarioMod(c.getFecUsuarioMod());
+
+				List<DetalleVentaResponse> ldv = new ArrayList<>();
+				for (DetalleVentaRequest d : c.getListaDetalleVenta()) {
+					DetalleVentaResponse dv = new DetalleVentaResponse();
+					dv.setId(d.getId());
+					dv.setIdProducto(d.getIdProducto());
+					dv.setNomProducto(d.getNomProducto());
+					dv.setIdVenta(id);
+					dv.setCantidad(d.getCantidad());
+					dv.setPrecio(d.getPrecio());
+					dv.setSubtotal(d.getSubtotal());
+					dv.setFlagActivo(d.getFlagActivo());
+					ldv.add(dv);
+				}
+
+				resp.setListaDetalleVenta(ldv);
 			} else {
 				resp = null;
 			}

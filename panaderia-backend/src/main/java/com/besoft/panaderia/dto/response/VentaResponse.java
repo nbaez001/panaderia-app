@@ -1,6 +1,7 @@
 package com.besoft.panaderia.dto.response;
 
 import java.util.Date;
+import java.util.List;
 
 public class VentaResponse {
 	private Long id;
@@ -12,6 +13,8 @@ public class VentaResponse {
 	private Date fecUsuarioCrea;
 	private Long idUsuarioMod;
 	private Date fecUsuarioMod;
+
+	private List<DetalleVentaResponse> listaDetalleVenta;
 
 	public Long getId() {
 		return id;
@@ -83,6 +86,14 @@ public class VentaResponse {
 
 	public void setFecUsuarioMod(Date fecUsuarioMod) {
 		this.fecUsuarioMod = fecUsuarioMod;
+	}
+
+	public List<DetalleVentaResponse> getListaDetalleVenta() {
+		return listaDetalleVenta;
+	}
+
+	public void setListaDetalleVenta(List<DetalleVentaResponse> listaDetalleVenta) {
+		this.listaDetalleVenta = listaDetalleVenta;
 	}
 
 }

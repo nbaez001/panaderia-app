@@ -146,12 +146,11 @@ export class VentaComponent implements OnInit {
       mae.cantidad = parseFloat((mae.subtotal / mae.precio).toFixed(2));
       mae.subtotal = this.formularioGrp.get('subtotal').value;
       mae.flagActivo = 1;
-      mae.idUsuarioCrea = this.user.getId;
-      mae.fecUsuarioCrea = new Date();
 
       console.log(mae);
       this.listaDetalleVenta.push(mae);
       this.cargarDatosTabla();
+      this.limpiar();
     } else {
       this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
     }
@@ -196,8 +195,10 @@ export class VentaComponent implements OnInit {
             if (data.rCodigo == 0) {
               console.log('VENTA EXITOSA');
               this._snackBar.open('VENTA EXITOSA', null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['success-snackbar'] });
-              this.limpiar();
+              
               this.listaDetalleVenta = [];
+              this.limpiar();
+              this.cargarDatosTabla();
             } else {
               console.log(data.rMensaje);
               this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });

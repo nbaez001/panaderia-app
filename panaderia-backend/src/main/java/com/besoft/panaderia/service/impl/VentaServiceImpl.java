@@ -1,5 +1,7 @@
 package com.besoft.panaderia.service.impl;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.response.ApiOutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.service.VentaService;
+import com.besoft.panaderia.util.BillPrintable;
+import com.besoft.panaderia.util.BillUtil;
 
 @Service
 public class VentaServiceImpl implements VentaService {
@@ -19,7 +23,19 @@ public class VentaServiceImpl implements VentaService {
 
 	@Override
 	public ApiOutResponse<VentaResponse> registrarVenta(VentaRequest c) {
-		return ventaDao.registrarVenta(c);
+		ApiOutResponse<VentaResponse> out = ventaDao.registrarVenta(c);
+		if (out.getrCodigo() == 0) {
+			PrinterJob pj = PrinterJob.getPrinterJob();
+			BillPrintable printable = new BillPrintable(out.getResult().getListaDetalleVenta());
+			pj.setPrintable(printable, new BillUtil().getPageFormat(pj));
+			try {
+				pj.print();
+			} catch (PrinterException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		return out;
 	}
 
 	@Override

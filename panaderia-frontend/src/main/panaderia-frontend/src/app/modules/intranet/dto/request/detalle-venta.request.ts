@@ -7,8 +7,4 @@ export class DetalleVentaRequest {
     precio: number;
     subtotal: number;
     flagActivo: number;
-    idUsuarioCrea: number;
-    fecUsuarioCrea: Date;
-    idUsuarioMod: number;
-    fecUsuarioMod: Date;
 }
