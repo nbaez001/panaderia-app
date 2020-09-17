@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, of } from 'rxjs';
+import { KEY_CODES } from 'src/app/common';
 import { FormService } from 'src/app/core/services/form.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { DetalleVentaRequest } from '../../dto/request/detalle-venta.request';
@@ -33,7 +34,6 @@ export class VentaComponent implements OnInit {
 
   listaDetalleVenta: DetalleVentaRequest[] = [];
 
-  producto: ProductoResponse;
   listaProductos: ProductoResponse[];
 
   displayedColumns: string[];
@@ -58,6 +58,9 @@ export class VentaComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  @ViewChild('producto') producto: ElementRef;
+  @ViewChild('subtotal') subtotal: ElementRef;
+
   constructor(private fb: FormBuilder,
     private dialog: MatDialog,
     private decimalPipe: DecimalPipe,
@@ -67,6 +70,16 @@ export class VentaComponent implements OnInit {
     @Inject(ProductoService) private productoService: ProductoService,
     @Inject(VentaService) private ventaService: VentaService,
     private _snackBar: MatSnackBar) { }
+
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (event.key === KEY_CODES.ESCAPE) {
+      this.limpiarTodo();
+    } else if (event.key == KEY_CODES.END) {
+      this.finalizar();
+    } else if (event.key == KEY_CODES.ENTER) {
+      this.evaluarAcccion();
+    }
+  }
 
   ngOnInit(): void {
     this.formularioGrp = this.fb.group({
@@ -101,11 +114,9 @@ export class VentaComponent implements OnInit {
   }
 
   public cargarDatosTabla(): void {
-    if (this.listaDetalleVenta.length > 0) {
-      this.dataSource = new MatTableDataSource(this.listaDetalleVenta);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }
+    this.dataSource = new MatTableDataSource(this.listaDetalleVenta);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   private _buscarProducto(value: any): void {
@@ -151,6 +162,8 @@ export class VentaComponent implements OnInit {
       this.listaDetalleVenta.push(mae);
       this.cargarDatosTabla();
       this.limpiar();
+
+      this.focusProductoControl();
     } else {
       this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
     }
@@ -160,64 +173,91 @@ export class VentaComponent implements OnInit {
     this.formService.setAsUntoched(this.formularioGrp, this.formErrors);
   }
 
+  limpiarTodo() {
+    this.listaDetalleVenta = [];
+    this.limpiar();
+    this.cargarDatosTabla();
+  }
+
   finalizar(): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      disableClose: true,
-      data: {
-        titulo: '',
-        objeto: null
-      }
-    });
+    if (this.listaDetalleVenta.length > 0) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '300px',
+        disableClose: true,
+        data: {
+          titulo: '',
+          objeto: null
+        }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == 1) {
-        this.venta = true;
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result == 1) {
+          this.venta = true;
 
-        let total = 0.0;
-        this.listaDetalleVenta.forEach(val => {
-          total += val.subtotal;
-        });
+          let total = 0.0;
+          this.listaDetalleVenta.forEach(val => {
+            total += val.subtotal;
+          });
 
-        let req = new VentaRequest();
-        req.serie = '001';
-        req.numero = '001';
-        req.total = total;
-        req.flgActivo = 1;
-        req.idUsuarioCrea = this.user.getId;
-        req.fecUsuarioCrea = new Date();
+          let req = new VentaRequest();
+          req.serie = '001';
+          req.numero = '001';
+          req.total = total;
+          req.flgActivo = 1;
+          req.idUsuarioCrea = this.user.getId;
+          req.fecUsuarioCrea = new Date();
 
-        req.listaDetalleVenta = this.listaDetalleVenta;
+          req.listaDetalleVenta = this.listaDetalleVenta;
 
-        this.ventaService.registrarVenta(req).subscribe(
-          (data: OutResponse<VentaResponse>) => {
-            console.log(data);
-            if (data.rCodigo == 0) {
-              console.log('VENTA EXITOSA');
-              this._snackBar.open('VENTA EXITOSA', null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['success-snackbar'] });
-              
-              this.listaDetalleVenta = [];
-              this.limpiar();
-              this.cargarDatosTabla();
-            } else {
-              console.log(data.rMensaje);
-              this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+          this.ventaService.registrarVenta(req).subscribe(
+            (data: OutResponse<VentaResponse>) => {
+              console.log(data);
+              if (data.rCodigo == 0) {
+                console.log('VENTA EXITOSA');
+                this._snackBar.open('VENTA EXITOSA', null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['success-snackbar'] });
+
+                this.limpiarTodo();
+              } else {
+                console.log(data.rMensaje);
+                this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+              }
+              this.venta = false;
+            }, error => {
+              console.log(error);
+              this.venta = false;
+              this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
             }
-            this.venta = false;
-          }, error => {
-            console.log(error);
-            this.venta = false;
-            this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
-          }
-        )
-      }
-    });
+          )
+        }
+      });
+    } else {
+      this._snackBar.open('AGREGUE AL MENOS UN PRODUCTO', null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+    }
   }
 
   eliminar(obj: DetalleVentaRequest): void {
     let index = this.listaDetalleVenta.indexOf(obj);
     this.listaDetalleVenta.splice(index, 1);
     this.cargarDatosTabla();
+  }
+
+  focusProductoControl() {
+    this.producto.nativeElement.focus();
+  }
+
+  focusSubtotalControl() {
+    this.subtotal.nativeElement.focus();
+  }
+
+  evaluarAcccion(): void {
+    let producto = this.formularioGrp.get('producto').value;
+    let subtotal = this.formularioGrp.get('subtotal').value;
+    console.log(typeof (producto));
+    if (producto) {
+      if (typeof producto != 'string') {
+
+      }
+    }
   }
 
 }

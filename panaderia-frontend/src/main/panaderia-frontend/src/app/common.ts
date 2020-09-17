@@ -29,3 +29,15 @@ export const MENSAJES = {
         }
     }
 }
+
+export const KEY_CODES = {
+    ESCAPE: "Escape",
+    TAB: "Tab",
+    ENTER: "Enter",
+    FLECHA_ABAJO: "ArrowDown",
+    FLECHA_ARRIBA: "ArrowUp",
+    FLECHA_DERECHA: "ArrowRight",
+    FLECHA_IZQUIERDA: "ArrowLeft",
+    END: "End",
+
+}

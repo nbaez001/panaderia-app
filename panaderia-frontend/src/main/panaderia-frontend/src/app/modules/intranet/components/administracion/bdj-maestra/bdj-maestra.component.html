@@ -10,7 +10,7 @@
         <mat-grid-list cols="12" rowHeight="50px">
           <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
             <mat-form-field appearance="legacy">
-              <input matInput formControlName="fecInicio" [matDatepicker]="picker" placeholder="Fecha inicio busqueda">
+              <input matInput formControlName="fecInicio" [matDatepicker]="picker" placeholder="Fecha inicio busqueda" cdkFocusInitial>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>

@@ -1,52 +1,16 @@
 <navbar [showSubmenu3]="true">
-    <!-- <mat-expansion-panel [expanded]="true">
-      <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
-        <mat-panel-title>
-          VENTAS
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="mat-expansion-panel-cuerpo">
-        <form [formGroup]="formularioGrp">
-          <mat-grid-list cols="12" rowHeight="50px">
-            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
-              <mat-form-field appearance="legacy">
-                <input matInput formControlName="fecInicio" [matDatepicker]="picker" placeholder="Fecha inicio busqueda">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </form>
-        <div class="panel-actions">
-          <button mat-raised-button color="primary" (click)="buscar()">
-            <mat-icon>search</mat-icon>
-            <strong> BUSCAR</strong>
-          </button>
-          <button mat-raised-button (click)="regMaestra(null)" matTooltip="Nueva maestra">
-            <mat-icon>add_box</mat-icon>
-            <strong> NUEVA</strong>
-          </button>
-          <button mat-raised-button type="button" [class.spinner]="exportar" [disabled]="exportar"
-            (click)="exportarExcel()" matTooltip="Exportar a excel">
-            <mat-icon svgIcon="excel"></mat-icon>
-            <strong>EXPORTAR</strong>
-          </button>
-        </div>
-      </div>
-    </mat-expansion-panel> -->
-
     <div class="venta">
         <mat-card>
             <mat-card-header>
-                <mat-card-title> VENTAS </mat-card-title>
+                <mat-card-title> AGREGAR PRODUCTO </mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <form [formGroup]="formularioGrp">
                     <mat-grid-list cols="12" rowHeight="50px">
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 8, md: 8, lg: 8, xl: 8}">
                             <mat-form-field appearance="legacy">
-                                <input matInput formControlName="producto" placeholder="Producto" type="text"
-                                    [matAutocomplete]="auto">
+                                <input matInput formControlName="producto" #producto placeholder="Producto" type="text"
+                                    [matAutocomplete]="auto" cdkFocusInitial>
                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                                     (optionSelected)="seleccionado($event)">
                                     <mat-option *ngFor="let producto of listaProductos" [value]="producto">
@@ -57,7 +21,7 @@
                         </mat-grid-tile>
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 8, md: 8, lg: 8, xl: 8}">
                             <mat-form-field appearance="legacy">
-                                <input matInput formControlName="subtotal" placeholder="Monto" type="number">
+                                <input matInput formControlName="subtotal" #subtotal placeholder="Monto" type="number">
                             </mat-form-field>
                         </mat-grid-tile>
                     </mat-grid-list>
@@ -78,7 +42,7 @@
     <div class="det-venta">
         <mat-card>
             <mat-card-header>
-                <mat-card-title> DETALLE VENTAS </mat-card-title>
+                <mat-card-title> DETALLE VENTA </mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div class="table-container">
