@@ -27,6 +27,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.
 })
 export class VentaComponent implements OnInit {
   venta: boolean = false;
+  pendConfirmacion: boolean = false;
 
   formularioGrp: FormGroup;
   formMessages = {};
@@ -72,12 +73,14 @@ export class VentaComponent implements OnInit {
     private _snackBar: MatSnackBar) { }
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.key === KEY_CODES.ESCAPE) {
-      this.limpiarTodo();
-    } else if (event.key == KEY_CODES.END) {
-      this.finalizar();
-    } else if (event.key == KEY_CODES.ENTER) {
-      this.evaluarAcccion();
+    if (!this.pendConfirmacion) {
+      if (event.key === KEY_CODES.ESCAPE) {
+        this.limpiarTodo();
+      } else if (event.key == KEY_CODES.END) {
+        this.finalizar();
+      } else if (event.key == KEY_CODES.ENTER) {
+        this.evaluarAcccion();
+      }
     }
   }
 
@@ -96,6 +99,10 @@ export class VentaComponent implements OnInit {
         }
       }
     );
+
+    setTimeout(() => {
+      this.focusProductoControl();
+    }, 0);
 
     this.inicializarVariables();
   }
@@ -170,6 +177,7 @@ export class VentaComponent implements OnInit {
   }
 
   limpiar(): void {
+    this.listaProductos = [];
     this.formService.setAsUntoched(this.formularioGrp, this.formErrors);
   }
 
@@ -181,6 +189,8 @@ export class VentaComponent implements OnInit {
 
   finalizar(): void {
     if (this.listaDetalleVenta.length > 0) {
+      this.pendConfirmacion = true;
+
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '300px',
         disableClose: true,
@@ -229,6 +239,7 @@ export class VentaComponent implements OnInit {
             }
           )
         }
+        this.pendConfirmacion = false;
       });
     } else {
       this._snackBar.open('AGREGUE AL MENOS UN PRODUCTO', null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
@@ -253,10 +264,23 @@ export class VentaComponent implements OnInit {
     let producto = this.formularioGrp.get('producto').value;
     let subtotal = this.formularioGrp.get('subtotal').value;
     console.log(typeof (producto));
+    console.log(typeof (subtotal));
+
+
     if (producto) {
       if (typeof producto != 'string') {
-
+        //PRODUCTO SELECCIONADO
+        if (subtotal) {
+          //SUBTOTAL INGRESADO
+          this.agregar();
+        } else {
+          this.focusSubtotalControl();
+        }
+      } else {
+        this.focusProductoControl();
       }
+    } else {
+      this.focusProductoControl();
     }
   }
 
