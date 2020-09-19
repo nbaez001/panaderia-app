@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductoService } from '../../../services/producto.service';
 import { ProductoBuscarRequest } from '../../../dto/request/producto-buscar.request';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-bdj-producto',
@@ -26,8 +27,7 @@ export class BdjProductoComponent implements OnInit {
   // listaUnidadMedida: MaestraResponse[] = [];
 
   formularioGrp: FormGroup;
-  messages = {};
-  formErrors = {};
+  formErrors: any;
 
   displayedColumns: string[];
   dataSource: MatTableDataSource<ProductoResponse>;
@@ -53,6 +53,7 @@ export class BdjProductoComponent implements OnInit {
   constructor(private fb: FormBuilder, public dialog: MatDialog,
     private decimalPipe: DecimalPipe,
     private _snackBar: MatSnackBar,
+    @Inject(FormService) private formService: FormService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(ProductoService) private productoService: ProductoService,) { }
 
@@ -63,6 +64,10 @@ export class BdjProductoComponent implements OnInit {
       indicio: ['', []],
       fechaInicio: ['', []],
       fechaFin: ['', []],
+    });
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
     });
 
     this.definirTabla();

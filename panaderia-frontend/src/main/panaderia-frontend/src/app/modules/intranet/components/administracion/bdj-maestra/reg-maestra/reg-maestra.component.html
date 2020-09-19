@@ -5,31 +5,36 @@
   </button>
 </mat-toolbar>
 <div mat-dialog-content>
-  <form [formGroup]="formularioGrp">
-    <mat-grid-list cols="12" rowHeight="50px">
+  <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="ejecutar()">
+    <mat-grid-list cols="12" rowHeight="53px">
       <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="nombre" placeholder="Nombre" type="text" [Uppercased] cdkFocusInitial (focusout)="generarCodigo()">
+          <mat-error *ngIf="formErrors.nombre">{{formErrors.nombre}}</mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="codigo" placeholder="Codigo" type="text" [Uppercased]>
+          <mat-error *ngIf="formErrors.codigo">{{formErrors.codigo}}</mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="valor" placeholder="Valor" type="text" [Uppercased]>
+          <mat-error *ngIf="formErrors.valor">{{formErrors.valor}}</mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="idTabla" placeholder="Numero tabla" type="number">
+          <mat-error *ngIf="formErrors.idTabla">{{formErrors.idTabla}}</mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="descripcion" placeholder="Descripcion" type="text" [Uppercased]>
+          <mat-error *ngIf="formErrors.descripcion">{{formErrors.descripcion}}</mat-error>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>

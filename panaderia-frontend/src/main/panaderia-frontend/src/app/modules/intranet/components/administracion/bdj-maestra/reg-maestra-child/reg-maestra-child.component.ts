@@ -33,8 +33,7 @@ export class RegMaestraChildComponent implements OnInit {
   eMaestra: MaestraRequest = null;
 
   formularioGrp: FormGroup;
-  formMessages = {};
-  formErrors = {};
+  formErrors: any;
 
   columnsGrilla = [
     {
@@ -95,7 +94,10 @@ export class RegMaestraChildComponent implements OnInit {
       valor: ['', []],
       descripcion: ['', []]
     });
-    this.formService.buildFormErrors(this.formularioGrp,this.formMessages,this.formErrors);
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
+    });
 
     this.definirTabla();
     this.inicializarVariables();
@@ -145,6 +147,14 @@ export class RegMaestraChildComponent implements OnInit {
     this.formularioGrp.get('orden').setValue(this.listaMaestraResponse.length + 1);
   }
 
+  ejecutar(): void {
+    if (this.data.objeto) {
+      this.editMaestra();
+    } else {
+      this.regMaestra();
+    }
+  }
+
   regMaestra(): void {
     console.log(this.formularioGrp);
     if (this.formularioGrp.valid) {
@@ -186,7 +196,7 @@ export class RegMaestraChildComponent implements OnInit {
         }
       );
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
   }
 
@@ -246,7 +256,7 @@ export class RegMaestraChildComponent implements OnInit {
         }
       );
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
   }
 

@@ -12,10 +12,10 @@ import java.util.List;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 
 public class BillPrintable implements Printable {
-	List<DetalleVentaResponse> ldv;
+	DetalleVentaResponse dv;
 
-	public BillPrintable(List<DetalleVentaResponse> ldv) {
-		this.ldv = ldv;
+	public BillPrintable(DetalleVentaResponse dv) {
+		this.dv = dv;
 	}
 
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
@@ -54,21 +54,23 @@ public class BillPrintable implements Printable {
 				/* Draw Header */
 				int y = 10;// POSICION INICIAL EN Y
 				int yShift = 15;// AUMENTO EN Y
+				int littleYShift = 5;// AUMENTO EN Y
 				int headerRectHeight = 20;// AUMENTO EN Y (MAS GRANDE)
 
 				g2d.setFont(new Font("Monospaced", Font.PLAIN, 15));
 				g2d.drawString("-------------------------------------", 8, y);
-				y += yShift;
-				g2d.drawString("      RECIBO        ", 12, y);
-				y += yShift;
-				g2d.drawString("-------------------------------------", 6, y);
-				y += headerRectHeight;
+				y += 20;
+				g2d.setFont(new Font("TimesRoman", Font.BOLD, 25));
+				g2d.drawString(" S/.", 8, y);
+				y += 20;
+				g2d.setFont(new Font("TimesRoman", Font.BOLD, 50));
+				g2d.drawString("   " + dv.getSubtotal(), 8, y);
+				y += 25;
+				g2d.setFont(new Font("TimesRoman", Font.BOLD, 25));
+				g2d.drawString("   " + dv.getNomProducto(), 8, y);
+				y += 12;
 
-				for (DetalleVentaResponse dv : ldv) {
-					g2d.drawString("S/" + dv.getSubtotal() + "   " + dv.getNomProducto(), 6, y);
-					y += yShift;
-				}
-
+				g2d.setFont(new Font("Monospaced", Font.PLAIN, 15));
 				g2d.drawString("-------------------------------------", 6, y);
 				y += yShift;
 

@@ -22,8 +22,7 @@ export class RegMaestraComponent implements OnInit {
   maestraEdit: MaestraResponse;
 
   formularioGrp: FormGroup;
-  formMessages = {};
-  formErrors = {};
+  formErrors: any;
 
   constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<RegMaestraComponent>,
@@ -41,7 +40,10 @@ export class RegMaestraComponent implements OnInit {
       idTabla: ['', [Validators.required]],
       descripcion: ['', []]
     });
-    this.formService.buildFormErrors(this.formularioGrp, this.formMessages, this.formErrors);
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
+    });
 
     this.inicializarVariables();
   }
@@ -54,6 +56,14 @@ export class RegMaestraComponent implements OnInit {
       this.formularioGrp.get('valor').setValue(this.maestraEdit.valor);
       this.formularioGrp.get('descripcion').setValue(this.maestraEdit.descripcion);
       this.formularioGrp.get('idTabla').setValue(this.maestraEdit.idTabla);
+    }
+  }
+
+  ejecutar(): void {
+    if (this.data.objeto) {
+      this.editMaestra();
+    } else {
+      this.regMaestra();
     }
   }
 
@@ -92,7 +102,7 @@ export class RegMaestraComponent implements OnInit {
         }
       );
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
   }
 
@@ -132,7 +142,7 @@ export class RegMaestraComponent implements OnInit {
         }
       );
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
   }
 

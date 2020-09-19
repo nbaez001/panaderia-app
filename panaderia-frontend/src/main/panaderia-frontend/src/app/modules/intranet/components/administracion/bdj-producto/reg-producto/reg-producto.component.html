@@ -6,8 +6,8 @@
     </button>
 </mat-toolbar>
 <div mat-dialog-content>
-    <form [formGroup]="formularioGrp">
-        <mat-grid-list cols="12" rowHeight="50px">
+    <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="ejecutar()">
+        <mat-grid-list cols="12" rowHeight="53px">
             <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
                 <mat-form-field>
                     <mat-label>Unidad Medida</mat-label>
@@ -16,17 +16,20 @@
                             {{unidadMedida.nombre}}
                         </mat-option>
                     </mat-select>
+                    <mat-error *ngIf="formErrors.unidadMedida">{{formErrors.unidadMedida}}</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
                 <mat-form-field>
                     <input matInput formControlName="nombre" placeholder="Nombre" type="text" [Uppercased]
                         cdkFocusInitial>
+                    <mat-error *ngIf="formErrors.nombre">{{formErrors.nombre}}</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
                 <mat-form-field>
                     <input matInput formControlName="precio" placeholder="Precio" type="number">
+                    <mat-error *ngIf="formErrors.precio">{{formErrors.precio}}</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
         </mat-grid-list>

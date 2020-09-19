@@ -30,8 +30,7 @@ export class VentaComponent implements OnInit {
   pendConfirmacion: boolean = false;
 
   formularioGrp: FormGroup;
-  formMessages = {};
-  formErrors = {};
+  formErrors: any;
 
   listaDetalleVenta: DetalleVentaRequest[] = [];
 
@@ -89,16 +88,17 @@ export class VentaComponent implements OnInit {
       producto: ['', [Validators.required]],
       subtotal: ['', [Validators.required]],
     });
-    this.formService.buildFormErrors(this.formularioGrp, this.formMessages, this.formErrors);
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
+    });
 
-    this.formularioGrp.get('producto').valueChanges.subscribe(
-      data => {
-        const filterValue = (typeof data == 'string') ? data.toUpperCase() : null;
-        if (filterValue) {
-          this._buscarProducto(filterValue);
-        }
+    this.formularioGrp.get('producto').valueChanges.subscribe(data => {
+      const filterValue = (typeof data == 'string') ? data.toUpperCase() : null;
+      if (filterValue) {
+        this._buscarProducto(filterValue);
       }
-    );
+    });
 
     setTimeout(() => {
       this.focusProductoControl();
@@ -172,7 +172,7 @@ export class VentaComponent implements OnInit {
 
       this.focusProductoControl();
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
   }
 

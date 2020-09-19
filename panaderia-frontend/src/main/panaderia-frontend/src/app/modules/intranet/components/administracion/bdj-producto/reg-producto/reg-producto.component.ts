@@ -27,8 +27,7 @@ export class RegProductoComponent implements OnInit {
   listaUnidadMedida: MaestraResponse[] = [];
 
   formularioGrp: FormGroup;
-  formMessages = {};
-  formErrors = {};
+  formErrors: any;
 
   constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<RegProductoComponent>,
@@ -43,10 +42,13 @@ export class RegProductoComponent implements OnInit {
   ngOnInit() {
     this.formularioGrp = this.fb.group({
       unidadMedida: ['', [Validators.required]],
-      nombre: ['', [Validators.required]],
+      nombre: ['', [Validators.required, Validators.maxLength(10)]],
       precio: ['', [Validators.required]],
     });
-    this.formService.buildFormErrors(this.formularioGrp, this.formMessages, this.formErrors);
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
+    });
 
     this.inicializarVariables();
   }
@@ -71,6 +73,14 @@ export class RegProductoComponent implements OnInit {
         this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
       }
     );
+  }
+
+  ejecutar(): void {
+    if (this.data.objeto) {
+      this.modificar();
+    } else {
+      this.registrar();
+    }
   }
 
   registrar(): void {
@@ -101,7 +111,8 @@ export class RegProductoComponent implements OnInit {
         }
       );
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
+      console.log(this.formErrors);
     }
   }
 

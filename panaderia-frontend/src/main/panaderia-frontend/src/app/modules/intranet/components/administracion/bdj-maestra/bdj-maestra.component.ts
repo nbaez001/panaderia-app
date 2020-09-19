@@ -31,8 +31,7 @@ export class BdjMaestraComponent implements OnInit {
   isLoading: boolean = false;
 
   formularioGrp: FormGroup;
-  formMessages = {};
-  formErrors = {};
+  formErrors: any;
 
   columnsGrilla = [
     {
@@ -88,7 +87,10 @@ export class BdjMaestraComponent implements OnInit {
       fecInicio: ['', []],
       fecFin: ['', []],
     });
-    this.formService.buildFormErrors(this.formularioGrp,this.formMessages,this.formErrors);
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
+    });
 
     this.listaMaestraResponse = [];
 

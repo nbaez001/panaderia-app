@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { AutenticacionService } from 'src/app/modules/sesion/services/autenticacion.service';
+import { Oauth2Response } from 'src/app/modules/sesion/dto/request/oauth2-response';
 
 @Component({
   selector: 'navbar',
@@ -23,15 +25,30 @@ export class NavbarComponent implements OnInit {
 
   constructor(private breakpointObserver: BreakpointObserver,
     @Inject(UsuarioService) public user: UsuarioService,
+    @Inject(AutenticacionService) public autenticacionService: AutenticacionService,
     private router: Router) { }
 
   ngOnInit() {
     if (!this.user.getId) {
-      this.router.navigate(['/sesion/login']);
+      let token = this.autenticacionService.existeToken();
+      if (token != null && typeof (token) !== 'undefined' && token != '') {
+        let oauth = new Oauth2Response();
+        oauth.refresh_token = token;
+        this.autenticacionService.refreshOauth2Token(oauth).subscribe(
+          (data: Oauth2Response) => {
+            this.user.setValues(data);
+            this.autenticacionService.saveToken(data);
+          }, error => {
+            console.log(error);
+            this.autenticacionService.salir();
+          });
+      } else {
+        this.autenticacionService.salir();
+      }
     }
   }
 
   salir(): void {
-    this.router.navigate(['/sesion/login']);
+    this.autenticacionService.salir();
   }
 }

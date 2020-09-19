@@ -20,8 +20,7 @@ export class LoginComponent implements OnInit {
   showMessage: boolean = false;
 
   formularioGrp: FormGroup;
-  formMessages = {};
-  formErrors = {};
+  formErrors: any;
 
   constructor(private fb: FormBuilder, private router: Router,
     @Inject(UsuarioService) private user: UsuarioService,
@@ -33,7 +32,10 @@ export class LoginComponent implements OnInit {
       usuario: ['', [Validators.required]],
       contrasenia: ['', [Validators.required]],
     });
-    this.formService.buildFormErrors(this.formularioGrp, this.formMessages, this.formErrors);
+    this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, false);
+    });
 
     this.formularioGrp.get('usuario').setValue('admin');
     this.formularioGrp.get('contrasenia').setValue('123456');
@@ -49,6 +51,7 @@ export class LoginComponent implements OnInit {
       this.autenticacionService.oauth2Token(this.usuario).subscribe(
         (data: Oauth2Response) => {
           this.user.setValues(data);
+          this.autenticacionService.saveToken(data);
           this.ingresar = false;
           this.router.navigate(['/intranet/home']);
         }, error => {
@@ -63,7 +66,7 @@ export class LoginComponent implements OnInit {
         }
       );
     } else {
-      this.formService.getValidationErrors(this.formularioGrp, this.formMessages, this.formErrors, true);
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
   }
 

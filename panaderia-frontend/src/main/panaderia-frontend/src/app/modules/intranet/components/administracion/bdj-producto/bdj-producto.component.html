@@ -6,11 +6,12 @@
                 <mat-card-title> BUSQUEDA PRODUCTOS </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <form [formGroup]="formularioGrp">
-                    <mat-grid-list cols="12" rowHeight="50px">
+                <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="buscar()">
+                    <mat-grid-list cols="12" rowHeight="53px">
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
                             <mat-form-field appearance="legacy">
                                 <input matInput formControlName="indicio" placeholder="Indicio busqueda" [Uppercased]>
+                                <mat-error *ngIf="formErrors.indicio">{{formErrors.indicio}}</mat-error>
                             </mat-form-field>
                         </mat-grid-tile>
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
@@ -19,6 +20,7 @@
                                     placeholder="Fecha inicio busqueda">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
+                                <mat-error *ngIf="formErrors.fechaInicio">{{formErrors.fechaInicio}}</mat-error>
                             </mat-form-field>
                         </mat-grid-tile>
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
@@ -27,6 +29,7 @@
                                     placeholder="Fecha fin busqueda">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
+                                <mat-error *ngIf="formErrors.fechaFin">{{formErrors.fechaFin}}</mat-error>
                             </mat-form-field>
                         </mat-grid-tile>
                     </mat-grid-list>

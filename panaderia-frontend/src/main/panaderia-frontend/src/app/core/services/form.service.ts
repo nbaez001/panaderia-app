@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -7,21 +7,20 @@ import { FormGroup } from '@angular/forms';
 export class FormService {
   constructor() { }
 
-  getValidationErrors(group: FormGroup, formMessages: any, formErrors: any, type: boolean): void {
+  getValidationErrors(group: FormGroup, formErrors: any, type: boolean): void {
     Object.keys(group.controls).forEach((key: string) => {
       let abstractControl = group.get(key);
       if (abstractControl instanceof FormGroup) {
-        this.getValidationErrors(abstractControl, formMessages[key], formErrors[key], type);
+        this.getValidationErrors(abstractControl, formErrors[key], type);
       } else {
         if (type) {
           abstractControl.markAsTouched();
         }
         formErrors[key] = '';
         if (abstractControl && abstractControl.invalid && (abstractControl.touched || abstractControl.dirty)) {
-          let msg = formMessages[key];
           for (let errorKey in abstractControl.errors) {
             if (errorKey) {
-              formErrors[key] += msg[errorKey] + ' ';
+              formErrors[key] += this.choseMessage(errorKey, abstractControl);
             }
           }
         }
@@ -87,32 +86,28 @@ export class FormService {
     });
   }
 
-  buildFormErrors(group: FormGroup, formMessages: any, formErrors: any): void {
+  buildFormErrors(group: FormGroup, formErrors: any): any {
+    formErrors = {};
     Object.keys(group.controls).forEach((key: string) => {
       let abstractControl = group.get(key);
       if (abstractControl instanceof FormGroup) {
-        this.buildFormErrors(abstractControl, formMessages[key], formErrors[key]);
+        this.buildFormErrors(abstractControl, formErrors[key]);
       } else {
-        //CONSTRUCCION DE LOS ERRORES DE FORMULARIO
         formErrors[key] = '';
-
-        //CONSTRUCCION DE LOS MENSAJES DE LOS ERRORES DE FORMULARIO
-        let msgs = {};
-        for (let errorKey in abstractControl.errors) {
-          if (errorKey) {
-            msgs[errorKey] = this.choseMessage(errorKey);
-          }
-        }
-        formMessages[key] = msgs;
       }
     });
+    return formErrors;
   }
 
-  choseMessage(error: string): string {
+  choseMessage(error: string, control: any): string {
+    let errorCtrl = control['errors'];
     let msg = '';
     switch (error) {
       case 'required':
         msg = 'Campo obligatorio';
+        break;
+      case 'maxlength':
+        msg = `Maximo ${errorCtrl['maxlength']['requiredLength']} caracteres`;
         break;
       default:
         msg = 'Valor incorrecto';

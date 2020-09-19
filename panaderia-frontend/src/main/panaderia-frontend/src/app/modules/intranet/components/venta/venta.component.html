@@ -5,8 +5,8 @@
                 <mat-card-title> AGREGAR PRODUCTO </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <form [formGroup]="formularioGrp">
-                    <mat-grid-list cols="12" rowHeight="50px">
+                <form [formGroup]="formularioGrp" *ngIf="formErrors">
+                    <mat-grid-list cols="12" rowHeight="53px">
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 8, md: 8, lg: 8, xl: 8}">
                             <mat-form-field appearance="legacy">
                                 <input matInput formControlName="producto" #producto placeholder="Producto" type="text"
@@ -17,11 +17,13 @@
                                         {{producto.nombre}}
                                     </mat-option>
                                 </mat-autocomplete>
+                                <mat-error *ngIf="formErrors.producto">{{formErrors.producto}}</mat-error>
                             </mat-form-field>
                         </mat-grid-tile>
                         <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 8, md: 8, lg: 8, xl: 8}">
                             <mat-form-field appearance="legacy">
                                 <input matInput formControlName="subtotal" #subtotal placeholder="Monto" type="number">
+                                <mat-error *ngIf="formErrors.subtotal">{{formErrors.subtotal}}</mat-error>
                             </mat-form-field>
                         </mat-grid-tile>
                     </mat-grid-list>
@@ -85,7 +87,8 @@
 
                 </div>
                 <div class="panel-actions">
-                    <button mat-raised-button [class.spinner]="venta" [disabled]="venta" type="button" (click)="finalizar()" matTooltip="Vender">
+                    <button mat-raised-button [class.spinner]="venta" [disabled]="venta" type="button"
+                        (click)="finalizar()" matTooltip="Vender">
                         <mat-icon>add_box</mat-icon>
                         <strong> VENDER</strong>
                     </button>

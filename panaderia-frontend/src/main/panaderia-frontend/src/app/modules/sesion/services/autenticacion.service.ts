@@ -26,35 +26,31 @@ export class AutenticacionService {
     return this.http.post<Oauth2Response>(`${environment.WsPanaderiaAuthorizer}/oauth/token`, params.toString(), { headers });
   }
 
-  // saveToken(token: Oauth2Response) {
-  //   const expireDate = new Date().getTime() + (1000 * token.expires_in);
-  //   Cookie.set('access_token_fc', token.access_token, expireDate);
-  //   Cookie.set('inforegioncodigo', token.inforegioncodigo, expireDate);
-  //   Cookie.set('idusuario', token.id_usuario, expireDate);
-  //   Cookie.set('idrol', token.nombre_rol, expireDate);
-  //   Cookie.set('vnombreusuario', token.infonombre, expireDate);
-  //   Cookie.set('vnombreregion', token.inforegion, expireDate);
-  // }
+  public refreshOauth2Token(req: Oauth2Response): Observable<Oauth2Response> {
+    const params = new URLSearchParams();
+    params.append('refresh_token', req.refresh_token);
+    params.append('grant_type', 'refresh_token');
 
-  // existeToken(): void {
-  //   const token = Cookie.get('access_token_fc');
-  //   console.log('esto es el token');
-  //   console.log(token);
+    const headers = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      Authorization: 'Basic ' + btoa(environment.clientId + ':' + environment.clientSecret)
+    });
 
-  //   if (token == null || typeof (token) === 'undefined') {
-  //     console.log('por aqui paso');
-  //     this.router.navigate(['/login']);
-  //   }
+    return this.http.post<Oauth2Response>(`${environment.WsPanaderiaAuthorizer}/oauth/token`, params.toString(), { headers });
+  }
 
-  // }
+  saveToken(token: Oauth2Response) {
+    const expireDate = token.expires_in/3600;
+    Cookie.set('refresh_token', token.refresh_token, expireDate);
+  }
 
-  // salir() {
-  //   Cookie.delete('access_token_fc');
-  //   Cookie.delete('inforegioncodigo');
-  //   Cookie.delete('idusuario');
-  //   Cookie.delete('idrol');
-  //   Cookie.delete('vnombreusuario');
-  //   Cookie.delete('vnombreregion');
-  //   this.router.navigate(['/login']);
-  // }
+  existeToken(): any {
+    const token = Cookie.get('refresh_token');
+    return token;
+  }
+
+  salir() {
+    Cookie.delete('refresh_token');
+    this.router.navigate(['/sesion/login']);
+  }
 }

@@ -6,13 +6,14 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="mat-expansion-panel-cuerpo">
-      <form [formGroup]="formularioGrp">
-        <mat-grid-list cols="12" rowHeight="50px">
+      <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="buscar()">
+        <mat-grid-list cols="12" rowHeight="53px">
           <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
             <mat-form-field appearance="legacy">
               <input matInput formControlName="fecInicio" [matDatepicker]="picker" placeholder="Fecha inicio busqueda" cdkFocusInitial>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="formErrors.fecInicio">{{formErrors.fecInicio}}</mat-error>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
@@ -20,6 +21,7 @@
               <input matInput formControlName="fecFin" [matDatepicker]="picker2" placeholder="Fecha fin busqueda">
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
+              <mat-error *ngIf="formErrors.fecFin">{{formErrors.fecFin}}</mat-error>
             </mat-form-field>
           </mat-grid-tile>
         </mat-grid-list>
