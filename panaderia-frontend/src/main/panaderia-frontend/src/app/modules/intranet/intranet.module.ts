@@ -17,27 +17,33 @@ import { RegMaestraChildComponent } from './components/administracion/bdj-maestr
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { VentaComponent } from './components/venta/venta.component';
 import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
+import { BdjComprobanteComponent } from './components/administracion/bdj-comprobante/bdj-comprobante.component';
+import { RegComprobanteComponent } from './components/administracion/bdj-comprobante/reg-comprobante/reg-comprobante.component';
 
 
 @NgModule({
   entryComponents: [
-    RegProductoComponent,
-    RegMaestraComponent,
-    RegMaestraChildComponent,
-    ConfirmDialogComponent,
-  ],
-  declarations: [
-    HomeComponent,
-    NavbarComponent,
-    BdjProductoComponent,
-    BdjMaestraComponent,
     ConfirmDialogComponent,
 
     RegProductoComponent,
     RegMaestraComponent,
     RegMaestraChildComponent,
-    VentaComponent,
+    RegComprobanteComponent,
     
+  ],
+  declarations: [
+    ConfirmDialogComponent,
+    RegProductoComponent,
+    RegMaestraComponent,
+    RegMaestraChildComponent,
+    RegComprobanteComponent,
+
+    HomeComponent,
+    NavbarComponent,
+    VentaComponent,
+    BdjProductoComponent,
+    BdjMaestraComponent,
+    BdjComprobanteComponent,
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,9 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { FormService } from 'src/app/core/services/form.service';
 import { AutenticacionService } from '../../services/autenticacion.service';
 import { Oauth2Response } from '../../dto/request/oauth2-response';
+import { PermisoBuscarRequest } from '../../dto/request/permiso-buscar.request';
+import { OutResponse } from 'src/app/modules/intranet/dto/response/out.response';
+import { PermisoResponse } from '../../dto/response/permiso.response';
 
 @Component({
   selector: 'app-login',
@@ -50,10 +53,8 @@ export class LoginComponent implements OnInit {
 
       this.autenticacionService.oauth2Token(this.usuario).subscribe(
         (data: Oauth2Response) => {
-          this.user.setValues(data);
+          this.listarPermiso(data);
           this.autenticacionService.saveToken(data);
-          this.ingresar = false;
-          this.router.navigate(['/intranet/home']);
         }, error => {
           console.log(error);
 
@@ -68,6 +69,38 @@ export class LoginComponent implements OnInit {
     } else {
       this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
     }
+  }
+
+  listarPermiso(oauth: Oauth2Response): void {
+    let req = new PermisoBuscarRequest();
+    req.idUsuario = oauth.id;
+
+    this.autenticacionService.listarPermiso(req, oauth.access_token).subscribe(
+      (data: OutResponse<PermisoResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.user.setValues(oauth, data.result);
+          this.autenticacionService.saveToken(oauth);
+          this.ingresar = false;
+          this.router.navigate(['/intranet/home']);
+        } else {
+          this.ingresar = false;
+          this.errorMessage = 'Error al cargar datos de usuario';
+          this.showMessage = true;
+          setTimeout(() => {
+            this.showMessage = false;
+          }, 7000);
+        }
+      }, error => {
+        console.log(error);
+
+        this.ingresar = false;
+        this.errorMessage = 'Error al cargar datos de usuario';
+        this.showMessage = true;
+        setTimeout(() => {
+          this.showMessage = false;
+        }, 7000);
+      }
+    );
   }
 
 }

@@ -26,6 +26,16 @@ export const MENSAJES = {
                     TITLE: 'REGISTRAR SUB PARAMETRO'
                 },
             }
+        },
+        BANDEJA_COMPROBANTES: {
+            COMPROBANTE: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR COMPROBANTE'
+                },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR COMPROBANTE'
+                }
+            }
         }
     }
 }

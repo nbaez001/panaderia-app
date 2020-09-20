@@ -1,11 +1,14 @@
 package com.besoft.panaderia.dto.response;
 
+import java.util.List;
+
 public class PermisoResponse {
 	private Long id;
 	private Long idPadre;
 	private String nombre;
 	private String ruta;
 	private Integer orden;
+	private List<PermisoResponse> listaPermiso;
 
 	public Long getId() {
 		return id;
@@ -45,6 +48,14 @@ public class PermisoResponse {
 
 	public void setOrden(Integer orden) {
 		this.orden = orden;
+	}
+
+	public List<PermisoResponse> getListaPermiso() {
+		return listaPermiso;
+	}
+
+	public void setListaPermiso(List<PermisoResponse> listaPermiso) {
+		this.listaPermiso = listaPermiso;
 	}
 
 }

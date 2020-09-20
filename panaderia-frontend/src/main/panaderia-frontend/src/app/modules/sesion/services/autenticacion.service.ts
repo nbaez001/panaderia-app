@@ -6,6 +6,9 @@ import { UsuarioRequest } from '../dto/request/usuario-request';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies';
+import { PermisoBuscarRequest } from '../dto/request/permiso-buscar.request';
+import { OutResponse } from '../../intranet/dto/response/out.response';
+import { PermisoResponse } from '../dto/response/permiso.response';
 
 @Injectable()
 export class AutenticacionService {
@@ -39,8 +42,18 @@ export class AutenticacionService {
     return this.http.post<Oauth2Response>(`${environment.WsPanaderiaAuthorizer}/oauth/token`, params.toString(), { headers });
   }
 
+  public listarPermiso(req: PermisoBuscarRequest, token: string): Observable<OutResponse<PermisoResponse[]>> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json; charset=utf-8',
+        authorization: 'Bearer ' + token
+      })
+    };
+    return this.http.post<OutResponse<PermisoResponse[]>>(`${environment.WsPanaderiaAuthorizer}/permiso/listarPermiso`, req, httpOptions);
+  }
+
   saveToken(token: Oauth2Response) {
-    const expireDate = token.expires_in/3600;
+    const expireDate = token.expires_in / 3600;
     Cookie.set('refresh_token', token.refresh_token, expireDate);
   }
 

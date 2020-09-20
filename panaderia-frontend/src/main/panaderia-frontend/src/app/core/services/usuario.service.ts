@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Oauth2Response } from 'src/app/modules/sesion/dto/request/oauth2-response';
+import { PermisoResponse } from 'src/app/modules/sesion/dto/response/permiso.response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class UsuarioService {
   // contrasenia: string;
   access_token: string;
   refresh_token: string;
+  listaPermiso: PermisoResponse[];
 
   constructor() { }
 
@@ -28,6 +30,7 @@ export class UsuarioService {
   // set setContrasenia(contrasenia: string) { this.contrasenia = contrasenia; }
   set setAccessToken(access_token: string) { this.access_token = access_token; }
   set setRefreshToken(refresh_token: string) { this.refresh_token = refresh_token; }
+  set setListaPermiso(listaPermiso: PermisoResponse[]) { this.listaPermiso = listaPermiso; }
 
   get getId() { return this.id; }
   get getNombre() { return this.nombre }
@@ -39,6 +42,7 @@ export class UsuarioService {
   // get getContrasenia() { return this.contrasenia; }
   get getAccessToken() { return this.access_token }
   get getRefreshToken() { return this.refresh_token }
+  get getListaPermiso() { return this.listaPermiso }
 
   limpiarRegistro(): void {
     this.id = null;
@@ -51,10 +55,11 @@ export class UsuarioService {
     // this.contrasenia = null;
     this.access_token = null;
     this.refresh_token = null;
+    this.listaPermiso = null;
     return null;
   }
 
-  setValues(auth: Oauth2Response): void {
+  setValues(auth: Oauth2Response, lista: PermisoResponse[]): void {
     this.id = auth.id;
     this.nombre = auth.nombre;
     this.apePaterno = auth.apePaterno;
@@ -63,5 +68,6 @@ export class UsuarioService {
     this.telefono = auth.telefono;
     this.access_token = auth.access_token;
     this.refresh_token = auth.refresh_token;
+    this.listaPermiso = lista;
   }
 }

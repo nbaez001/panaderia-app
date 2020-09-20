@@ -37,8 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// Deshabilitar la proteccion csrf(cross-site request forgery)
-		http.authorizeRequests().anyRequest().authenticated().and().csrf().disable().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.NEVER); // Deshabilitar el manejo de sesiones en la autenticacion por lado de spring security porque se va a trebajar con tokens NEVER(nunca)
+		http.authorizeRequests()
+		.anyRequest().authenticated()
+		.and()
+		.csrf().disable()
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.NEVER); // Deshabilitar el manejo de sesiones en la autenticacion por lado de spring security porque se va a trebajar con tokens NEVER(nunca)
 	}
 
 	@Override
