@@ -16,7 +16,7 @@ import com.besoft.panaderia.dao.VentaDao;
 import com.besoft.panaderia.dto.request.DetalleVentaRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.request.array.DetalleVentaArray;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.dto.response.mapper.VentaResponseMapper;
@@ -34,8 +34,8 @@ public class VentaDaoImpl implements VentaDao {
 	DetalleVentaArray detalleVentaArray;
 
 	@Override
-	public ApiOutResponse<VentaResponse> registrarVenta(VentaRequest c) {
-		ApiOutResponse<VentaResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<VentaResponse> registrarVenta(VentaRequest c) {
+		OutResponse<VentaResponse> outResponse = new OutResponse<>();
 		VentaResponse resp = new VentaResponse();
 
 		Integer rCodigo = 0;
@@ -97,18 +97,18 @@ public class VentaDaoImpl implements VentaDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(resp);
+			outResponse.setrResult(resp);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<List<VentaResponse>> listarVenta() {
-		ApiOutResponse<List<VentaResponse>> outResponse = new ApiOutResponse<>();
+	public OutResponse<List<VentaResponse>> listarVenta() {
+		OutResponse<List<VentaResponse>> outResponse = new OutResponse<>();
 
 		List<VentaResponse> lista = new ArrayList<>();
 
@@ -134,11 +134,11 @@ public class VentaDaoImpl implements VentaDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(lista);
+			outResponse.setrResult(lista);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}

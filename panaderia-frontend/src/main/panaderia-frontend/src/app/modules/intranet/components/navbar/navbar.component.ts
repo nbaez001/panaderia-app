@@ -16,10 +16,6 @@ import { PermisoResponse } from 'src/app/modules/sesion/dto/response/permiso.res
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @Input() showSubmenu1: boolean;
-  @Input() showSubmenu2: boolean;
-  @Input() showSubmenu3: boolean;
-
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -57,7 +53,7 @@ export class NavbarComponent implements OnInit {
     this.autenticacionService.listarPermiso(req, oauth.access_token).subscribe(
       (data: OutResponse<PermisoResponse[]>) => {
         if (data.rCodigo == 0) {
-          this.user.setValues(oauth, data.result);
+          this.user.setValues(oauth, data.rResult);
           this.autenticacionService.saveToken(oauth);
         } else {
           this.autenticacionService.salir();
@@ -72,5 +68,17 @@ export class NavbarComponent implements OnInit {
 
   salir(): void {
     this.autenticacionService.salir();
+  }
+
+  marcarSeleccionado(obj: PermisoResponse): void {
+    this.user.listaPermiso.forEach(el => {
+      if (el.id == obj.id) {
+        el.selected = true;
+      } else {
+        el.selected = false;
+      }
+    });
+    console.log('MENU');
+    console.log(this.user.listaPermiso);
   }
 }

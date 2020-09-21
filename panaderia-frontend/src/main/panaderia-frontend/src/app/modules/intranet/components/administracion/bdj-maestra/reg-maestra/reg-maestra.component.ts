@@ -89,7 +89,7 @@ export class RegMaestraComponent implements OnInit {
       this.maestraService.registrarMaestra(mae).subscribe(
         (data: OutResponse<MaestraResponse>) => {
           if (data.rCodigo == 0) {
-            this.dialogRef.close(data.result);
+            this.dialogRef.close(data.rResult);
           } else {
             this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
           }

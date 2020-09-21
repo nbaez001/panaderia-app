@@ -18,6 +18,7 @@ public class ProductoResponseMapper implements RowMapper<ProductoResponse> {
 		p.setNombre(rs.getString("NOMBRE"));
 		p.setCodigo(rs.getString("CODIGO"));
 		p.setPrecio(rs.getDouble("PRECIO"));
+		p.setFlgActivo(rs.getInt("FLG_ACTIVO"));
 		p.setIdUsuarioCrea(rs.getLong("ID_USUARIO_CREA"));
 		p.setFecUsuarioCrea(rs.getDate("FEC_USUARIO_CREA"));
 		p.setIdUsuarioMod(rs.getLong("ID_USUARIO_MOD"));

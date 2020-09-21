@@ -133,7 +133,7 @@ export class VentaComponent implements OnInit {
       (data: OutResponse<ProductoResponse[]>) => {
         console.log(data);
         if (data.rCodigo == 0) {
-          this.listaProductos = data.result;
+          this.listaProductos = data.rResult;
         } else {
           console.log(data.rMensaje);
           this.listaProductos = [];

@@ -17,6 +17,8 @@ import { ProductoService } from '../../../services/producto.service';
 import { ProductoBuscarRequest } from '../../../dto/request/producto-buscar.request';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormService } from 'src/app/core/services/form.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-bdj-producto',
@@ -36,23 +38,34 @@ export class BdjProductoComponent implements OnInit {
   listaProductos: ProductoResponse[] = [];
   columnsGrilla = [
     {
+      columnDef: 'codigo',
+      header: 'Codigo',
+      cell: (producto: ProductoResponse) => `${producto.codigo ? producto.codigo : ''}`
+    }, {
       columnDef: 'nombre',
       header: 'Nombre',
-      cell: (producto: ProductoResponse) => `${(producto.nombre) ? producto.nombre : ''}`
+      cell: (producto: ProductoResponse) => `${producto.nombre ? producto.nombre : ''}`
+    },
+    {
+      columnDef: 'unidadMedida',
+      header: 'Unidad Medida',
+      cell: (producto: ProductoResponse) => `${producto.nomUnidadMedida ? producto.nomUnidadMedida : ''}`
     },
     {
       columnDef: 'precio',
       header: 'Precio',
-      cell: (producto: ProductoResponse) => `${(producto.precio) ? this.decimalPipe.transform(producto.precio, '1.2-2') : ''}`
+      cell: (producto: ProductoResponse) => `${producto.precio ? this.decimalPipe.transform(producto.precio, '1.2-2') : ''}`
     }
   ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog,
+  constructor(private fb: FormBuilder,
+    public dialog: MatDialog,
     private decimalPipe: DecimalPipe,
     private _snackBar: MatSnackBar,
+    private spinner: NgxSpinnerService,
     @Inject(FormService) private formService: FormService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(ProductoService) private productoService: ProductoService,) { }
@@ -124,7 +137,7 @@ export class BdjProductoComponent implements OnInit {
     this.productoService.listarProducto(request).subscribe(
       (data: OutResponse<ProductoResponse[]>) => {
         if (data.rCodigo == 0) {
-          this.listaProductos = data.result;
+          this.listaProductos = data.rResult;
 
           this.cargarDatosTabla();
           this.isLoading = false;
@@ -140,8 +153,6 @@ export class BdjProductoComponent implements OnInit {
   }
 
   registrar(obj): void {
-    console.log('MODAL');
-    console.log(obj);
     const dialogRef = this.dialog.open(RegProductoComponent, {
       width: '600px',
       data: { title: MENSAJES.INTRANET.BANDEJA_PRODUCTOS.PRODUCTO.REGISTRAR.TITLE, objeto: obj }
@@ -159,8 +170,49 @@ export class BdjProductoComponent implements OnInit {
 
   }
 
-  editar(p: any): void {
+  editar(obj: ProductoResponse): void {
+    let index = this.listaProductos.indexOf(obj);
+    const dialogRef = this.dialog.open(RegProductoComponent, {
+      width: '600px',
+      data: { title: MENSAJES.INTRANET.BANDEJA_PRODUCTOS.PRODUCTO.MODIFICAR.TITLE, objeto: obj }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.listaProductos.splice(index,1);
+        this.listaProductos.unshift(result);
+        this.cargarDatosTabla();
+      }
+    });
+  }
+
+  eliminar(obj: ProductoResponse): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == 1) {
+        this.spinner.show();
+        let index = this.listaProductos.indexOf(obj);
+        this.productoService.eliminarProducto(obj).subscribe(
+          (data: OutResponse<ProductoResponse>) => {
+            if (data.rCodigo == 0) {
+              this.listaProductos.splice(index, 1);
+              this.cargarDatosTabla();
+              this.spinner.hide();
+            } else {
+              this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+              this.spinner.hide();
+            }
+          }, error => {
+            this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+            this.spinner.hide();
+          }
+        );
+      }
+    });
   }
 
 }

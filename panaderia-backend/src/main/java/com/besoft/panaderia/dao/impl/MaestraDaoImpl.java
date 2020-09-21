@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.besoft.panaderia.dao.MaestraDao;
 import com.besoft.panaderia.dto.request.MaestraBuscarRequest;
 import com.besoft.panaderia.dto.request.MaestraRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.MaestraResponse;
 import com.besoft.panaderia.dto.response.mapper.MaestraResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
@@ -28,8 +28,8 @@ public class MaestraDaoImpl implements MaestraDao {
 	DataSource dataSource;
 
 	@Override
-	public ApiOutResponse<List<MaestraResponse>> listarMaestra(MaestraBuscarRequest req) {
-		ApiOutResponse<List<MaestraResponse>> outResponse = new ApiOutResponse<>();
+	public OutResponse<List<MaestraResponse>> listarMaestra(MaestraBuscarRequest req) {
+		OutResponse<List<MaestraResponse>> outResponse = new OutResponse<>();
 
 		List<MaestraResponse> lista = new ArrayList<>();
 		Integer rCodigo = 0;
@@ -57,18 +57,18 @@ public class MaestraDaoImpl implements MaestraDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(lista);
+			outResponse.setrResult(lista);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<MaestraResponse> registrarMaestra(MaestraRequest req) {
-		ApiOutResponse<MaestraResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<MaestraResponse> registrarMaestra(MaestraRequest req) {
+		OutResponse<MaestraResponse> outResponse = new OutResponse<>();
 		MaestraResponse res = new MaestraResponse();
 
 		Integer rCodigo = 0;
@@ -119,18 +119,18 @@ public class MaestraDaoImpl implements MaestraDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<MaestraResponse> modificarMaestra(MaestraRequest req) {
-		ApiOutResponse<MaestraResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<MaestraResponse> modificarMaestra(MaestraRequest req) {
+		OutResponse<MaestraResponse> outResponse = new OutResponse<>();
 		MaestraResponse res = new MaestraResponse();
 
 		Integer rCodigo = 0;
@@ -178,18 +178,18 @@ public class MaestraDaoImpl implements MaestraDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<MaestraResponse> eliminarMaestra(MaestraRequest req) {
-		ApiOutResponse<MaestraResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<MaestraResponse> eliminarMaestra(MaestraRequest req) {
+		OutResponse<MaestraResponse> outResponse = new OutResponse<>();
 		MaestraResponse res = new MaestraResponse();
 
 		Integer rCodigo = 0;
@@ -226,11 +226,11 @@ public class MaestraDaoImpl implements MaestraDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}

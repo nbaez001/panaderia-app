@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//@EnableResourceServer
 public class PanaderiaApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(PanaderiaApplication.class);

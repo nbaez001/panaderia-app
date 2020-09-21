@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.besoft.panaderia.dao.VentaDao;
 import com.besoft.panaderia.dto.request.VentaRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.service.VentaService;
@@ -23,10 +23,10 @@ public class VentaServiceImpl implements VentaService {
 	VentaDao ventaDao;
 
 	@Override
-	public ApiOutResponse<VentaResponse> registrarVenta(VentaRequest c) {
-		ApiOutResponse<VentaResponse> out = ventaDao.registrarVenta(c);
+	public OutResponse<VentaResponse> registrarVenta(VentaRequest c) {
+		OutResponse<VentaResponse> out = ventaDao.registrarVenta(c);
 		if (out.getrCodigo() == 0) {
-			for (DetalleVentaResponse dv : out.getResult().getListaDetalleVenta()) {
+			for (DetalleVentaResponse dv : out.getrResult().getListaDetalleVenta()) {
 				PrinterJob pj = PrinterJob.getPrinterJob();
 				BillPrintable printable = new BillPrintable(dv);
 				pj.setPrintable(printable, new BillUtil().getPageFormat(pj));
@@ -42,7 +42,7 @@ public class VentaServiceImpl implements VentaService {
 	}
 
 	@Override
-	public ApiOutResponse<List<VentaResponse>> listarVenta() {
+	public OutResponse<List<VentaResponse>> listarVenta() {
 		return ventaDao.listarVenta();
 	}
 

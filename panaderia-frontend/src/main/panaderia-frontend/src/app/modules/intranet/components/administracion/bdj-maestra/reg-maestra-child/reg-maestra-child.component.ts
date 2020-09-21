@@ -126,7 +126,7 @@ export class RegMaestraChildComponent implements OnInit {
     this.maestraService.listarMaestra(req).subscribe(
       (data: OutResponse<MaestraResponse[]>) => {
         if (data.rCodigo == 0) {
-          this.listaMaestraResponse = data.result;
+          this.listaMaestraResponse = data.rResult;
         } else {
           this.listaMaestraResponse = [];
         }
@@ -182,7 +182,7 @@ export class RegMaestraChildComponent implements OnInit {
           if (data.rCodigo == 0) {
             // this.spinnerService.hide();
             this.limpiar();
-            this.listaMaestraResponse.unshift(data.result);
+            this.listaMaestraResponse.unshift(data.rResult);
             this.cargarDatosTabla();
           } else {
             this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });

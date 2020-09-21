@@ -132,7 +132,7 @@ export class BdjMaestraComponent implements OnInit {
       (data: OutResponse<MaestraResponse[]>) => {
         console.log(data);
         if (data.rCodigo == 0) {
-          this.listaMaestraResponse = data.result;
+          this.listaMaestraResponse = data.rResult;
         } else {
           this.listaMaestraResponse = [];
         }

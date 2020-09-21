@@ -77,8 +77,9 @@ export class LoginComponent implements OnInit {
 
     this.autenticacionService.listarPermiso(req, oauth.access_token).subscribe(
       (data: OutResponse<PermisoResponse[]>) => {
+        console.log(data);
         if (data.rCodigo == 0) {
-          this.user.setValues(oauth, data.result);
+          this.user.setValues(oauth, data.rResult);
           this.autenticacionService.saveToken(oauth);
           this.ingresar = false;
           this.router.navigate(['/intranet/home']);

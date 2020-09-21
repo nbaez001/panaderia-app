@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.ComprobanteBuscarRequest;
 import com.besoft.panaderia.dto.request.ComprobanteRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ComprobanteResponse;
 import com.besoft.panaderia.service.ComprobanteService;
 
@@ -29,23 +29,23 @@ public class ComprobanteController {
 	ComprobanteService comprobanteService;
 
 	@PostMapping("/listarComprobante")
-	public ApiOutResponse<List<ComprobanteResponse>> listarComprobante(@RequestBody ComprobanteBuscarRequest req) {
-		ApiOutResponse<List<ComprobanteResponse>> out = comprobanteService.listarComprobante(req);
+	public OutResponse<List<ComprobanteResponse>> listarComprobante(@RequestBody ComprobanteBuscarRequest req) {
+		OutResponse<List<ComprobanteResponse>> out = comprobanteService.listarComprobante(req);
 		return out;
 	}
 
 	@PostMapping("/registrarComprobante")
-	public ApiOutResponse<ComprobanteResponse> registrarComprobante(@RequestBody ComprobanteRequest req) {
+	public OutResponse<ComprobanteResponse> registrarComprobante(@RequestBody ComprobanteRequest req) {
 		return comprobanteService.registrarComprobante(req);
 	}
 
 	@PostMapping("/modificarComprobante")
-	public ApiOutResponse<ComprobanteResponse> modificarComprobante(@RequestBody ComprobanteRequest req) {
+	public OutResponse<ComprobanteResponse> modificarComprobante(@RequestBody ComprobanteRequest req) {
 		return comprobanteService.modificarComprobante(req);
 	}
 
 	@PostMapping("/eliminarComprobante")
-	public ApiOutResponse<ComprobanteResponse> eliminarComprobante(@RequestBody ComprobanteRequest req) {
+	public OutResponse<ComprobanteResponse> eliminarComprobante(@RequestBody ComprobanteRequest req) {
 		return comprobanteService.eliminarComprobante(req);
 	}
 }

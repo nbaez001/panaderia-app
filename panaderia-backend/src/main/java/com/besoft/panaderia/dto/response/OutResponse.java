@@ -1,9 +1,9 @@
 package com.besoft.panaderia.dto.response;
 
-public class ApiOutResponse<T> {
+public class OutResponse<T> {
 	private Integer rCodigo;
 	private String rMensaje;
-	private T result;
+	private T rResult;
 
 	public Integer getrCodigo() {
 		return rCodigo;
@@ -21,12 +21,12 @@ public class ApiOutResponse<T> {
 		this.rMensaje = rMensaje;
 	}
 
-	public T getResult() {
-		return result;
+	public T getrResult() {
+		return rResult;
 	}
 
-	public void setResult(T result) {
-		this.result = result;
+	public void setrResult(T rResult) {
+		this.rResult = rResult;
 	}
 
 }

@@ -131,7 +131,7 @@ export class BdjComprobanteComponent implements OnInit {
       (data: OutResponse<ComprobanteResponse[]>) => {
         console.log(data);
         if (data.rCodigo == 0) {
-          this.listaComprobanteResponse = data.result;
+          this.listaComprobanteResponse = data.rResult;
         } else {
           this.listaComprobanteResponse = [];
         }

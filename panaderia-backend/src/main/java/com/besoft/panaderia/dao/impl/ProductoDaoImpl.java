@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.besoft.panaderia.dao.ProductoDao;
 import com.besoft.panaderia.dto.request.ProductoBuscarRequest;
 import com.besoft.panaderia.dto.request.ProductoRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ProductoResponse;
 import com.besoft.panaderia.dto.response.mapper.ProductoResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
@@ -28,8 +28,8 @@ public class ProductoDaoImpl implements ProductoDao {
 	DataSource dataSource;
 
 	@Override
-	public ApiOutResponse<List<ProductoResponse>> listarProducto(ProductoBuscarRequest req) {
-		ApiOutResponse<List<ProductoResponse>> outResponse = new ApiOutResponse<>();
+	public OutResponse<List<ProductoResponse>> listarProducto(ProductoBuscarRequest req) {
+		OutResponse<List<ProductoResponse>> outResponse = new OutResponse<>();
 
 		List<ProductoResponse> lista = new ArrayList<>();
 		Integer rCodigo = 0;
@@ -56,18 +56,18 @@ public class ProductoDaoImpl implements ProductoDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(lista);
+			outResponse.setrResult(lista);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<ProductoResponse> registrarProducto(ProductoRequest req) {
-		ApiOutResponse<ProductoResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<ProductoResponse> registrarProducto(ProductoRequest req) {
+		OutResponse<ProductoResponse> outResponse = new OutResponse<>();
 		ProductoResponse res = new ProductoResponse();
 
 		Integer rCodigo = 0;
@@ -95,7 +95,7 @@ public class ProductoDaoImpl implements ProductoDao {
 
 			if (rCodigo == ConstanteUtil.R_COD_EXITO) {// CONSULTA CORRECTA
 				id = Long.parseLong(out.get("R_ID").toString());
-				codProducto = out.get("R_COD_PRODUCTO").toString();
+				codProducto = out.get("I_CODIGO").toString();
 
 				res.setId(id);
 				res.setIdtUnidadMedida(req.getIdtUnidadMedida());
@@ -113,18 +113,18 @@ public class ProductoDaoImpl implements ProductoDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<ProductoResponse> modificarProducto(ProductoRequest req) {
-		ApiOutResponse<ProductoResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<ProductoResponse> modificarProducto(ProductoRequest req) {
+		OutResponse<ProductoResponse> outResponse = new OutResponse<>();
 		ProductoResponse res = new ProductoResponse();
 
 		Integer rCodigo = 0;
@@ -134,13 +134,14 @@ public class ProductoDaoImpl implements ProductoDao {
 					.withCatalogName(ConstanteUtil.BD_PCK_ADMINISTRACION).withProcedureName("SP_U_PRODUCTO");
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
+			in.addValue("I_ID", req.getId(), Types.NUMERIC);
 			in.addValue("I_IDT_UNIDAD_MEDIDA", req.getIdtUnidadMedida(), Types.NUMERIC);
 			in.addValue("I_NOMBRE", req.getNombre(), Types.VARCHAR);
 			in.addValue("I_CODIGO", req.getCodigo(), Types.VARCHAR);
 			in.addValue("I_PRECIO", req.getPrecio(), Types.NUMERIC);
 			in.addValue("I_FLG_ACTIVO", req.getFlgActivo(), Types.NUMERIC);
-			in.addValue("I_ID_USUARIO_MOD", req.getIdUsuarioCrea(), Types.NUMERIC);
-			in.addValue("I_FEC_USUARIO_MOD", DateUtil.formatSlashDDMMYYYY(req.getFecUsuarioCrea()), Types.VARCHAR);
+			in.addValue("I_ID_USUARIO_MOD", req.getIdUsuarioMod(), Types.NUMERIC);
+			in.addValue("I_FEC_USUARIO_MOD", DateUtil.formatSlashDDMMYYYY(req.getFecUsuarioMod()), Types.VARCHAR);
 
 			Map<String, Object> out = jdbcCall.execute(in);
 
@@ -164,18 +165,18 @@ public class ProductoDaoImpl implements ProductoDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<ProductoResponse> eliminarProducto(ProductoRequest req) {
-		ApiOutResponse<ProductoResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<ProductoResponse> eliminarProducto(ProductoRequest req) {
+		OutResponse<ProductoResponse> outResponse = new OutResponse<>();
 		ProductoResponse res = new ProductoResponse();
 
 		Integer rCodigo = 0;
@@ -199,11 +200,11 @@ public class ProductoDaoImpl implements ProductoDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}

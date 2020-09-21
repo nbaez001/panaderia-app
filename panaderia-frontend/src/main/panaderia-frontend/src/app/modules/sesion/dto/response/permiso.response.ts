@@ -3,7 +3,9 @@ export class PermisoResponse {
     idPadre: number;
     nombre: string;
     ruta: string;
+    icono: string;
     orden: number;
+    selected: boolean;
     listaPermiso: PermisoResponse[];
 }
 

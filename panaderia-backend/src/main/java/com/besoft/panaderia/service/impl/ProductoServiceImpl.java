@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.besoft.panaderia.dao.ProductoDao;
 import com.besoft.panaderia.dto.request.ProductoBuscarRequest;
 import com.besoft.panaderia.dto.request.ProductoRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ProductoResponse;
 import com.besoft.panaderia.service.ProductoService;
 
@@ -19,22 +19,22 @@ public class ProductoServiceImpl implements ProductoService {
 	ProductoDao productoDao;
 
 	@Override
-	public ApiOutResponse<List<ProductoResponse>> listarProducto(ProductoBuscarRequest req) {
+	public OutResponse<List<ProductoResponse>> listarProducto(ProductoBuscarRequest req) {
 		return productoDao.listarProducto(req);
 	}
 
 	@Override
-	public ApiOutResponse<ProductoResponse> registrarProducto(ProductoRequest req) {
+	public OutResponse<ProductoResponse> registrarProducto(ProductoRequest req) {
 		return productoDao.registrarProducto(req);
 	}
 
 	@Override
-	public ApiOutResponse<ProductoResponse> modificarProducto(ProductoRequest req) {
+	public OutResponse<ProductoResponse> modificarProducto(ProductoRequest req) {
 		return productoDao.modificarProducto(req);
 	}
 
 	@Override
-	public ApiOutResponse<ProductoResponse> eliminarProducto(ProductoRequest req) {
+	public OutResponse<ProductoResponse> eliminarProducto(ProductoRequest req) {
 		return productoDao.eliminarProducto(req);
 	}
 

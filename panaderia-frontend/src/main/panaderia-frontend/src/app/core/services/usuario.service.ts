@@ -70,4 +70,8 @@ export class UsuarioService {
     this.refresh_token = auth.refresh_token;
     this.listaPermiso = lista;
   }
+
+  setPermisos(lista: PermisoResponse[]): void {
+    this.listaPermiso = lista;
+  }
 }

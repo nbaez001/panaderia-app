@@ -23,7 +23,7 @@ public class PermisoServiceImpl implements PermisoService {
 		OutResponse<List<PermisoResponse>> out = permisoDao.listarPermiso(req);
 
 		List<PermisoResponse> lista = out.getrResult().stream()
-				.filter(obj -> obj.getIdPadre() == null)
+				.filter(obj -> (obj.getIdPadre() == null || obj.getIdPadre() == 0L))
 				.collect(Collectors.toList());
 
 		for (PermisoResponse p : lista) {

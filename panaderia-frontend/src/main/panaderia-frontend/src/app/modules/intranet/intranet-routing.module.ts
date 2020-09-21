@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { BdjProductoComponent } from './components/administracion/bdj-producto/bdj-producto.component';
 import { BdjMaestraComponent } from './components/administracion/bdj-maestra/bdj-maestra.component';
 import { VentaComponent } from './components/venta/venta.component';
+import { BdjComprobanteComponent } from './components/administracion/bdj-comprobante/bdj-comprobante.component';
 
 
 const intranetRoutes: Routes = [
@@ -23,13 +24,27 @@ const intranetRoutes: Routes = [
         component: VentaComponent,
         data: { title: 'Venta' }
       }, {
-        path: 'administracion/productos',
-        component: BdjProductoComponent,
-        data: { title: 'Productos' }
-      }, {
-        path: 'administracion/maestras',
-        component: BdjMaestraComponent,
-        data: { title: 'Parametros' }
+        path: 'administracion',
+        children: [
+          {
+            path: '',
+            redirectTo: 'productos',
+            pathMatch: 'full'
+          },
+          {
+            path: 'productos',
+            component: BdjProductoComponent,
+            data: { title: 'Productos' }
+          }, {
+            path: 'comprobantes',
+            component: BdjComprobanteComponent,
+            data: { title: 'Comprobantes' }
+          }, {
+            path: 'maestras',
+            component: BdjMaestraComponent,
+            data: { title: 'Parametros' }
+          }
+        ]
       }
     ]
   }

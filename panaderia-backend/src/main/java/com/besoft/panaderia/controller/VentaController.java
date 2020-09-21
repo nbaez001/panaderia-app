@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.VentaRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.service.VentaService;
 
@@ -30,12 +30,12 @@ public class VentaController {
 	VentaService ventaService;
 
 	@PostMapping("/registrarVenta")
-	public ApiOutResponse<VentaResponse> registrarVenta(@RequestBody VentaRequest c) {
+	public OutResponse<VentaResponse> registrarVenta(@RequestBody VentaRequest c) {
 		return ventaService.registrarVenta(c);
 	}
 
 	@PostMapping("/listarVenta")
-	public ApiOutResponse<List<VentaResponse>> listarVenta() {
+	public OutResponse<List<VentaResponse>> listarVenta() {
 		return ventaService.listarVenta();
 	}
 

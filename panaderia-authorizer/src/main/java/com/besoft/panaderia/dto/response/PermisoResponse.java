@@ -7,6 +7,7 @@ public class PermisoResponse {
 	private Long idPadre;
 	private String nombre;
 	private String ruta;
+	private String icono;
 	private Integer orden;
 	private List<PermisoResponse> listaPermiso;
 
@@ -40,6 +41,14 @@ public class PermisoResponse {
 
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
+	}
+
+	public String getIcono() {
+		return icono;
+	}
+
+	public void setIcono(String icono) {
+		this.icono = icono;
 	}
 
 	public Integer getOrden() {

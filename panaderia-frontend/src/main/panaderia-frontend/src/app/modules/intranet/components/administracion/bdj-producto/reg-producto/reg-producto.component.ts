@@ -55,6 +55,17 @@ export class RegProductoComponent implements OnInit {
 
   public inicializarVariables(): void {
     this.comboUnidadesMedida();
+
+    this.formularioGrp.get('nombre').setValue(this.data.objeto.nombre);
+    this.formularioGrp.get('precio').setValue(this.data.objeto.precio);
+  }
+
+  completarCombo(controlName: string, lista: any[], field: string, value: any): void {
+    if (this.data.objeto) {
+      this.formularioGrp.get(controlName).setValue(lista.filter(el => el[field] == value));
+    } else {
+      this.formularioGrp.get(controlName).setValue(lista[0]);
+    }
   }
 
   comboUnidadesMedida(): void {
@@ -63,8 +74,13 @@ export class RegProductoComponent implements OnInit {
     this.maestraService.listarMaestra(maestra).subscribe(
       (data: OutResponse<MaestraResponse[]>) => {
         if (data.rCodigo == 0) {
-          this.listaUnidadMedida = data.result;
-          this.formularioGrp.get('unidadMedida').setValue(this.listaUnidadMedida[0]);
+          this.listaUnidadMedida = data.rResult;
+
+          if (this.data.objeto) {
+            this.formularioGrp.get('unidadMedida').setValue(this.listaUnidadMedida.filter(el => el.id == this.data.objeto.idtUnidadMedida)[0]);
+          } else {
+            this.formularioGrp.get('unidadMedida').setValue(this.listaUnidadMedida[0]);
+          }
         } else {
           this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
         }
@@ -100,7 +116,7 @@ export class RegProductoComponent implements OnInit {
       this.productoService.registrarProducto(obj).subscribe(
         (data: OutResponse<ProductoResponse>) => {
           if (data.rCodigo == 0) {
-            this.dialogRef.close(data.result);
+            this.dialogRef.close(data.rResult);
           } else {
             this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
           }
@@ -117,42 +133,37 @@ export class RegProductoComponent implements OnInit {
   }
 
   modificar(): void {
-    //   if (this.egresoGrp.valid) {
-    //     let obj: Egreso = JSON.parse(JSON.stringify(this.data.objeto));
-    //     obj.idTipoEgreso = this.egresoGrp.get('tipoEgreso').value.id;
-    //     obj.nomTipoEgreso = this.egresoGrp.get('tipoEgreso').value.nombre;
-    //     obj.idUnidadMedida = this.egresoGrp.get('unidadMedida').value.id;
-    //     obj.nomUnidadMedida = this.egresoGrp.get('unidadMedida').value.nombre;
-    //     obj.nombre = this.egresoGrp.get('nombre').value;
-    //     obj.cantidad = this.egresoGrp.get('cantidad').value;
-    //     obj.precio = this.egresoGrp.get('precio').value;
-    //     obj.total = this.egresoGrp.get('total').value;
-    //     obj.descripcion = this.egresoGrp.get('descripcion').value;
-    //     obj.ubicacion = this.egresoGrp.get('ubicacion').value;
-    //     obj.fecha = this.egresoGrp.get('fecha').value;
-    //     obj.dia = this.dias[(obj.fecha.getDay() == 0 ? 7 : obj.fecha.getDay()) - 1];
-    //     obj.idUsuarioMod = this.user.getIdUsuario;
-    //     obj.fecUsuarioMod = new Date();
+    if (this.formularioGrp.valid) {
+      this.modif = true;
 
-    //     console.log(obj)
+      let obj = new ProductoRequest();
+      obj.id = this.data.objeto.id;
+      obj.idtUnidadMedida = this.formularioGrp.get('unidadMedida').value.id;
+      obj.nomUnidadMedida = this.formularioGrp.get('unidadMedida').value.nombre;
+      obj.nombre = this.formularioGrp.get('nombre').value;
+      obj.precio = this.formularioGrp.get('precio').value;
+      obj.codigo = this.data.objeto.codigo;
+      obj.flgActivo = this.data.objeto.flgActivo;
+      obj.idUsuarioMod = this.user.getId;
+      obj.fecUsuarioMod = new Date();
 
-    //     this.spinnerService.show();
-    //     this.egresoService.editEgreso(obj).subscribe(
-    //       (data: ApiResponse[]) => {
-    //         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
-    //           console.log('Exito al modificar');
-    //           this.dialogRef.close(obj);
-    //           this.spinnerService.hide();
-    //         } else {
-    //           console.error('Ocurrio un error al modificar egreso');
-    //         }
-    //       }, error => {
-    //         console.error('Error al modificar egreso');
-    //       }
-    //     );
-    //   } else {
-    //     this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, true);
-    //   }
+      this.productoService.modificarProducto(obj).subscribe(
+        (data: OutResponse<ProductoResponse>) => {
+          if (data.rCodigo == 0) {
+            this.dialogRef.close(data.rResult);
+          } else {
+            this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+          }
+          this.modif = false;
+        }, error => {
+          this.modif = false;
+          this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+      );
+    } else {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
+      console.log(this.formErrors);
+    }
   }
 
 }

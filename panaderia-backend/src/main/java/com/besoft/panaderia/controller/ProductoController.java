@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.ProductoBuscarRequest;
 import com.besoft.panaderia.dto.request.ProductoRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ProductoResponse;
 import com.besoft.panaderia.service.ProductoService;
 
@@ -29,22 +29,22 @@ public class ProductoController {
 	ProductoService productoService;
 
 	@PostMapping("/listarProducto")
-	public ApiOutResponse<List<ProductoResponse>> listarProducto(@RequestBody ProductoBuscarRequest req) {
+	public OutResponse<List<ProductoResponse>> listarProducto(@RequestBody ProductoBuscarRequest req) {
 		return productoService.listarProducto(req);
 	}
 
 	@PostMapping("/registrarProducto")
-	public ApiOutResponse<ProductoResponse> registrarProducto(@RequestBody ProductoRequest req) {
+	public OutResponse<ProductoResponse> registrarProducto(@RequestBody ProductoRequest req) {
 		return productoService.registrarProducto(req);
 	}
 
 	@PostMapping("/modificarProducto")
-	public ApiOutResponse<ProductoResponse> modificarProducto(@RequestBody ProductoRequest req) {
+	public OutResponse<ProductoResponse> modificarProducto(@RequestBody ProductoRequest req) {
 		return productoService.modificarProducto(req);
 	}
 
 	@PostMapping("/eliminarProducto")
-	public ApiOutResponse<ProductoResponse> eliminarProducto(@RequestBody ProductoRequest req) {
+	public OutResponse<ProductoResponse> eliminarProducto(@RequestBody ProductoRequest req) {
 		return productoService.eliminarProducto(req);
 	}
 }

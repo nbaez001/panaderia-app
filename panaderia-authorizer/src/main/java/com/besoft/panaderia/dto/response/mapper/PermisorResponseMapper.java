@@ -16,7 +16,8 @@ public class PermisorResponseMapper implements RowMapper<PermisoResponse> {
 		o.setId(rs.getLong("ID"));
 		o.setIdPadre(rs.getLong("ID_PADRE"));
 		o.setNombre(rs.getString("NOMBRE"));
-		o.setRuta(rs.getString("RUTA"));
+		o.setRuta(rs.getString("RUTA") != null ? rs.getString("RUTA") : "");
+		o.setIcono(rs.getString("ICONO"));
 		o.setOrden(rs.getInt("ORDEN"));
 		o.setListaPermiso(new ArrayList<>());
 		return o;

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.besoft.panaderia.dao.ComprobanteDao;
 import com.besoft.panaderia.dto.request.ComprobanteBuscarRequest;
 import com.besoft.panaderia.dto.request.ComprobanteRequest;
-import com.besoft.panaderia.dto.response.ApiOutResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ComprobanteResponse;
 import com.besoft.panaderia.dto.response.mapper.ComprobanteResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
@@ -28,8 +28,8 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 	DataSource dataSource;
 
 	@Override
-	public ApiOutResponse<List<ComprobanteResponse>> listarComprobante(ComprobanteBuscarRequest req) {
-		ApiOutResponse<List<ComprobanteResponse>> outResponse = new ApiOutResponse<>();
+	public OutResponse<List<ComprobanteResponse>> listarComprobante(ComprobanteBuscarRequest req) {
+		OutResponse<List<ComprobanteResponse>> outResponse = new OutResponse<>();
 
 		List<ComprobanteResponse> lista = new ArrayList<>();
 		Integer rCodigo = 0;
@@ -56,18 +56,18 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(lista);
+			outResponse.setrResult(lista);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<ComprobanteResponse> registrarComprobante(ComprobanteRequest req) {
-		ApiOutResponse<ComprobanteResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<ComprobanteResponse> registrarComprobante(ComprobanteRequest req) {
+		OutResponse<ComprobanteResponse> outResponse = new OutResponse<>();
 		ComprobanteResponse res = new ComprobanteResponse();
 
 		Integer rCodigo = 0;
@@ -118,18 +118,18 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<ComprobanteResponse> modificarComprobante(ComprobanteRequest req) {
-		ApiOutResponse<ComprobanteResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<ComprobanteResponse> modificarComprobante(ComprobanteRequest req) {
+		OutResponse<ComprobanteResponse> outResponse = new OutResponse<>();
 		ComprobanteResponse res = new ComprobanteResponse();
 
 		Integer rCodigo = 0;
@@ -177,18 +177,18 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
 
 	@Override
-	public ApiOutResponse<ComprobanteResponse> eliminarComprobante(ComprobanteRequest req) {
-		ApiOutResponse<ComprobanteResponse> outResponse = new ApiOutResponse<>();
+	public OutResponse<ComprobanteResponse> eliminarComprobante(ComprobanteRequest req) {
+		OutResponse<ComprobanteResponse> outResponse = new OutResponse<>();
 		ComprobanteResponse res = new ComprobanteResponse();
 
 		Integer rCodigo = 0;
@@ -226,11 +226,11 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 			}
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
-			outResponse.setResult(res);
+			outResponse.setrResult(res);
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
-			outResponse.setResult(null);
+			outResponse.setrResult(null);
 		}
 		return outResponse;
 	}
