@@ -73,8 +73,19 @@
                     </ng-container>
                     <ng-container *ngFor="let column of columnsGrilla" [matColumnDef]="column.columnDef">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header }} </th>
-                        <td mat-cell *matCellDef="let row"> {{ column.cell(row) }} </td>
+                        <ng-container *ngIf="column.numero!=6">
+                            <td mat-cell *matCellDef="let row"> {{ column.cell(row) }} </td>
+                        </ng-container>
+                        <ng-container *ngIf="column.numero==6">
+                            <td mat-cell *matCellDef="let row">
+                                <!-- <mat-checkbox [checked]="row.flgActual" [disabled] = "row.flgActual==1" (click)="establecerActual(row)"></mat-checkbox> -->
+
+                                <mat-checkbox [checked]="row.flgActual" (click)="establecerActual(row, $event)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
                     </ng-container>
+
                     <ng-container matColumnDef="opt" stickyEnd>
                         <th mat-header-cell *matHeaderCellDef>Opc.</th>
                         <td mat-cell *matCellDef="let element">

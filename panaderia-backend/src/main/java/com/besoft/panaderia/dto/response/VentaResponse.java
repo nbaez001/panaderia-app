@@ -5,6 +5,7 @@ import java.util.List;
 
 public class VentaResponse {
 	private Long id;
+	private Long idComprobante;
 	private String serie;
 	private String numero;
 	private Double total;
@@ -22,6 +23,14 @@ public class VentaResponse {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getIdComprobante() {
+		return idComprobante;
+	}
+
+	public void setIdComprobante(Long idComprobante) {
+		this.idComprobante = idComprobante;
 	}
 
 	public String getSerie() {

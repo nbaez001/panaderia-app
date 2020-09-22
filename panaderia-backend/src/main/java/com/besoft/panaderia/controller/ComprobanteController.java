@@ -48,4 +48,9 @@ public class ComprobanteController {
 	public OutResponse<ComprobanteResponse> eliminarComprobante(@RequestBody ComprobanteRequest req) {
 		return comprobanteService.eliminarComprobante(req);
 	}
+
+	@PostMapping("/establecerComprobanteActual")
+	public OutResponse<ComprobanteResponse> establecerComprobanteActual(@RequestBody ComprobanteRequest req) {
+		return comprobanteService.establecerComprobanteActual(req);
+	}
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ResponsiveRowsDirective } from '../core/directives/responsive-rows.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,6 +16,7 @@ import { UppercasedDirective } from '../core/directives/uppercased.directive';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     FlexLayoutModule,
   ],
@@ -24,6 +25,7 @@ import { UppercasedDirective } from '../core/directives/uppercased.directive';
     UppercasedDirective,
 
     ReactiveFormsModule,
+    FormsModule,//FOR ngModel
     HttpClientModule,
     FlexLayoutModule,
   ]

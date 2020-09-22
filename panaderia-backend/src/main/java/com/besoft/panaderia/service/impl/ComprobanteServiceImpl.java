@@ -38,4 +38,9 @@ public class ComprobanteServiceImpl implements ComprobanteService {
 		return comprobanteDao.eliminarComprobante(req);
 	}
 
+	@Override
+	public OutResponse<ComprobanteResponse> establecerComprobanteActual(ComprobanteRequest req) {
+		return comprobanteDao.establecerComprobanteActual(req);
+	}
+
 }

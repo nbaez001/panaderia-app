@@ -1,1 +1,62 @@
-<p>reg-comprobante works!</p>
+<!-- <ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner> -->
+<mat-toolbar class="mat-primary mat-dialog-header">
+    <span>{{data.titulo}}</span>
+    <button tabindex="-1" mat-icon-button [mat-dialog-close]="">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-toolbar>
+<div mat-dialog-content>
+    <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="ejecutar()">
+        <mat-grid-list cols="12" rowHeight="53px">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Tipo comprobante</mat-label>
+                    <mat-select formControlName="tipoComprobante">
+                        <mat-option *ngFor="let tipoComprobante of listaTipoComprobante" [value]="tipoComprobante">
+                            {{tipoComprobante.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.tipoComprobante">{{formErrors.tipoComprobante}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="nombre" placeholder="Nombre" type="text" [Uppercased]
+                        cdkFocusInitial>
+                    <mat-error *ngIf="formErrors.nombre">{{formErrors.nombre}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="serie" placeholder="Serie" type="number">
+                    <mat-error *ngIf="formErrors.serie">{{formErrors.serie}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="numero" placeholder="Numero" type="number">
+                    <mat-error *ngIf="formErrors.numero">{{formErrors.numero}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="longSerie" placeholder="Numero de cifras serie" type="number">
+                    <mat-error *ngIf="formErrors.longSerie">{{formErrors.longSerie}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="longNumero" placeholder="Numero cifras numero" type="number">
+                    <mat-error *ngIf="formErrors.longNumero">{{formErrors.longNumero}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" [class.spinner]="modif" [disabled]="modif" type="button"
+        (click)="modificar()" *ngIf="data.objeto">Modificar</button>
+    <button mat-raised-button color="primary" [class.spinner]="guardar" [disabled]="guardar" type="button"
+        (click)="registrar()" *ngIf="!data.objeto">Guardar</button>
+    <button mat-button [mat-dialog-close]="">Salir</button>
+</div>

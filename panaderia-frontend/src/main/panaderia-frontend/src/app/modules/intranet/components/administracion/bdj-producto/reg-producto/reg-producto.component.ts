@@ -37,7 +37,7 @@ export class RegProductoComponent implements OnInit {
     @Inject(FormService) private formService: FormService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(ProductoService) private productoService: ProductoService,
-    @Inject(MAT_DIALOG_DATA) public data: DataDialog) { }
+    @Inject(MAT_DIALOG_DATA) public data: DataDialog<ProductoResponse>) { }
 
   ngOnInit() {
     this.formularioGrp = this.fb.group({

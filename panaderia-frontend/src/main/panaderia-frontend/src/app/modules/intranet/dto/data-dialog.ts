@@ -1,4 +1,4 @@
-export class DataDialog {
+export class DataDialog<T> {
     titulo: string;
-    objeto: any;
+    objeto: T;
 }

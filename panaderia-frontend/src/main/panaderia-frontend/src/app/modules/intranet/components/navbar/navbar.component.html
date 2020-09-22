@@ -13,53 +13,31 @@
     </div>
     <mat-nav-list>
       <ng-container *ngFor="let item of user.listaPermiso">
-        <a mat-list-item [routerLink]="[item.ruta]" routerLinkActive="active-list-item"
-          (click)="marcarSeleccionado(item)">
-          <mat-icon>{{item.icono}}</mat-icon> {{item.nombre}}
-          <ng-container *ngIf="item.listaPermiso.length>0">
+        <ng-container *ngIf="item.listaPermiso.length==0">
+          <a mat-list-item [routerLink]="[item.ruta]" routerLinkActive="active-list-item"
+            (click)="marcarSeleccionado(item)">
+            <mat-icon>{{item.icono}}</mat-icon> {{item.nombre}}
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="item.listaPermiso.length>0">
+          <a mat-list-item (click)="marcarSeleccionado(item)">
+            <mat-icon>{{item.icono}}</mat-icon> {{item.nombre}}
             <span class="spacer"></span>
             <mat-icon>expand_more</mat-icon>
-          </ng-container>
-        </a>
-        <div *ngIf="item.selected">
-          <ng-container *ngFor="let subitem of item.listaPermiso">
-            <a mat-list-item [routerLink]="[subitem.ruta]" routerLinkActive="active-list-item"
-              [ngStyle]="{'padding-left': '20px'}">
-              <span class="child-link"></span>
-              {{subitem.nombre}}
-            </a>
-          </ng-container>
-        </div>
+          </a>
+          <div *ngIf="item.selected">
+            <ng-container *ngFor="let subitem of item.listaPermiso">
+              <a mat-list-item [routerLink]="[subitem.ruta]" routerLinkActive="active-list-item"
+                [ngStyle]="{'padding-left': '20px'}">
+                <span class="child-link"></span>
+                {{subitem.nombre}}
+              </a>
+            </ng-container>
+          </div>
+        </ng-container>
       </ng-container>
 
-      <!-- <a mat-list-item [routerLink]="['/intranet/home']" routerLinkActive="active-list-item"
-        [ngClass]="{'selected':showSubmenu1}" (click)="showSubmenu1 = !showSubmenu1">
-        <mat-icon>home</mat-icon> Home
-      </a>
-
-      <a mat-list-item [routerLink]="['/intranet/venta']" routerLinkActive="active-list-item"
-        [ngClass]="{'selected':showSubmenu3}" (click)="showSubmenu3 = !showSubmenu3">
-        <mat-icon>add_shopping_cart</mat-icon> Venta
-      </a> -->
-
-      <!-- <a mat-list-item routerLinkActive="active-list-item" [ngClass]="{'selected':showSubmenu2}"
-        (click)="showSubmenu2 = !showSubmenu2">
-        <mat-icon>assignment</mat-icon> Administracion
-        <span class="spacer"></span>
-        <mat-icon>expand_more</mat-icon>
-      </a>
-      <div *ngIf="showSubmenu2">
-        <a mat-list-item [routerLink]="['/intranet/administracion/productos']" routerLinkActive="active-list-item"
-          [ngStyle]="{'padding-left': '20px'}">
-          <span class="child-link"></span>
-          Registrar Producto
-        </a>
-        <a mat-list-item [routerLink]="['/intranet/administracion/maestras']" routerLinkActive="active-list-item"
-          [ngStyle]="{'padding-left': '20px'}">
-          <span class="child-link"></span>
-          Parametros
-        </a>
-      </div> -->
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -5,8 +5,7 @@ import java.util.List;
 
 public class VentaRequest {
 	private Long id;
-	private String serie;
-	private String numero;
+	private Long idComprobante;
 	private Double total;
 	private Integer flgActivo;
 	private Long idUsuarioCrea;
@@ -24,20 +23,12 @@ public class VentaRequest {
 		this.id = id;
 	}
 
-	public String getSerie() {
-		return serie;
+	public Long getIdComprobante() {
+		return idComprobante;
 	}
 
-	public void setSerie(String serie) {
-		this.serie = serie;
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
+	public void setIdComprobante(Long idComprobante) {
+		this.idComprobante = idComprobante;
 	}
 
 	public Double getTotal() {

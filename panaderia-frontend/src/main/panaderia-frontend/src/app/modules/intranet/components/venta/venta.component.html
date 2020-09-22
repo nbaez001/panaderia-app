@@ -44,7 +44,9 @@
     <div class="det-venta">
         <mat-card>
             <mat-card-header>
-                <mat-card-title> DETALLE VENTA </mat-card-title>
+                <mat-card-title> DETALLE VENTA N°
+                    {{comprobante? (comprobante.serie+'').padStart(comprobante.longSerie, '0'):'0000'}}-{{comprobante?(comprobante.numero+'').padStart(comprobante.longNumero, '0'):'00000000'}}
+                </mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div class="table-container">

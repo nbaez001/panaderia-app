@@ -42,6 +42,8 @@ public class VentaDaoImpl implements VentaDao {
 		String rMensaje = "";
 
 		Long id = 0L;
+		String serie = "";
+		String numero = "";
 		try {
 			SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withSchemaName(ConstanteUtil.BD_SCHEMA)
 					.withCatalogName(ConstanteUtil.BD_PCK_VENTA).withProcedureName("SP_I_VENTA");
@@ -50,8 +52,7 @@ public class VentaDaoImpl implements VentaDao {
 			ARRAY array = detalleVentaArray.toArray(lDetalle);
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
-			in.addValue("I_NUMERO", c.getNumero(), Types.VARCHAR);
-			in.addValue("I_SERIE", c.getSerie(), Types.VARCHAR);
+			in.addValue("I_ID_COMPROBANTE", c.getIdComprobante(), Types.NUMERIC);
 			in.addValue("I_TOTAL", c.getTotal(), Types.DECIMAL);
 			in.addValue("I_FLG_ACTIVO", c.getFlgActivo(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_CREA", c.getIdUsuarioCrea(), Types.NUMERIC);
@@ -66,10 +67,13 @@ public class VentaDaoImpl implements VentaDao {
 
 			if (rCodigo == 0) {// CONSULTA CORRECTA
 				id = Long.parseLong(out.get("R_ID").toString());
+				serie = out.get("R_SERIE").toString();
+				numero = out.get("R_NUMERO").toString();
 
 				resp.setId(id);
-				resp.setSerie(c.getSerie());
-				resp.setNumero(c.getNumero());
+				resp.setIdComprobante(c.getIdComprobante());
+				resp.setSerie(serie);
+				resp.setNumero(numero);
 				resp.setTotal(c.getTotal());
 				resp.setFlgActivo(c.getFlgActivo());
 				resp.setIdUsuarioCrea(c.getIdUsuarioCrea());

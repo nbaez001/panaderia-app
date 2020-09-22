@@ -40,9 +40,11 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 					.returningResultSet(ConstanteUtil.R_LISTA, new ComprobanteResponseMapper());
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
+			in.addValue("I_ID", req.getId(), Types.NUMERIC);
 			in.addValue("I_FEC_INICIO", DateUtil.formatSlashDDMMYYYY(req.getFecInicio()), Types.VARCHAR);
 			in.addValue("I_FEC_FIN", DateUtil.formatSlashDDMMYYYY(req.getFecFin()), Types.VARCHAR);
 			in.addValue("I_IDT_TIPO_COMPROBANTE", req.getIdtTipoComprobante(), Types.NUMERIC);
+			in.addValue("I_FLG_ACTUAL", req.getFlgActual(), Types.NUMERIC);
 
 			Map<String, Object> out = jdbcCall.execute(in);
 
@@ -74,6 +76,7 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 		String rMensaje = "";
 
 		Long id = 0L;
+		Integer flgActual = 0;
 		try {
 			SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withSchemaName(ConstanteUtil.BD_SCHEMA)
 					.withCatalogName(ConstanteUtil.BD_PCK_ADMINISTRACION).withProcedureName("SP_I_COMPROBANTE");
@@ -86,6 +89,7 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 			in.addValue("I_LONG_SERIE", req.getLongSerie(), Types.NUMERIC);
 			in.addValue("I_LONG_NUMERO", req.getLongNumero(), Types.NUMERIC);
 			in.addValue("I_FLG_ACTIVO", req.getFlgActivo(), Types.NUMERIC);
+			in.addValue("I_FLG_ACTUAL", req.getFlgActual(), Types.NUMERIC);
 			in.addValue("I_FLG_USADO", req.getFlgUsado(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_CREA", req.getIdUsuarioCrea(), Types.NUMERIC);
 			in.addValue("I_FEC_USUARIO_CREA", DateUtil.formatSlashDDMMYYYY(req.getFecUsuarioCrea()), Types.VARCHAR);
@@ -97,6 +101,7 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 
 			if (rCodigo == ConstanteUtil.R_COD_EXITO) {// CONSULTA CORRECTA
 				id = Long.parseLong(out.get("R_ID").toString());
+				flgActual = Integer.parseInt(out.get("I_FLG_ACTUAL").toString());
 
 				res.setId(id);
 				res.setIdtTipoComprobante(req.getIdtTipoComprobante());
@@ -106,7 +111,7 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 				res.setNumero(req.getNumero());
 				res.setLongSerie(req.getLongSerie());
 				res.setLongNumero(req.getLongNumero());
-				res.setFlgActual(req.getFlgActual());
+				res.setFlgActual(flgActual);
 				res.setFlgActivo(req.getFlgActivo());
 				res.setFlgUsado(req.getFlgUsado());
 				res.setIdUsuarioCrea(req.getIdUsuarioCrea());
@@ -147,6 +152,7 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 			in.addValue("I_LONG_SERIE", req.getLongSerie(), Types.NUMERIC);
 			in.addValue("I_LONG_NUMERO", req.getLongNumero(), Types.NUMERIC);
 			in.addValue("I_FLG_ACTIVO", req.getFlgActivo(), Types.NUMERIC);
+			in.addValue("I_FLG_ACTUAL", req.getFlgActual(), Types.NUMERIC);
 			in.addValue("I_FLG_USADO", req.getFlgUsado(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_MOD", req.getIdUsuarioMod(), Types.NUMERIC);
 			in.addValue("I_FEC_USUARIO_MOD", DateUtil.formatSlashDDMMYYYY(req.getFecUsuarioMod()), Types.VARCHAR);
@@ -198,7 +204,58 @@ public class ComprobanteDaoImpl implements ComprobanteDao {
 					.withCatalogName(ConstanteUtil.BD_PCK_ADMINISTRACION).withProcedureName("SP_D_COMPROBANTE");
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
-			in.addValue("I_ID", req.getId());
+			in.addValue("I_ID", req.getId(), Types.NUMERIC);
+
+			Map<String, Object> out = jdbcCall.execute(in);
+
+			rCodigo = Integer.parseInt(out.get(ConstanteUtil.R_CODIGO).toString());
+			rMensaje = out.get(ConstanteUtil.R_MENSAJE).toString();
+
+			if (rCodigo == ConstanteUtil.R_COD_EXITO) {// CONSULTA CORRECTA
+				res.setId(req.getId());
+				res.setIdtTipoComprobante(req.getIdtTipoComprobante());
+				res.setNomTipoComprobante(req.getNomTipoComprobante());
+				res.setNombre(req.getNombre());
+				res.setSerie(req.getSerie());
+				res.setNumero(req.getNumero());
+				res.setLongSerie(req.getLongSerie());
+				res.setLongNumero(req.getLongNumero());
+				res.setFlgActual(req.getFlgActual());
+				res.setFlgActivo(req.getFlgActivo());
+				res.setFlgUsado(req.getFlgUsado());
+				res.setIdUsuarioCrea(req.getIdUsuarioCrea());
+				res.setFecUsuarioCrea(req.getFecUsuarioCrea());
+				res.setIdUsuarioMod(req.getIdUsuarioMod());
+				res.setFecUsuarioMod(req.getFecUsuarioMod());
+			} else {
+				res = null;
+			}
+			outResponse.setrCodigo(rCodigo);
+			outResponse.setrMensaje(rMensaje);
+			outResponse.setrResult(res);
+		} catch (Exception e) {
+			outResponse.setrCodigo(500);
+			outResponse.setrMensaje(e.getMessage());
+			outResponse.setrResult(null);
+		}
+		return outResponse;
+	}
+
+	@Override
+	public OutResponse<ComprobanteResponse> establecerComprobanteActual(ComprobanteRequest req) {
+		OutResponse<ComprobanteResponse> outResponse = new OutResponse<>();
+		ComprobanteResponse res = new ComprobanteResponse();
+
+		Integer rCodigo = 0;
+		String rMensaje = "";
+		try {
+			SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withSchemaName(ConstanteUtil.BD_SCHEMA)
+					.withCatalogName(ConstanteUtil.BD_PCK_ADMINISTRACION)
+					.withProcedureName("SP_EST_COMPROBANTE_ACTUAL");
+
+			MapSqlParameterSource in = new MapSqlParameterSource();
+			in.addValue("I_ID", req.getId(), Types.NUMERIC);
+			in.addValue("I_IDT_TIPO_COMPROBANTE", req.getIdtTipoComprobante(), Types.NUMERIC);
 
 			Map<String, Object> out = jdbcCall.execute(in);
 

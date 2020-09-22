@@ -1,5 +1,6 @@
 export const TABLAS_MAESTRA = {
-    UNIDAD_MEDIDA: { ID: 1 }
+    UNIDAD_MEDIDA: { ID: 1 },
+    TIPO_COMPROBANTE: { ID: 2 }
 };
 
 export const MENSAJES = {
@@ -34,9 +35,11 @@ export const MENSAJES = {
                 },
                 MODIFICAR: {
                     TITLE: 'MODIFICAR COMPROBANTE'
-                }
+                },
+                MSG_ESTABLECER_ACTUAL: '¿Esta seguro que desea cambiar el comprobante actual?'
             }
-        }
+        },
+        MSG_CONFIRMACION: '¿Esta seguro de continuar?'
     }
 }
 

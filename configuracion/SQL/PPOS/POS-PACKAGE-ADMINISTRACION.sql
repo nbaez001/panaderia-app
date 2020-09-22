@@ -53,7 +53,7 @@ create or replace PACKAGE PCK_PPOS_ADMINISTRACION AS
     PROCEDURE SP_L_PRODUCTO (
         I_FEC_INICIO   IN    VARCHAR2,
         I_FEC_FIN      IN    VARCHAR2,
-        I_NOMBRE       IN    NUMBER,
+        I_NOMBRE       IN    VARCHAR2,
         R_LISTA        OUT   SYS_REFCURSOR,
         R_CODIGO       OUT   NUMBER,
         R_MENSAJE      OUT   VARCHAR2
@@ -92,9 +92,11 @@ create or replace PACKAGE PCK_PPOS_ADMINISTRACION AS
     );
     
     PROCEDURE SP_L_COMPROBANTE (
+		I_ID   					IN    NUMBER,
         I_FEC_INICIO   			IN    VARCHAR2,
         I_FEC_FIN      			IN    VARCHAR2,
         I_IDT_TIPO_COMPROBANTE  IN    NUMBER,
+		I_FLG_ACTUAL			IN 	  NUMBER,
         R_LISTA        			OUT   SYS_REFCURSOR,
         R_CODIGO       			OUT   NUMBER,
         R_MENSAJE      			OUT   VARCHAR2
@@ -102,14 +104,14 @@ create or replace PACKAGE PCK_PPOS_ADMINISTRACION AS
 	
 	PROCEDURE SP_I_COMPROBANTE (
         I_IDT_TIPO_COMPROBANTE	IN      NUMBER,
-        I_NOMBRE            	IN      NUMBER,
+        I_NOMBRE            	IN      VARCHAR2,
         I_SERIE             	IN      NUMBER,
         I_NUMERO               	IN      NUMBER,
-        I_LONG_SERIE            IN      VARCHAR2,
-        I_LONG_NUMERO           IN      VARCHAR2,
-		I_FLG_ACTUAL            IN      VARCHAR2,
-        I_FLG_ACTIVO            IN      VARCHAR2,
-        I_FLG_USADO         	IN      VARCHAR2,
+        I_LONG_SERIE            IN      NUMBER,
+        I_LONG_NUMERO           IN      NUMBER,
+		I_FLG_ACTUAL            IN OUT  NUMBER,
+        I_FLG_ACTIVO            IN      NUMBER,
+        I_FLG_USADO         	IN      NUMBER,
         I_ID_USUARIO_CREA     	IN      NUMBER,
         I_FEC_USUARIO_CREA    	IN      VARCHAR2,
         R_ID                  	OUT     NUMBER,
@@ -120,14 +122,14 @@ create or replace PACKAGE PCK_PPOS_ADMINISTRACION AS
 	PROCEDURE SP_U_COMPROBANTE (
         I_ID                  	IN      NUMBER,       
         I_IDT_TIPO_COMPROBANTE	IN      NUMBER,
-        I_NOMBRE            	IN      NUMBER,
+        I_NOMBRE            	IN      VARCHAR2,
         I_SERIE             	IN      NUMBER,
         I_NUMERO               	IN      NUMBER,
-        I_LONG_SERIE            IN      VARCHAR2,
-        I_LONG_NUMERO           IN      VARCHAR2,
-		I_FLG_ACTUAL            IN      VARCHAR2,
-        I_FLG_ACTIVO            IN      VARCHAR2,
-        I_FLG_USADO         	IN      VARCHAR2,
+        I_LONG_SERIE            IN      NUMBER,
+        I_LONG_NUMERO           IN      NUMBER,
+		I_FLG_ACTUAL            IN      NUMBER,
+        I_FLG_ACTIVO            IN      NUMBER,
+        I_FLG_USADO         	IN      NUMBER,
         I_ID_USUARIO_MOD      	IN      NUMBER,
         I_FEC_USUARIO_MOD     	IN      VARCHAR2,
         R_CODIGO              	OUT     NUMBER,
@@ -138,6 +140,13 @@ create or replace PACKAGE PCK_PPOS_ADMINISTRACION AS
         I_ID                  IN      NUMBER,
         R_CODIGO              OUT     NUMBER,
         R_MENSAJE             OUT     VARCHAR2
+    );
+	
+	PROCEDURE SP_EST_COMPROBANTE_ACTUAL (
+        I_ID                  	IN      NUMBER,
+		I_IDT_TIPO_COMPROBANTE  IN    	NUMBER,
+        R_CODIGO              	OUT     NUMBER,
+        R_MENSAJE             	OUT     VARCHAR2
     );
 
 END PCK_PPOS_ADMINISTRACION;
@@ -286,7 +295,7 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
     PROCEDURE SP_L_PRODUCTO (
         I_FEC_INICIO   IN    VARCHAR2,
         I_FEC_FIN      IN    VARCHAR2,
-        I_NOMBRE       IN    NUMBER,
+        I_NOMBRE       IN    VARCHAR2,
         R_LISTA        OUT   SYS_REFCURSOR,
         R_CODIGO       OUT   NUMBER,
         R_MENSAJE      OUT   VARCHAR2
@@ -412,9 +421,11 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
 	END SP_D_PRODUCTO;
 
 	PROCEDURE SP_L_COMPROBANTE (
+		I_ID   					IN    NUMBER,
         I_FEC_INICIO   			IN    VARCHAR2,
         I_FEC_FIN      			IN    VARCHAR2,
         I_IDT_TIPO_COMPROBANTE  IN    NUMBER,
+		I_FLG_ACTUAL			IN 	  NUMBER,
         R_LISTA        			OUT   SYS_REFCURSOR,
         R_CODIGO       			OUT   NUMBER,
         R_MENSAJE      			OUT   VARCHAR2
@@ -440,6 +451,10 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
 		FROM COMPROBANTE M 
 		WHERE M.FLG_ACTIVO=1';
 
+		IF ( I_ID IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND M.ID=' || I_ID;
+        END IF;
+		
         IF ( I_FEC_INICIO IS NOT NULL ) THEN
             V_SQL := V_SQL || ' AND M.FEC_USUARIO_CREA>=TO_DATE(''' || I_FEC_INICIO || ''',''DD/MM/YY'')';
         END IF;
@@ -448,11 +463,15 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
             V_SQL := V_SQL || ' AND M.FEC_USUARIO_CREA<=TO_DATE(''' || I_FEC_FIN || ''',''DD/MM/YY'')';
         END IF;
 
-        IF ( I_IDT_TIPO_COMPROBANTE IS NOT NULL ) THEN
+        IF ( (I_IDT_TIPO_COMPROBANTE IS NOT NULL) AND  (I_IDT_TIPO_COMPROBANTE <> 0)) THEN
             V_SQL := V_SQL || ' AND M.IDT_TIPO_COMPROBANTE=' || I_IDT_TIPO_COMPROBANTE;
         END IF;
+		
+        IF ( I_FLG_ACTUAL IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND M.FLG_ACTUAL=' || I_FLG_ACTUAL;
+        END IF;
 
-        V_SQL := V_SQL||' ORDER BY M.FEC_USUARIO_CREA DESC';
+        V_SQL := V_SQL||' ORDER BY M.FLG_ACTUAL DESC, M.FEC_USUARIO_CREA DESC';
         OPEN R_LISTA FOR V_SQL;
 
         R_CODIGO := SQLCODE;
@@ -466,14 +485,14 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
 
     PROCEDURE SP_I_COMPROBANTE (
         I_IDT_TIPO_COMPROBANTE	IN      NUMBER,
-        I_NOMBRE            	IN      NUMBER,
+        I_NOMBRE            	IN      VARCHAR2,
         I_SERIE             	IN      NUMBER,
         I_NUMERO               	IN      NUMBER,
-        I_LONG_SERIE            IN      VARCHAR2,
-        I_LONG_NUMERO           IN      VARCHAR2,
-		I_FLG_ACTUAL            IN      VARCHAR2,
-        I_FLG_ACTIVO            IN      VARCHAR2,
-        I_FLG_USADO         	IN      VARCHAR2,
+        I_LONG_SERIE            IN      NUMBER,
+        I_LONG_NUMERO           IN      NUMBER,
+		I_FLG_ACTUAL            IN OUT  NUMBER,
+        I_FLG_ACTIVO            IN      NUMBER,
+        I_FLG_USADO         	IN      NUMBER,
         I_ID_USUARIO_CREA     	IN      NUMBER,
         I_FEC_USUARIO_CREA    	IN      VARCHAR2,
         R_ID                  	OUT     NUMBER,
@@ -481,8 +500,16 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
         R_MENSAJE             	OUT     VARCHAR2
     ) AS
 	V_CONT NUMBER;
+	V_CONT_ACTUAL NUMBER;
     BEGIN
 		SELECT COUNT(M.ID) INTO V_CONT FROM COMPROBANTE M WHERE M.SERIE = I_SERIE AND M.IDT_TIPO_COMPROBANTE=I_IDT_TIPO_COMPROBANTE;
+		SELECT COUNT(M.ID) INTO V_CONT_ACTUAL FROM COMPROBANTE M WHERE M.FLG_ACTUAL = 1;
+		
+		IF V_CONT_ACTUAL = 0 THEN
+			I_FLG_ACTUAL := 1;
+		ELSE
+			I_FLG_ACTUAL := 0;
+		END IF;
 
 		IF V_CONT > 0 THEN
 			R_CODIGO := -1;
@@ -505,14 +532,14 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
     PROCEDURE SP_U_COMPROBANTE (
         I_ID                  	IN      NUMBER,       
         I_IDT_TIPO_COMPROBANTE	IN      NUMBER,
-        I_NOMBRE            	IN      NUMBER,
+        I_NOMBRE            	IN      VARCHAR2,
         I_SERIE             	IN      NUMBER,
         I_NUMERO               	IN      NUMBER,
-        I_LONG_SERIE            IN      VARCHAR2,
-        I_LONG_NUMERO           IN      VARCHAR2,
-		I_FLG_ACTUAL            IN      VARCHAR2,
-        I_FLG_ACTIVO            IN      VARCHAR2,
-        I_FLG_USADO         	IN      VARCHAR2,
+        I_LONG_SERIE            IN      NUMBER,
+        I_LONG_NUMERO           IN      NUMBER,
+		I_FLG_ACTUAL            IN      NUMBER,
+        I_FLG_ACTIVO            IN      NUMBER,
+        I_FLG_USADO         	IN      NUMBER,
         I_ID_USUARIO_MOD      	IN      NUMBER,
         I_FEC_USUARIO_MOD     	IN      VARCHAR2,
         R_CODIGO              	OUT     NUMBER,
@@ -575,5 +602,25 @@ create or replace PACKAGE BODY PCK_PPOS_ADMINISTRACION AS
             R_CODIGO := SQLCODE;
             R_MENSAJE := SQLERRM;
 	END SP_D_COMPROBANTE;
+	
+	PROCEDURE SP_EST_COMPROBANTE_ACTUAL (
+        I_ID                  	IN      NUMBER,
+		I_IDT_TIPO_COMPROBANTE  IN    	NUMBER,
+        R_CODIGO              	OUT     NUMBER,
+        R_MENSAJE             	OUT     VARCHAR2
+    ) AS
+    BEGIN
+        UPDATE COMPROBANTE M SET M.FLG_ACTUAL=0 WHERE M.IDT_TIPO_COMPROBANTE=I_IDT_TIPO_COMPROBANTE;
+		UPDATE COMPROBANTE M SET M.FLG_ACTUAL=1 WHERE M.ID=I_ID;
+        COMMIT;
+
+        R_CODIGO := SQLCODE;
+		R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+	END SP_EST_COMPROBANTE_ACTUAL;
 
 END PCK_PPOS_ADMINISTRACION;

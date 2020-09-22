@@ -1,5 +1,6 @@
 export class VentaResponse {
     id: number;
+    idComprobante: number;
     serie: string;
     numero: string;
     total: number;

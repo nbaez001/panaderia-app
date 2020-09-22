@@ -82,7 +82,7 @@ export class RegMaestraChildComponent implements OnInit {
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(FormService) private formService: FormService,
     @Inject(UsuarioService) private user: UsuarioService,
-    @Inject(MAT_DIALOG_DATA) public data: DataDialog,
+    @Inject(MAT_DIALOG_DATA) public data: DataDialog<MaestraResponse>,
     private datePipe: DatePipe) { }
 
   ngOnInit() {

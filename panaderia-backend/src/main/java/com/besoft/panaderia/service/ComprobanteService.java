@@ -16,4 +16,6 @@ public interface ComprobanteService {
 	public OutResponse<ComprobanteResponse> modificarComprobante(ComprobanteRequest req);
 
 	public OutResponse<ComprobanteResponse> eliminarComprobante(ComprobanteRequest req);
+	
+	public OutResponse<ComprobanteResponse> establecerComprobanteActual(ComprobanteRequest req);
 }

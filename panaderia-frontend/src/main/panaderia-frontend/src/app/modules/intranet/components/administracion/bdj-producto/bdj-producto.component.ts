@@ -189,7 +189,10 @@ export class BdjProductoComponent implements OnInit {
   eliminar(obj: ProductoResponse): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',
-      data: null
+      data: {
+        titulo: MENSAJES.INTRANET.MSG_CONFIRMACION,
+        objeto: null
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

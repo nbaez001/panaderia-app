@@ -27,4 +27,8 @@ export class ComprobanteService {
   public eliminarComprobante(req: ComprobanteRequest): Observable<OutResponse<ComprobanteResponse>> {
     return this.http.post<OutResponse<ComprobanteResponse>>(`${environment.WsPanaderiaBackend}/comprobante/eliminarComprobante`, req);
   }
+
+  public establecerComprobanteActual(req: ComprobanteRequest): Observable<OutResponse<ComprobanteResponse>> {
+    return this.http.post<OutResponse<ComprobanteResponse>>(`${environment.WsPanaderiaBackend}/comprobante/establecerComprobanteActual`, req);
+  }
 }

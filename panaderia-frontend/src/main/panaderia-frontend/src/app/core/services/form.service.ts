@@ -109,8 +109,17 @@ export class FormService {
       case 'maxlength':
         msg = `Maximo ${errorCtrl['maxlength']['requiredLength']} caracteres`;
         break;
+      case 'min':
+        msg = `Minimo valor permitido es ${errorCtrl['min']['min']}`;
+        break;
+      case 'max':
+        msg = `Maximo valor permitido es ${errorCtrl['max']['max']}`;
+        break;
       default:
         msg = 'Valor incorrecto';
+        console.log('Mensaje no encontrado');
+        console.log(error);
+        console.log(errorCtrl);
         break;
     }
     return msg;
