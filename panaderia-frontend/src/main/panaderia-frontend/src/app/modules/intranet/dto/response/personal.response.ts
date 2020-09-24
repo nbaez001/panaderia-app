@@ -9,4 +9,6 @@ export class PersonalResponse {
     fecUsuarioCrea: Date;
     idUsuarioMod: number;
     fecUsuarioMod: Date;
+
+    nombreCompleto: string;
 }

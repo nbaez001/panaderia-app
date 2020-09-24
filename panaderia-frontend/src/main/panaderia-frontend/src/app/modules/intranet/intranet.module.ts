@@ -24,6 +24,8 @@ import { BdjInsumosPersonalComponent } from './components/personal/bdj-insumos-p
 import { BdjHonorariosComponent } from './components/personal/bdj-honorarios/bdj-honorarios.component';
 import { RegPersonalComponent } from './components/personal/bdj-personal/reg-personal/reg-personal.component';
 import { RegInsumosPersonalComponent } from './components/personal/bdj-insumos-personal/reg-insumos-personal/reg-insumos-personal.component';
+import { BdjTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/bdj-tipo-insumo.component';
+import { RegTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/reg-tipo-insumo/reg-tipo-insumo.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { RegInsumosPersonalComponent } from './components/personal/bdj-insumos-p
     BdjPersonalComponent,
     BdjInsumosPersonalComponent,
     BdjHonorariosComponent,
+    BdjTipoInsumoComponent,
+    RegTipoInsumoComponent,
   ],
   imports: [
     CommonModule,

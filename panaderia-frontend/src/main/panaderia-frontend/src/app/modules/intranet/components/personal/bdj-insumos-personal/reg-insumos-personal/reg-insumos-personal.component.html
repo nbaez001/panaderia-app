@@ -1,1 +1,55 @@
-<p>reg-insumos-personal works!</p>
+<mat-toolbar class="mat-primary mat-dialog-header">
+    <span>{{data.titulo}}</span>
+    <button tabindex="-1" mat-icon-button [mat-dialog-close]="null">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-toolbar>
+<div mat-dialog-content>
+    <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="ejecutar()">
+        <mat-grid-list cols="12" rowHeight="53px">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Personal</mat-label>
+                    <mat-select formControlName="personal">
+                        <mat-option *ngFor="let personal of listaPersonalResponse" [value]="personal">
+                            {{personal.persona.nombre}} {{personal.persona.apePaterno}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.personal">{{formErrors.personal}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Tipo insumo</mat-label>
+                    <mat-select formControlName="tipoInsumo">
+                        <mat-option *ngFor="let tipoInsumo of listaTipoInsumoResponse" [value]="tipoInsumo">
+                            {{tipoInsumo.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.tipoInsumo">{{formErrors.tipoInsumo}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="cantidad" placeholder="Cantidad" type="number">
+                    <mat-error *ngIf="formErrors.cantidad">{{formErrors.cantidad}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="fecha" [matDatepicker]="picker" placeholder="Fecha pedido">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="formErrors.fecha">{{formErrors.fecha}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="button" (click)="modificar()" *ngIf="data.objeto"
+        [class.spinner]="modif" [disabled]="modif">Modificar</button>
+    <button mat-raised-button color="primary" type="button" (click)="registrar()" *ngIf="!data.objeto"
+        [class.spinner]="guardar" [disabled]="guardar">Guardar</button>
+    <button mat-button [mat-dialog-close]="">Salir</button>
+</div>

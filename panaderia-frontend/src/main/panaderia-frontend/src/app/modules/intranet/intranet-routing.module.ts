@@ -8,6 +8,7 @@ import { BdjComprobanteComponent } from './components/administracion/bdj-comprob
 import { BdjInsumosPersonalComponent } from './components/personal/bdj-insumos-personal/bdj-insumos-personal.component';
 import { BdjHonorariosComponent } from './components/personal/bdj-honorarios/bdj-honorarios.component';
 import { BdjPersonalComponent } from './components/personal/bdj-personal/bdj-personal.component';
+import { BdjTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/bdj-tipo-insumo.component';
 
 
 const intranetRoutes: Routes = [
@@ -38,6 +39,11 @@ const intranetRoutes: Routes = [
             path: 'productos',
             component: BdjProductoComponent,
             data: { title: 'Productos' }
+          },
+          {
+            path: 'tipos-insumo',
+            component: BdjTipoInsumoComponent,
+            data: { title: 'Tipos insumo' }
           }, {
             path: 'comprobantes',
             component: BdjComprobanteComponent,

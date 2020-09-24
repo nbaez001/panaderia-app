@@ -7,6 +7,7 @@ export class InsumoResponse {
     tipoInsumo: TipoInsumoResponse;
     cantidad: number;
     fecha: Date;
+    flgActivo: number;
 
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;

@@ -7,9 +7,15 @@ export class InsumoRequest {
     tipoInsumo: TipoInsumoRequest;
     cantidad: number;
     fecha: Date;
+    flgActivo: number;
 
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;
     idUsuarioMod: number;
     fecUsuarioMod: Date;
+
+    constructor() {
+        this.personal = new PersonalRequest();
+        this.tipoInsumo = new TipoInsumoRequest();
+    }
 }

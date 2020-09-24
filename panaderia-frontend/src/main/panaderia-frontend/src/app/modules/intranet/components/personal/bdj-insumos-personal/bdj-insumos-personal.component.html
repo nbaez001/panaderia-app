@@ -10,17 +10,6 @@
                 <mat-grid-list cols="12" rowHeight="53px">
                     <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
                         <mat-form-field appearance="legacy">
-                            <mat-label>Tipo insumo</mat-label>
-                            <mat-select formControlName="tipoInsumo">
-                                <mat-option *ngFor="let tipoInsumo of listaTipoInsumoResponse" [value]="tipoInsumo">
-                                    {{tipoInsumo.nombre}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="formErrors.tipoInsumo">{{formErrors.tipoInsumo}}</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
-                        <mat-form-field appearance="legacy">
                             <mat-label>Personal</mat-label>
                             <mat-select formControlName="personal">
                                 <mat-option *ngFor="let personal of listaPersonalResponse" [value]="personal">
@@ -28,6 +17,17 @@
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="formErrors.personal">{{formErrors.personal}}</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
+                        <mat-form-field appearance="legacy">
+                            <mat-label>Tipo insumo</mat-label>
+                            <mat-select formControlName="tipoInsumo">
+                                <mat-option *ngFor="let tipoInsumo of listaTipoInsumoResponse" [value]="tipoInsumo">
+                                    {{tipoInsumo.nombre}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="formErrors.tipoInsumo">{{formErrors.tipoInsumo}}</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">

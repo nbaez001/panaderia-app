@@ -1,9 +1,11 @@
 export class TipoInsumoRequest {
     id: number;
-    idtTipoUnidadMedida: number;
-    nomTipoUnidadMedida: number;
+    idtUnidadMedida: number;
+    nomUnidadMedida: number;
     nombre: string;
     codigo: string;
+    observacion: string;
+    flgActivo: number;
 
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;

@@ -59,6 +59,14 @@ export const MENSAJES = {
                 MODIFICAR: {
                     TITLE: 'MODIFICAR INSUMO'
                 },
+            },
+            TIPO_INSUMO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR TIPOS DE INSUMO'
+                },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR TIPOS DE INSUMO'
+                },
             }
         },
         MSG_CONFIRMACION: '¿Esta seguro de continuar?'

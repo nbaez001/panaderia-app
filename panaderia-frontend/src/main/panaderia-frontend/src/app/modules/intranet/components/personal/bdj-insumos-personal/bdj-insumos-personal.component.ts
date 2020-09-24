@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { MENSAJES } from 'src/app/common';
 import { FormService } from 'src/app/core/services/form.service';
 import { InsumoBuscarRequest } from '../../../dto/request/insumo-buscar.request';
 import { InsumoRequest } from '../../../dto/request/insumo.request';
+import { PersonalBuscarRequest } from '../../../dto/request/personal-buscar.request';
 import { TipoInsumoBuscarRequest } from '../../../dto/request/tipo-insumo-buscar.request';
 import { InsumoResponse } from '../../../dto/response/insumo.response';
 import { OutResponse } from '../../../dto/response/out.response';
@@ -51,11 +52,11 @@ export class BdjInsumosPersonalComponent implements OnInit {
     }, {
       columnDef: 'cantidad',
       header: 'Cantidad',
-      cell: (m: InsumoResponse) => `${m.cantidad ? m.cantidad : ''}`
+      cell: (m: InsumoResponse) => `${m.cantidad ? this.decimalPipe.transform(m.cantidad, '1.1-1') : ''}`
     }, {
       columnDef: 'unidadMedida',
       header: 'Unidad medida',
-      cell: (m: InsumoResponse) => `${m.tipoInsumo.nomTipoUnidadMedida ? m.tipoInsumo.nomTipoUnidadMedida : ''}`
+      cell: (m: InsumoResponse) => `${m.tipoInsumo.nomUnidadMedida ? m.tipoInsumo.nomUnidadMedida : ''}`
     }, {
       columnDef: 'fecha',
       header: 'Fecha',
@@ -72,7 +73,9 @@ export class BdjInsumosPersonalComponent implements OnInit {
     @Inject(InsumoService) private insumoService: InsumoService,
     @Inject(FormService) private formService: FormService,
     private _snackBar: MatSnackBar,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe,
+    private decimalPipe: DecimalPipe,
+  ) { }
 
   ngOnInit() {
     this.formularioGrp = this.fb.group({
@@ -89,6 +92,7 @@ export class BdjInsumosPersonalComponent implements OnInit {
 
   inicializarVariables(): void {
     this.comboTipoInsumo();
+    this.comboPersonal();
     this.buscar();
   }
 
@@ -119,6 +123,30 @@ export class BdjInsumosPersonalComponent implements OnInit {
           this.listaTipoInsumoResponse.unshift(JSON.parse(JSON.stringify({ id: 0, nombre: 'TODOS' })));
 
           this.formularioGrp.get('tipoInsumo').setValue(this.listaTipoInsumoResponse[0]);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+      }, error => {
+        console.error(error);
+        this._snackBar.open(error.statusText, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+      }
+    )
+  }
+
+  comboPersonal(): void {
+    let req = new PersonalBuscarRequest();
+
+    this.personalService.listarPersonal(req).subscribe(
+      (data: OutResponse<PersonalResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.listaPersonalResponse = data.rResult;
+          this.listaPersonalResponse.unshift(JSON.parse(JSON.stringify({ id: 0, persona: { nombre: 'TODOS', apePaterno: '' } })));
+
+          this.listaPersonalResponse.forEach(el => {
+            el.nombreCompleto = el.persona.nombre + ' ' + el.persona.apePaterno;
+          });
+
+          this.formularioGrp.get('personal').setValue(this.listaPersonalResponse[0]);
         } else {
           this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
         }
