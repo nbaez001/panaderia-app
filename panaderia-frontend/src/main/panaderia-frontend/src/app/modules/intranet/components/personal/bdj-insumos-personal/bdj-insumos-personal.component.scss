@@ -1,0 +1,31 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+    max-height: 400px;
+}
+
+@include mat-table-columns(
+    (
+        id: (
+            width: 2rem,
+        ),
+        personal: (
+            width: 12rem,
+        ),
+        tipoInsumo: (
+            width: 6rem,
+        ),
+        cantidad: (
+            width: 6rem,
+        ),
+        unidadMedida: (
+            width: 5rem,
+        ),
+        fecha: (
+            width: 6rem,
+        ),
+        opt: (
+            width: 5rem,
+        ),
+    )
+);

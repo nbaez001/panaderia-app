@@ -1,0 +1,156 @@
+create or replace PACKAGE PCK_PPOS_UBIGEO AS
+
+    PROCEDURE SP_L_PAIS (
+        R_LISTA        			OUT   SYS_REFCURSOR,
+        R_CODIGO       			OUT   NUMBER,
+        R_MENSAJE      			OUT   VARCHAR2
+    );
+
+    PROCEDURE SP_L_DEPARTAMENTO (
+		I_ID_PAIS          		IN      NUMBER,
+		R_LISTA        			OUT   	SYS_REFCURSOR,
+        R_CODIGO              	OUT     NUMBER,
+        R_MENSAJE             	OUT     VARCHAR2
+    );
+
+    PROCEDURE SP_L_PROVINCIA (
+        I_ID_DEPARTAMENTO  		IN      NUMBER,
+		R_LISTA        			OUT   	SYS_REFCURSOR,
+        R_CODIGO              	OUT     NUMBER,
+        R_MENSAJE             	OUT     VARCHAR2
+    );
+
+    PROCEDURE SP_L_DISTRITO (
+        I_ID_PROVINCIA        IN      NUMBER,
+		R_LISTA        		  OUT   	SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    );
+
+END PCK_PPOS_UBIGEO;
+
+/
+create or replace PACKAGE BODY PCK_PPOS_UBIGEO AS
+
+    PROCEDURE SP_L_PAIS (
+        R_LISTA        			OUT   SYS_REFCURSOR,
+        R_CODIGO       			OUT   NUMBER,
+        R_MENSAJE      			OUT   VARCHAR2
+    ) AS
+    BEGIN
+        OPEN R_LISTA FOR 
+			SELECT
+			M.ID,
+			M.NOMBRE,
+			M.CODIGO,
+			M.FLG_ACTIVO,
+			M.ID_USUARIO_CREA,
+			M.FEC_USUARIO_CREA,
+			M.ID_USUARIO_MOD,
+			M.FEC_USUARIO_MOD
+			FROM PAIS M
+			WHERE M.FLG_ACTIVO=1;
+
+        R_CODIGO := SQLCODE;
+		R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+    END SP_L_PAIS;
+
+    PROCEDURE SP_L_DEPARTAMENTO (
+		I_ID_PAIS          		IN      NUMBER,
+		R_LISTA        			OUT   	SYS_REFCURSOR,
+        R_CODIGO              	OUT     NUMBER,
+        R_MENSAJE             	OUT     VARCHAR2
+    ) AS
+    BEGIN
+		OPEN R_LISTA FOR 
+			SELECT
+			M.ID,
+			M.ID_PAIS,
+			M.NOMBRE,
+			M.UBIGEO,
+			M.UBIGEO_RENIEC,
+			M.FLG_ACTIVO,
+			M.ID_USUARIO_CREA,
+			M.FEC_USUARIO_CREA,
+			M.ID_USUARIO_MOD,
+			M.FEC_USUARIO_MOD
+			FROM DEPARTAMENTO M
+			WHERE M.FLG_ACTIVO=1 AND M.ID_PAIS = I_ID_PAIS;
+
+		R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+	END SP_L_DEPARTAMENTO;
+
+    PROCEDURE SP_L_PROVINCIA (
+        I_ID_DEPARTAMENTO  		IN      NUMBER,
+		R_LISTA        			OUT   	SYS_REFCURSOR,
+        R_CODIGO              	OUT     NUMBER,
+        R_MENSAJE             	OUT     VARCHAR2
+    ) AS
+    BEGIN
+		OPEN R_LISTA FOR 
+			SELECT
+			M.ID,
+			M.ID_DEPARTAMENTO,
+			M.NOMBRE,
+			M.UBIGEO,
+			M.UBIGEO_RENIEC,
+			M.FLG_ACTIVO,
+			M.ID_USUARIO_CREA,
+			M.FEC_USUARIO_CREA,
+			M.ID_USUARIO_MOD,
+			M.FEC_USUARIO_MOD
+			FROM PROVINCIA M
+			WHERE M.FLG_ACTIVO=1 AND M.ID_DEPARTAMENTO=I_ID_DEPARTAMENTO;
+			
+		R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+	END SP_L_PROVINCIA;
+
+    PROCEDURE SP_L_DISTRITO (
+        I_ID_PROVINCIA        IN      NUMBER,
+		R_LISTA        		  OUT   	SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    ) AS
+    BEGIN
+        OPEN R_LISTA FOR 
+			SELECT
+			M.ID,
+			M.ID_PROVINCIA,
+			M.NOMBRE,
+			M.UBIGEO,
+			M.UBIGEO_RENIEC,
+			M.FLG_ACTIVO,
+			M.ID_USUARIO_CREA,
+			M.FEC_USUARIO_CREA,
+			M.ID_USUARIO_MOD,
+			M.FEC_USUARIO_MOD
+			FROM DISTRITO M
+			WHERE M.FLG_ACTIVO=1 AND M.ID_PROVINCIA=I_ID_PROVINCIA;
+
+        R_CODIGO := SQLCODE;
+		R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+	END SP_L_DISTRITO;
+
+END PCK_PPOS_UBIGEO;

@@ -1,6 +1,8 @@
 export const TABLAS_MAESTRA = {
     UNIDAD_MEDIDA: { ID: 1 },
-    TIPO_COMPROBANTE: { ID: 2 }
+    TIPO_COMPROBANTE: { ID: 2 },
+    TIPO_DOCUMENTO: { ID: 3 },
+    SEXO: { ID: 4 },
 };
 
 export const MENSAJES = {
@@ -37,6 +39,26 @@ export const MENSAJES = {
                     TITLE: 'MODIFICAR COMPROBANTE'
                 },
                 MSG_ESTABLECER_ACTUAL: '¿Esta seguro que desea cambiar el comprobante actual?'
+            }
+        },
+        BANDEJA_PERSONAL: {
+            PERSONAL: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR PERSONAL'
+                },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR PERSONAL'
+                },
+            }
+        },
+        BANDEJA_INSUMO: {
+            INSUMO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR INSUMO'
+                },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR INSUMO'
+                },
             }
         },
         MSG_CONFIRMACION: '¿Esta seguro de continuar?'

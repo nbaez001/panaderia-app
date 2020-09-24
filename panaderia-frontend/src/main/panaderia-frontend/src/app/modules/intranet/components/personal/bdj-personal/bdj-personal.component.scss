@@ -1,0 +1,46 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+  max-height: 400px;
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem,
+    ),
+    cargo: (
+      width: 6rem,
+    ),
+    nombre: (
+      width: 6rem,
+    ),
+    apellidos: (
+      width: 10rem,
+    ),
+    nomTipoDocumento: (
+      width: 5rem,
+    ),
+    nroDocumento: (
+      width: 6rem,
+    ),
+    direccionDomicilio: (
+      width: 10rem,
+    ),
+    nomDistrito: (
+      width: 10rem,
+    ),
+    nomProvincia: (
+      width: 10rem,
+    ),
+    nomDepartamento: (
+      width: 10rem,
+    ),
+    nomPais: (
+      width: 5rem,
+    ),
+    opt: (
+      width: 5rem,
+    ),
+  )
+);

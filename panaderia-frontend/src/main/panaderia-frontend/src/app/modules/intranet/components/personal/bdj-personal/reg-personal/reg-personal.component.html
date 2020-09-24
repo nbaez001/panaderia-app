@@ -1,0 +1,136 @@
+<!-- <ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner> -->
+<mat-toolbar class="mat-primary mat-dialog-header">
+    <span>{{data.titulo}}</span>
+    <button tabindex="-1" mat-icon-button [mat-dialog-close]="">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-toolbar>
+<div mat-dialog-content>
+    <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="ejecutar()">
+        <mat-grid-list cols="12" rowHeight="53px">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="cargo" placeholder="Cargo" type="text" [Uppercased]
+                        cdkFocusInitial>
+                    <mat-error *ngIf="formErrors.cargo">{{formErrors.cargo}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Tipo documento</mat-label>
+                    <mat-select formControlName="tipoDocumento">
+                        <mat-option *ngFor="let tipoDocumento of listaTipoDocumento" [value]="tipoDocumento">
+                            {{tipoDocumento.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.tipoDocumento">{{formErrors.tipoDocumento}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="nroDocumento" placeholder="Nro Documento" type="number">
+                    <mat-error *ngIf="formErrors.nroDocumento">{{formErrors.nroDocumento}}</mat-error>
+                    <button mat-icon-button type="button" class="btn-icon-input" color="primary"
+                        (click)="buscarPersona()" [class.spinner]="buscar" [disabled]="buscar">
+                        <mat-icon>cached</mat-icon>
+                    </button>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="nombre" placeholder="Nombre" type="text" [Uppercased]>
+                    <mat-error *ngIf="formErrors.nombre">{{formErrors.nombre}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="apePaterno" placeholder="Apellido paterno" type="text" [Uppercased]>
+                    <mat-error *ngIf="formErrors.apePaterno">{{formErrors.apePaterno}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="apeMaterno" placeholder="Apellido materno" type="text" [Uppercased]>
+                    <mat-error *ngIf="formErrors.apeMaterno">{{formErrors.apeMaterno}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <input matInput formControlName="direccionDomicilio" placeholder="Direccion domicilio" type="text" [Uppercased]>
+                    <mat-error *ngIf="formErrors.direccionDomicilio">{{formErrors.direccionDomicilio}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Pais</mat-label>
+                    <mat-select formControlName="pais" (selectionChange)="comboDepartamento()">
+                        <mat-option *ngFor="let pais of listaPais" [value]="pais">
+                            {{pais.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.pais">{{formErrors.pais}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Departamento</mat-label>
+                    <mat-select formControlName="departamento" (selectionChange)="comboProvincia()">
+                        <mat-option *ngFor="let departamento of listaDepartamento" [value]="departamento">
+                            {{departamento.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.departamento">{{formErrors.departamento}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Provincia</mat-label>
+                    <mat-select formControlName="provincia" (selectionChange)="comboDistrito()">
+                        <mat-option *ngFor="let provincia of listaProvincia" [value]="provincia">
+                            {{provincia.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.provincia">{{formErrors.provincia}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Distrito</mat-label>
+                    <mat-select formControlName="distrito">
+                        <mat-option *ngFor="let distrito of listaDistrito" [value]="distrito">
+                            {{distrito.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.distrito">{{formErrors.distrito}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field appearance="legacy">
+                    <input matInput formControlName="fecNacimiento" [matDatepicker]="picker"
+                        placeholder="Fecha nacimiento">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="formErrors.fecNacimiento">{{formErrors.fecNacimiento}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+                <mat-form-field>
+                    <mat-label>Sexo</mat-label>
+                    <mat-select formControlName="sexo">
+                        <mat-option *ngFor="let sexo of listaSexo" [value]="sexo">
+                            {{sexo.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.sexo">{{formErrors.sexo}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" [class.spinner]="modif" [disabled]="modif" type="button"
+        (click)="modificar()" *ngIf="data.objeto">Modificar</button>
+    <button mat-raised-button color="primary" [class.spinner]="guardar" [disabled]="guardar" type="button"
+        (click)="registrar()" *ngIf="!data.objeto">Guardar</button>
+    <button mat-button [mat-dialog-close]="">Salir</button>
+</div>

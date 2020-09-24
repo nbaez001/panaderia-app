@@ -19,6 +19,11 @@ import { VentaComponent } from './components/venta/venta.component';
 import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
 import { BdjComprobanteComponent } from './components/administracion/bdj-comprobante/bdj-comprobante.component';
 import { RegComprobanteComponent } from './components/administracion/bdj-comprobante/reg-comprobante/reg-comprobante.component';
+import { BdjPersonalComponent } from './components/personal/bdj-personal/bdj-personal.component';
+import { BdjInsumosPersonalComponent } from './components/personal/bdj-insumos-personal/bdj-insumos-personal.component';
+import { BdjHonorariosComponent } from './components/personal/bdj-honorarios/bdj-honorarios.component';
+import { RegPersonalComponent } from './components/personal/bdj-personal/reg-personal/reg-personal.component';
+import { RegInsumosPersonalComponent } from './components/personal/bdj-insumos-personal/reg-insumos-personal/reg-insumos-personal.component';
 
 
 @NgModule({
@@ -29,7 +34,8 @@ import { RegComprobanteComponent } from './components/administracion/bdj-comprob
     RegMaestraComponent,
     RegMaestraChildComponent,
     RegComprobanteComponent,
-    
+    RegPersonalComponent,
+    RegInsumosPersonalComponent,
   ],
   declarations: [
     ConfirmDialogComponent,
@@ -37,6 +43,8 @@ import { RegComprobanteComponent } from './components/administracion/bdj-comprob
     RegMaestraComponent,
     RegMaestraChildComponent,
     RegComprobanteComponent,
+    RegPersonalComponent,
+    RegInsumosPersonalComponent,
 
     HomeComponent,
     NavbarComponent,
@@ -44,6 +52,9 @@ import { RegComprobanteComponent } from './components/administracion/bdj-comprob
     BdjProductoComponent,
     BdjMaestraComponent,
     BdjComprobanteComponent,
+    BdjPersonalComponent,
+    BdjInsumosPersonalComponent,
+    BdjHonorariosComponent,
   ],
   imports: [
     CommonModule,
