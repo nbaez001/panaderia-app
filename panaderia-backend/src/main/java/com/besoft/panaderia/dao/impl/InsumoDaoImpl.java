@@ -91,6 +91,7 @@ public class InsumoDaoImpl implements InsumoDao {
 			in.addValue("I_CANTIDAD", req.getCantidad(), Types.DECIMAL);
 			in.addValue("I_FECHA", DateUtil.formatSlashDDMMYYYY(req.getFecha()), Types.VARCHAR);
 			in.addValue("I_FLG_ACTIVO", req.getFlgActivo(), Types.NUMERIC);
+			in.addValue("I_FLG_CAL_HONORARIO", req.getFlgCalHonorario(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_CREA", req.getIdUsuarioCrea(), Types.NUMERIC);
 			in.addValue("I_FEC_USUARIO_CREA", DateUtil.formatSlashDDMMYYYY(req.getFecUsuarioCrea()), Types.VARCHAR);
 
@@ -123,6 +124,7 @@ public class InsumoDaoImpl implements InsumoDao {
 				res.setCantidad(req.getCantidad());
 				res.setFecha(req.getFecha());
 				res.setFlgActivo(req.getFlgActivo());
+				res.setFlgCalHonorario(req.getFlgCalHonorario());
 				res.setIdUsuarioCrea(req.getIdUsuarioCrea());
 				res.setFecUsuarioCrea(req.getFecUsuarioCrea());
 				res.setIdUsuarioMod(req.getIdUsuarioMod());
@@ -159,6 +161,7 @@ public class InsumoDaoImpl implements InsumoDao {
 			in.addValue("I_CANTIDAD", req.getCantidad(), Types.DECIMAL);
 			in.addValue("I_FECHA", DateUtil.formatSlashDDMMYYYY(req.getFecha()), Types.VARCHAR);
 			in.addValue("I_FLG_ACTIVO", req.getFlgActivo(), Types.NUMERIC);
+			in.addValue("I_FLG_CAL_HONORARIO", req.getFlgCalHonorario(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_MOD", req.getIdUsuarioMod(), Types.NUMERIC);
 			in.addValue("I_FEC_USUARIO_MOD", DateUtil.formatSlashDDMMYYYY(req.getFecUsuarioMod()), Types.VARCHAR);
 
@@ -189,6 +192,7 @@ public class InsumoDaoImpl implements InsumoDao {
 				res.setCantidad(req.getCantidad());
 				res.setFecha(req.getFecha());
 				res.setFlgActivo(req.getFlgActivo());
+				res.setFlgCalHonorario(req.getFlgCalHonorario());
 				res.setIdUsuarioCrea(req.getIdUsuarioCrea());
 				res.setFecUsuarioCrea(req.getFecUsuarioCrea());
 				res.setIdUsuarioMod(req.getIdUsuarioMod());

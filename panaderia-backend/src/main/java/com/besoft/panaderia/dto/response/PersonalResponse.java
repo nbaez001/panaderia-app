@@ -12,6 +12,10 @@ public class PersonalResponse {
 	private Long idUsuarioMod;
 	private Date fecUsuarioMod;
 
+	public PersonalResponse() {
+		this.persona = new PersonaResponse();
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -138,6 +138,7 @@ export class RegInsumosPersonalComponent implements OnInit {
       mae.cantidad = this.formularioGrp.get('cantidad').value;
       mae.fecha = this.formularioGrp.get('fecha').value;
       mae.flgActivo = 1;
+      mae.flgCalHonorario = 0;
       mae.idUsuarioCrea = this.user.getId;
       mae.fecUsuarioCrea = new Date();
 
@@ -180,6 +181,7 @@ export class RegInsumosPersonalComponent implements OnInit {
       req.cantidad = this.formularioGrp.get('cantidad').value;
       req.fecha = this.formularioGrp.get('fecha').value;
       req.flgActivo = this.data.objeto.flgActivo;
+      req.flgCalHonorario = this.data.objeto.flgCalHonorario;
       req.idUsuarioCrea = this.data.objeto.idUsuarioCrea;
       req.fecUsuarioCrea = this.data.objeto.fecUsuarioCrea;
       req.idUsuarioMod = this.user.getId;

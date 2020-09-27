@@ -1,19 +1,24 @@
 package com.besoft.panaderia.dto.request;
 
 import java.util.Date;
+import java.util.List;
 
-public class InsumoRequest {
+public class HonorarioRequest {
 	private Long id;
 	private PersonalRequest personal;
-	private TipoInsumoRequest tipoInsumo;
-	private Double cantidad;
+	private Double monto;
+	private Date fechaInicio;
+	private Date fechaFin;
 	private Date fecha;
+	private Integer mes;
+	private Integer anio;
 	private Integer flgActivo;
-	private Integer flgCalHonorario;
 	private Long idUsuarioCrea;
 	private Date fecUsuarioCrea;
 	private Long idUsuarioMod;
 	private Date fecUsuarioMod;
+
+	private List<HonorarioInsumoRequest> listaHonorarioInsumo;
 
 	public Long getId() {
 		return id;
@@ -31,20 +36,28 @@ public class InsumoRequest {
 		this.personal = personal;
 	}
 
-	public TipoInsumoRequest getTipoInsumo() {
-		return tipoInsumo;
+	public Double getMonto() {
+		return monto;
 	}
 
-	public void setTipoInsumo(TipoInsumoRequest tipoInsumo) {
-		this.tipoInsumo = tipoInsumo;
+	public void setMonto(Double monto) {
+		this.monto = monto;
 	}
 
-	public Double getCantidad() {
-		return cantidad;
+	public Date getFechaInicio() {
+		return fechaInicio;
 	}
 
-	public void setCantidad(Double cantidad) {
-		this.cantidad = cantidad;
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
 	public Date getFecha() {
@@ -55,20 +68,28 @@ public class InsumoRequest {
 		this.fecha = fecha;
 	}
 
+	public Integer getMes() {
+		return mes;
+	}
+
+	public void setMes(Integer mes) {
+		this.mes = mes;
+	}
+
+	public Integer getAnio() {
+		return anio;
+	}
+
+	public void setAnio(Integer anio) {
+		this.anio = anio;
+	}
+
 	public Integer getFlgActivo() {
 		return flgActivo;
 	}
 
 	public void setFlgActivo(Integer flgActivo) {
 		this.flgActivo = flgActivo;
-	}
-
-	public Integer getFlgCalHonorario() {
-		return flgCalHonorario;
-	}
-
-	public void setFlgCalHonorario(Integer flgCalHonorario) {
-		this.flgCalHonorario = flgCalHonorario;
 	}
 
 	public Long getIdUsuarioCrea() {
@@ -101,6 +122,14 @@ public class InsumoRequest {
 
 	public void setFecUsuarioMod(Date fecUsuarioMod) {
 		this.fecUsuarioMod = fecUsuarioMod;
+	}
+
+	public List<HonorarioInsumoRequest> getListaHonorarioInsumo() {
+		return listaHonorarioInsumo;
+	}
+
+	public void setListaHonorarioInsumo(List<HonorarioInsumoRequest> listaHonorarioInsumo) {
+		this.listaHonorarioInsumo = listaHonorarioInsumo;
 	}
 
 }

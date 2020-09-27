@@ -1,19 +1,25 @@
-package com.besoft.panaderia.dto.request;
+package com.besoft.panaderia.dto.response;
 
 import java.util.Date;
 
-public class InsumoRequest {
+public class HonorarioResponse {
 	private Long id;
-	private PersonalRequest personal;
-	private TipoInsumoRequest tipoInsumo;
-	private Double cantidad;
+	private PersonalResponse personal;
+	private Double monto;
+	private Date fechaInicio;
+	private Date fechaFin;
 	private Date fecha;
+	private Integer mes;
+	private Integer anio;
 	private Integer flgActivo;
-	private Integer flgCalHonorario;
 	private Long idUsuarioCrea;
 	private Date fecUsuarioCrea;
 	private Long idUsuarioMod;
 	private Date fecUsuarioMod;
+
+	public HonorarioResponse() {
+		this.personal = new PersonalResponse();
+	}
 
 	public Long getId() {
 		return id;
@@ -23,28 +29,36 @@ public class InsumoRequest {
 		this.id = id;
 	}
 
-	public PersonalRequest getPersonal() {
+	public PersonalResponse getPersonal() {
 		return personal;
 	}
 
-	public void setPersonal(PersonalRequest personal) {
+	public void setPersonal(PersonalResponse personal) {
 		this.personal = personal;
 	}
 
-	public TipoInsumoRequest getTipoInsumo() {
-		return tipoInsumo;
+	public Double getMonto() {
+		return monto;
 	}
 
-	public void setTipoInsumo(TipoInsumoRequest tipoInsumo) {
-		this.tipoInsumo = tipoInsumo;
+	public void setMonto(Double monto) {
+		this.monto = monto;
 	}
 
-	public Double getCantidad() {
-		return cantidad;
+	public Date getFechaInicio() {
+		return fechaInicio;
 	}
 
-	public void setCantidad(Double cantidad) {
-		this.cantidad = cantidad;
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
 	public Date getFecha() {
@@ -55,20 +69,28 @@ public class InsumoRequest {
 		this.fecha = fecha;
 	}
 
+	public Integer getMes() {
+		return mes;
+	}
+
+	public void setMes(Integer mes) {
+		this.mes = mes;
+	}
+
+	public Integer getAnio() {
+		return anio;
+	}
+
+	public void setAnio(Integer anio) {
+		this.anio = anio;
+	}
+
 	public Integer getFlgActivo() {
 		return flgActivo;
 	}
 
 	public void setFlgActivo(Integer flgActivo) {
 		this.flgActivo = flgActivo;
-	}
-
-	public Integer getFlgCalHonorario() {
-		return flgCalHonorario;
-	}
-
-	public void setFlgCalHonorario(Integer flgCalHonorario) {
-		this.flgCalHonorario = flgCalHonorario;
 	}
 
 	public Long getIdUsuarioCrea() {

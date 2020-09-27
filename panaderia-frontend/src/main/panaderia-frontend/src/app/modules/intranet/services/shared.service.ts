@@ -1,5 +1,6 @@
 import { AutenticacionService } from '../../sesion/services/autenticacion.service';
 import { ComprobanteService } from './comprobante.service';
+import { HonorarioService } from './honorario.service';
 import { InsumoService } from './insumo.service';
 import { MaestraService } from './maestra.service';
 import { PersonaService } from './persona.service';
@@ -18,4 +19,5 @@ export const SharedService = [
     PersonalService,
     UbigeoService,
     InsumoService,
+    HonorarioService,
 ];

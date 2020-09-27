@@ -44,6 +44,8 @@ public class PersonalDaoImpl implements PersonalDao {
 			in.addValue("I_IDT_TIPO_DOCUMENTO", req.getIdtTipoDocumento(), Types.NUMERIC);
 			in.addValue("I_NRO_DOCUMENTO", req.getNroDocumento(), Types.VARCHAR);
 			in.addValue("I_NOMBRE", req.getNombre(), Types.VARCHAR);
+			in.addValue("I_APE_PATERNO", req.getApePaterno(), Types.VARCHAR);
+			in.addValue("I_APE_MATERNO", req.getApeMaterno(), Types.VARCHAR);
 
 			Map<String, Object> out = jdbcCall.execute(in);
 

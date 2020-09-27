@@ -4,6 +4,8 @@ create or replace PACKAGE PCK_PPOS_PERSONAL AS
         I_IDT_TIPO_DOCUMENTO   	IN    NUMBER,
         I_NRO_DOCUMENTO        	IN    VARCHAR2,
         I_NOMBRE   			 	IN    VARCHAR2,
+		I_APE_PATERNO		 	IN    VARCHAR2,
+		I_APE_MATERNO		 	IN    VARCHAR2,
         R_LISTA        			OUT   SYS_REFCURSOR,
         R_CODIGO       			OUT   NUMBER,
         R_MENSAJE      			OUT   VARCHAR2
@@ -70,6 +72,8 @@ create or replace PACKAGE BODY PCK_PPOS_PERSONAL AS
         I_IDT_TIPO_DOCUMENTO   	IN    NUMBER,
         I_NRO_DOCUMENTO        	IN    VARCHAR2,
         I_NOMBRE   			 	IN    VARCHAR2,
+		I_APE_PATERNO		 	IN    VARCHAR2,
+		I_APE_MATERNO		 	IN    VARCHAR2,
         R_LISTA        			OUT   SYS_REFCURSOR,
         R_CODIGO       			OUT   NUMBER,
         R_MENSAJE      			OUT   VARCHAR2
@@ -117,6 +121,14 @@ create or replace PACKAGE BODY PCK_PPOS_PERSONAL AS
 
         IF ( I_NOMBRE IS NOT NULL ) THEN
             V_SQL := V_SQL || ' AND P.NOMBRE LIKE ''%' || I_NOMBRE || '%''';
+        END IF;
+		
+		IF ( I_APE_PATERNO IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND P.APE_PATERNO LIKE ''%' || I_APE_PATERNO || '%''';
+        END IF;
+		
+		IF ( I_APE_MATERNO IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND P.APE_MATERNO LIKE ''%' || I_APE_MATERNO || '%''';
         END IF;
 
         V_SQL := V_SQL||' ORDER BY P.NOMBRE ASC';

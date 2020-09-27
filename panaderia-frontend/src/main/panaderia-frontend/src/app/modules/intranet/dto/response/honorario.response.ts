@@ -1,15 +1,15 @@
 import { PersonalResponse } from './personal.response';
-import { TipoInsumoResponse } from './tipo-insumo.response';
 
-export class InsumoResponse {
+export class HonorarioResponse {
     id: number;
     personal: PersonalResponse;
-    tipoInsumo: TipoInsumoResponse;
-    cantidad: number;
+    monto: number;
+    fechaInicio: Date;
+    fechaFin: Date;
     fecha: Date;
+    mes: number;
+    anio: number;
     flgActivo: number;
-    flgCalHonorario: number;
-
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;
     idUsuarioMod: number;

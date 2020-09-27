@@ -9,6 +9,7 @@ public class InsumoResponse {
 	private Double cantidad;
 	private Date fecha;
 	private Integer flgActivo;
+	private Integer flgCalHonorario;
 	private Long idUsuarioCrea;
 	private Date fecUsuarioCrea;
 	private Long idUsuarioMod;
@@ -60,6 +61,14 @@ public class InsumoResponse {
 
 	public void setFlgActivo(Integer flgActivo) {
 		this.flgActivo = flgActivo;
+	}
+
+	public Integer getFlgCalHonorario() {
+		return flgCalHonorario;
+	}
+
+	public void setFlgCalHonorario(Integer flgCalHonorario) {
+		this.flgCalHonorario = flgCalHonorario;
 	}
 
 	public Long getIdUsuarioCrea() {

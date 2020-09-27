@@ -1,0 +1,5 @@
+[0924/214513.083:ERROR:process_reader_win.cc(151)] SuspendThread: Acceso denegado. (0x5)
+[0924/214513.103:ERROR:process_reader_win.cc(151)] SuspendThread: Acceso denegado. (0x5)
+[0924/214513.103:ERROR:process_reader_win.cc(151)] SuspendThread: Acceso denegado. (0x5)
+[0924/214513.103:ERROR:process_reader_win.cc(151)] SuspendThread: Acceso denegado. (0x5)
+[0924/214513.103:ERROR:exception_snapshot_win.cc(99)] thread ID 6220 not found in process

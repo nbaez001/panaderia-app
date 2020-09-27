@@ -69,8 +69,21 @@ export const MENSAJES = {
                 },
             }
         },
+        BANDEJA_HONORARIO: {
+            HONORARIO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR HONORARIO'
+                },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR HONORARIO'
+                },
+            },
+            BUSCAR_PERSONAL: {
+                TITLE: 'BUSCAR PERSONAL'
+            }
+        },
         MSG_CONFIRMACION: '¿Esta seguro de continuar?'
-    }
+    },
 }
 
 export const KEY_CODES = {

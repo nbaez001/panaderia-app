@@ -26,6 +26,8 @@ import { RegPersonalComponent } from './components/personal/bdj-personal/reg-per
 import { RegInsumosPersonalComponent } from './components/personal/bdj-insumos-personal/reg-insumos-personal/reg-insumos-personal.component';
 import { BdjTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/bdj-tipo-insumo.component';
 import { RegTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/reg-tipo-insumo/reg-tipo-insumo.component';
+import { RegHonorarioComponent } from './components/personal/bdj-honorarios/reg-honorario/reg-honorario.component';
+import { BuscarPersonalComponent } from './components/personal/bdj-honorarios/reg-honorario/buscar-personal/buscar-personal.component';
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import { RegTipoInsumoComponent } from './components/administracion/bdj-tipo-ins
     RegComprobanteComponent,
     RegPersonalComponent,
     RegInsumosPersonalComponent,
+    RegTipoInsumoComponent,
+    RegHonorarioComponent,
   ],
   declarations: [
     ConfirmDialogComponent,
@@ -47,6 +51,8 @@ import { RegTipoInsumoComponent } from './components/administracion/bdj-tipo-ins
     RegComprobanteComponent,
     RegPersonalComponent,
     RegInsumosPersonalComponent,
+    RegTipoInsumoComponent,
+    RegHonorarioComponent,
 
     HomeComponent,
     NavbarComponent,
@@ -58,7 +64,7 @@ import { RegTipoInsumoComponent } from './components/administracion/bdj-tipo-ins
     BdjInsumosPersonalComponent,
     BdjHonorariosComponent,
     BdjTipoInsumoComponent,
-    RegTipoInsumoComponent,
+    BuscarPersonalComponent,
   ],
   imports: [
     CommonModule,

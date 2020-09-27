@@ -1,22 +1,24 @@
+import { HonorarioInsumoRequest } from './honorario-insumo.request';
 import { PersonalRequest } from './personal.request';
-import { TipoInsumoRequest } from './tipo-insumo.request';
 
-export class InsumoRequest {
+export class HonorarioRequest {
     id: number;
     personal: PersonalRequest;
-    tipoInsumo: TipoInsumoRequest;
-    cantidad: number;
+    monto: number;
+    fechaInicio: Date;
+    fechaFin: Date;
     fecha: Date;
+    mes: number;
+    anio: number;
     flgActivo: number;
-    flgCalHonorario: number;
-
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;
     idUsuarioMod: number;
     fecUsuarioMod: Date;
 
+    listaHonorarioInsumo: HonorarioInsumoRequest;
+
     constructor() {
         this.personal = new PersonalRequest();
-        this.tipoInsumo = new TipoInsumoRequest();
     }
 }

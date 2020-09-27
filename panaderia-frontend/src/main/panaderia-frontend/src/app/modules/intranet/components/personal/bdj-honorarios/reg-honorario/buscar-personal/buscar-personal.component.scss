@@ -1,0 +1,34 @@
+@import "../../../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+    max-height: 400px;
+}
+
+@include mat-table-columns(
+    (
+        id: (
+            width: 2rem,
+        ),
+        nombre: (
+            width: 8rem,
+        ),
+        apePaterno: (
+            width: 8rem,
+        ),
+        apeMaterno: (
+            width: 8rem,
+        ),
+    )
+);
+
+// @mixin mat-table-columns-hover() {
+//     .mat-row:hover {
+//         cursor: pointer;
+//         background-color: #b4b4b433;
+//     }
+// }
+
+.mat-row:hover {
+    cursor: pointer;
+    background-color: #b4b4b433;
+}

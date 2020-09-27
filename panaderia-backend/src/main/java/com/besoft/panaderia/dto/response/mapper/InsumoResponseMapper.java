@@ -19,29 +19,30 @@ public class InsumoResponseMapper implements RowMapper<InsumoResponse> {
 		p.setCantidad(rs.getDouble("CANTIDAD"));
 		p.setFecha(rs.getDate("FECHA"));
 		p.setFlgActivo(rs.getInt("FLG_ACTIVO"));
+		p.setFlgCalHonorario(rs.getInt("FLG_CAL_HONORARIO"));
 		p.setIdUsuarioCrea(rs.getLong("ID_USUARIO_CREA"));
 		p.setFecUsuarioCrea(rs.getDate("FEC_USUARIO_CREA"));
 		p.setIdUsuarioMod(rs.getLong("ID_USUARIO_MOD"));
 		p.setFecUsuarioMod(rs.getDate("FEC_USUARIO_MOD"));
-		
-		TipoInsumoResponse ti = new  TipoInsumoResponse();
+
+		TipoInsumoResponse ti = new TipoInsumoResponse();
 		ti.setId(rs.getLong("ID_TIPO_INSUMO"));
 		ti.setNombre(rs.getString("NOMBRE_TI"));
 		ti.setIdtUnidadMedida(rs.getLong("IDT_UNIDAD_MEDIDA_TI"));
 		ti.setNomUnidadMedida(rs.getString("NOM_UNIDAD_MEDIDA"));
-		
+
 		PersonaResponse per = new PersonaResponse();
 		per.setNombre(rs.getString("NOMBRE_PER"));
 		per.setApePaterno(rs.getString("APE_PATERNO_PER"));
 		per.setApeMaterno(rs.getString("APE_MATERNO_PER"));
-		
-		PersonalResponse pe= new PersonalResponse();
+
+		PersonalResponse pe = new PersonalResponse();
 		pe.setId(rs.getLong("ID_PERSONAL"));
 		pe.setPersona(per);
-		
+
 		p.setTipoInsumo(ti);
 		p.setPersonal(pe);
-		
+
 		return p;
 	}
 

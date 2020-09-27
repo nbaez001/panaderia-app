@@ -1,0 +1,171 @@
+CREATE OR REPLACE TYPE T_HONORARIO_INSUMO AS OBJECT(
+ID_INSUMO INTEGER,
+FLG_ACTIVO NUMBER(1)
+);
+/
+CREATE OR REPLACE TYPE TB_HONORARIO_INSUMO IS TABLE OF T_HONORARIO_INSUMO;
+/
+create or replace PACKAGE PCK_PPOS_HONORARIO AS
+
+    PROCEDURE SP_I_HONORARIO (
+		I_ID_PERSONAL			IN 		NUMBER,
+		I_MONTO		 			IN 		DECIMAL,
+		I_FECHA_INICIO      	IN      VARCHAR2,
+		I_FECHA_FIN      		IN      VARCHAR2,
+		I_FECHA 	     		IN      VARCHAR2,
+		I_MES					IN 		NUMBER,
+		I_ANIO					IN 		NUMBER,
+		I_FLG_ACTIVO 			IN 		NUMBER,
+        I_ID_USUARIO_CREA       IN      NUMBER,
+        I_FEC_USUARIO_CREA      IN      VARCHAR2,
+		L_HONORARIO_INSUMO     	IN      TB_HONORARIO_INSUMO,
+        R_ID                    OUT     NUMBER,
+        R_CODIGO                OUT     NUMBER,
+        R_MENSAJE               OUT     VARCHAR2
+    );
+
+    PROCEDURE SP_L_HONORARIO (
+		I_ID_PERSONAL  		  IN      NUMBER,
+        I_FEC_INICIO	      IN      VARCHAR2,
+        I_FEC_FIN  			  IN      VARCHAR2,
+        R_LISTA               OUT     SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    );
+
+END PCK_PPOS_HONORARIO;
+/
+create or replace PACKAGE BODY PCK_PPOS_HONORARIO AS
+
+    PROCEDURE SP_I_HONORARIO (
+		I_ID_PERSONAL			IN 		NUMBER,
+		I_MONTO		 			IN 		DECIMAL,
+		I_FECHA_INICIO      	IN      VARCHAR2,
+		I_FECHA_FIN      		IN      VARCHAR2,
+		I_FECHA 	     		IN      VARCHAR2,
+		I_MES					IN 		NUMBER,
+		I_ANIO					IN 		NUMBER,
+		I_FLG_ACTIVO 			IN 		NUMBER,
+        I_ID_USUARIO_CREA       IN      NUMBER,
+        I_FEC_USUARIO_CREA      IN      VARCHAR2,
+		L_HONORARIO_INSUMO     	IN      TB_HONORARIO_INSUMO,
+        R_ID                    OUT     NUMBER,
+        R_CODIGO                OUT     NUMBER,
+        R_MENSAJE               OUT     VARCHAR2
+    ) AS
+    BEGIN
+        SELECT SEQ_HONORARIO.NEXTVAL INTO R_ID FROM DUAL;
+
+        INSERT INTO HONORARIO(
+        ID,
+		ID_PERSONAL,
+        MONTO,
+		FECHA_INICIO,
+		FECHA_FIN,
+		FECHA,
+		MES,
+		ANIO,
+        FLG_ACTIVO,
+        ID_USUARIO_CREA,
+        FEC_USUARIO_CREA)
+        VALUES(
+		R_ID,
+		I_ID_PERSONAL,
+        I_MONTO,
+		TO_DATE(I_FECHA_INICIO,'DD/MM/YYYY'),
+		TO_DATE(I_FECHA_FIN,'DD/MM/YYYY'),
+		TO_DATE(I_FECHA,'DD/MM/YYYY'),
+		I_MES,
+		I_ANIO,
+        I_FLG_ACTIVO,
+        I_ID_USUARIO_CREA,
+        TO_DATE(I_FEC_USUARIO_CREA,'DD/MM/YYYY'));
+
+        FOR I IN 1..L_HONORARIO_INSUMO.COUNT
+        LOOP
+            INSERT INTO HONORARIO_INSUMO(
+			ID,
+			ID_HONORARIO,
+			ID_INSUMO,
+			FLG_ACTIVO)
+            VALUES(
+			SEQ_HONORARIO_INSUMO.NEXTVAL,
+			R_ID,
+			L_HONORARIO_INSUMO(I).ID_INSUMO,
+			L_HONORARIO_INSUMO(I).FLG_ACTIVO);
+			
+			UPDATE INSUMO SET 
+			FLG_CAL_HONORARIO = 1
+			WHERE ID = L_HONORARIO_INSUMO(I).ID_INSUMO;
+        END LOOP;
+
+        COMMIT;
+
+        R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+	END SP_I_HONORARIO;
+
+    PROCEDURE SP_L_HONORARIO (
+		I_ID_PERSONAL  		  IN      NUMBER,
+        I_FEC_INICIO	      IN      VARCHAR2,
+        I_FEC_FIN  			  IN      VARCHAR2,
+        R_LISTA               OUT     SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    ) AS
+        V_SQL VARCHAR2(30000);
+    BEGIN
+        V_SQL := 'SELECT
+		C.ID,
+		C.ID_PERSONAL,
+		PE.NOMBRE,
+		PE.APE_PATERNO,
+		PE.APE_MATERNO,
+		C.MONTO,
+		C.FECHA_INICIO,
+		C.FECHA_FIN,
+		C.FECHA,
+		C.MES,
+		C.ANIO,
+		C.FLG_ACTIVO,
+		C.ID_USUARIO_CREA,
+		C.FEC_USUARIO_CREA,
+		C.ID_USUARIO_MOD,
+		C.FEC_USUARIO_MOD
+        FROM HONORARIO C
+		LEFT JOIN PERSONAL P ON P.ID = C.ID_PERSONAL
+		LEFT JOIN PERSONA PE ON PE.ID = P.ID_PERSONA
+        WHERE C.FLG_ACTIVO=1';
+
+        IF ( (I_ID_PERSONAL IS NOT NULL) AND (I_ID_PERSONAL <> 0) ) THEN
+            V_SQL := V_SQL || ' AND C.ID_PERSONAL=' || I_ID_PERSONAL;
+        END IF;
+
+        IF ( I_FEC_INICIO IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND C.FECHA>=TO_DATE(''' || I_FEC_INICIO || ''',''DD/MM/YY'')';
+        END IF;
+
+        IF ( I_FEC_FIN IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND C.FECHA<=TO_DATE(''' || I_FEC_FIN || ''',''DD/MM/YY'')';
+        END IF;
+
+        V_SQL := V_SQL||' ORDER BY C.FECHA DESC';
+        OPEN R_LISTA FOR V_SQL;
+
+        OPEN R_LISTA FOR V_SQL;
+
+        R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+    END SP_L_HONORARIO;
+
+END PCK_PPOS_HONORARIO;

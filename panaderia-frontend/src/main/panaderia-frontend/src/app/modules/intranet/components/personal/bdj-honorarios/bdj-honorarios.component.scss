@@ -1,0 +1,31 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+    max-height: 400px;
+}
+
+@include mat-table-columns(
+    (
+        id: (
+            width: 2rem,
+        ),
+        personal: (
+            width: 12rem,
+        ),
+        monto: (
+            width: 6rem,
+        ),
+        mes: (
+            width: 6rem,
+        ),
+        fechaInicio: (
+            width: 6rem,
+        ),
+        fechaFin: (
+            width: 6rem,
+        ),
+        opt: (
+            width: 5rem,
+        ),
+    )
+);
