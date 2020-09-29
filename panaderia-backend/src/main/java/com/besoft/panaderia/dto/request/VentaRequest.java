@@ -14,6 +14,7 @@ public class VentaRequest {
 	private Date fecUsuarioMod;
 
 	private List<DetalleVentaRequest> listaDetalleVenta;
+	private String detalleVenta;
 
 	public Long getId() {
 		return id;
@@ -85,6 +86,14 @@ public class VentaRequest {
 
 	public void setListaDetalleVenta(List<DetalleVentaRequest> listaDetalleVenta) {
 		this.listaDetalleVenta = listaDetalleVenta;
+	}
+
+	public String getDetalleVenta() {
+		return detalleVenta;
+	}
+
+	public void setDetalleVenta(String detalleVenta) {
+		this.detalleVenta = detalleVenta;
 	}
 
 }
