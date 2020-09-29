@@ -7,8 +7,6 @@ export class HonorarioResponse {
     fechaInicio: Date;
     fechaFin: Date;
     fecha: Date;
-    mes: number;
-    anio: number;
     flgActivo: number;
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;

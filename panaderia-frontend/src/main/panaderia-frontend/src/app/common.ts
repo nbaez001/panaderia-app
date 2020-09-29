@@ -77,6 +77,9 @@ export const MENSAJES = {
                 MODIFICAR: {
                     TITLE: 'MODIFICAR HONORARIO'
                 },
+                RESUMEN_HONORARIO: {
+                    TITLE: 'RESUMEN HONORARIO'
+                },
             },
             BUSCAR_PERSONAL: {
                 TITLE: 'BUSCAR PERSONAL'

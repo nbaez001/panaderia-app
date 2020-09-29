@@ -9,8 +9,6 @@ public class HonorarioResponse {
 	private Date fechaInicio;
 	private Date fechaFin;
 	private Date fecha;
-	private Integer mes;
-	private Integer anio;
 	private Integer flgActivo;
 	private Long idUsuarioCrea;
 	private Date fecUsuarioCrea;
@@ -67,22 +65,6 @@ public class HonorarioResponse {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
-	}
-
-	public Integer getMes() {
-		return mes;
-	}
-
-	public void setMes(Integer mes) {
-		this.mes = mes;
-	}
-
-	public Integer getAnio() {
-		return anio;
-	}
-
-	public void setAnio(Integer anio) {
-		this.anio = anio;
 	}
 
 	public Integer getFlgActivo() {

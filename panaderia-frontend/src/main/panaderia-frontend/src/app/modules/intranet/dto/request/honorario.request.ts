@@ -1,4 +1,5 @@
-import { HonorarioInsumoRequest } from './honorario-insumo.request';
+import { InsumoResponse } from '../response/insumo.response';
+import { HonorarioDetalleRequest } from './honorario-detalle.request';
 import { PersonalRequest } from './personal.request';
 
 export class HonorarioRequest {
@@ -8,15 +9,14 @@ export class HonorarioRequest {
     fechaInicio: Date;
     fechaFin: Date;
     fecha: Date;
-    mes: number;
-    anio: number;
     flgActivo: number;
     idUsuarioCrea: number;
     fecUsuarioCrea: Date;
     idUsuarioMod: number;
     fecUsuarioMod: Date;
 
-    listaHonorarioInsumo: HonorarioInsumoRequest;
+    listaInsumo: InsumoResponse[];
+    listaHonorarioDetalle: HonorarioDetalleRequest[];
 
     constructor() {
         this.personal = new PersonalRequest();

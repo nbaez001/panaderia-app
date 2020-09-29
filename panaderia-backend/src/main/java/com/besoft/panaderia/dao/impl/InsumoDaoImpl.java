@@ -50,6 +50,7 @@ public class InsumoDaoImpl implements InsumoDao {
 			in.addValue("I_ID_PERSONAL", req.getIdPersonal(), Types.NUMERIC);
 			in.addValue("I_FEC_INICIO", DateUtil.formatSlashDDMMYYYY(req.getFecInicio()), Types.VARCHAR);
 			in.addValue("I_FEC_FIN", DateUtil.formatSlashDDMMYYYY(req.getFecFin()), Types.VARCHAR);
+			in.addValue("I_FLG_CAL_HONORARIO", req.getFlgCalHonorario(), Types.NUMERIC);
 
 			Map<String, Object> out = jdbcCall.execute(in);
 

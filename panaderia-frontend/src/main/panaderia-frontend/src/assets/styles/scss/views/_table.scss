@@ -12,11 +12,15 @@
         }
 
         @if map-has-key($props, "text-align") {
-          text-align: map-get($props, "text-align") !important;
+          text-align: map-get($props, "text-align");
         }
 
         @if map-has-key($props, "padding-left") {
-          padding-left: map-get($props, "padding-left") !important;
+          padding-left: map-get($props, "padding-left");
+        }
+
+        @if map-has-key($props, "padding-right") {
+          padding-right: map-get($props, "padding-right");
         }
       }
     }

@@ -29,4 +29,9 @@ public class OutResponse<T> {
 		this.rResult = rResult;
 	}
 
+	@Override
+	public String toString() {
+		return "OutResponse [rCodigo=" + rCodigo + ", rMensaje=" + rMensaje + ", rResult=" + rResult + "]";
+	}
+
 }

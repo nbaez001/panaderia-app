@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.besoft.panaderia.dto.request.DetalleVentaRequest;
 import com.besoft.panaderia.util.ConexionUtil;
 
+import oracle.jdbc.driver.OracleConnection;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
 import oracle.sql.STRUCT;
@@ -22,11 +25,15 @@ public class DetalleVentaArray {
 
 	@Autowired
 	ConexionUtil conexionUtil;
+	
+	@Autowired
+	DataSource dataSource;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	public ARRAY toArray(List<DetalleVentaRequest> lista) throws Exception {
-		Connection con = conexionUtil.getConexion();
+//		Connection con = conexionUtil.getConexion();
+		OracleConnection con = dataSource.getConnection().unwrap(OracleConnection.class);
 
 		STRUCT[] structura = new STRUCT[lista.size()];
 		StructDescriptor structDesc = StructDescriptor.createDescriptor("T_DETALLE_VENTA", con);

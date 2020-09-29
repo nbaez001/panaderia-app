@@ -7,7 +7,7 @@
 <div mat-dialog-content>
     <form [formGroup]="formularioGrp" *ngIf="formErrors" (keyup.enter)="ejecutar()">
         <mat-grid-list cols="12" rowHeight="53px">
-            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 4, xl: 4}">
                 <mat-form-field>
                     <input matInput formControlName="nombre" placeholder="Nombre personal" type="text">
                     <mat-error *ngIf="formErrors.nombre">{{formErrors.nombre}}</mat-error>
@@ -17,7 +17,9 @@
                     </button>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        </mat-grid-list>
+        <mat-grid-list cols="12" rowHeight="53px">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6,md: 4, lg: 4, xl: 4}">
                 <mat-form-field appearance="legacy">
                     <input matInput formControlName="fecInicio" [matDatepicker]="picker"
                         placeholder="Fecha inicio busqueda">
@@ -26,7 +28,7 @@
                     <mat-error *ngIf="formErrors.fecInicio">{{formErrors.fecInicio}}</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 4, xl: 4}">
                 <mat-form-field appearance="legacy">
                     <input matInput formControlName="fecFin" [matDatepicker]="picker2" placeholder="Fecha fin busqueda">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -34,8 +36,14 @@
                     <mat-error *ngIf="formErrors.fecFin">{{formErrors.fecFin}}</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 4, xl: 4}" class="dialog-form-actions">
+                <button mat-raised-button color="primary" type="button" (click)="buscaInsumos()">
+                    <mat-icon>list_alt</mat-icon>
+                    Buscar insumos utilizados
+                </button>
+            </mat-grid-tile>
 
-            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+            <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 4, xl: 4}">
                 <mat-form-field>
                     <input matInput formControlName="monto" placeholder="Monto" type="number">
                     <mat-error *ngIf="formErrors.monto">{{formErrors.monto}}</mat-error>
@@ -43,6 +51,68 @@
             </mat-grid-tile>
 
         </mat-grid-list>
+    </form>
+    <form [formGroup]="detFormularioGrp">
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> N° </th>
+                    <td mat-cell *matCellDef="let i = index"> {{ i + 1}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tipoInsumo">
+                    <th mat-header-cell *matHeaderCellDef>Insumo</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{ row.tipoInsumo.nombre ? row.tipoInsumo.nombre : '' }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="unidadMedida">
+                    <th mat-header-cell *matHeaderCellDef>Unidad medida</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{ row.tipoInsumo.nomUnidadMedida ? row.tipoInsumo.nomUnidadMedida : '' }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="cantidad">
+                    <th mat-header-cell *matHeaderCellDef style="text-align: center;">Cantidad</th>
+                    <td mat-cell *matCellDef="let row" style="text-align: right; padding-right: 30px">
+                        {{ row.cantidad | number :'1.1-1' }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tarifa">
+                    <th mat-header-cell *matHeaderCellDef>Tarifa</th>
+                    <td mat-cell *matCellDef="let row; let i = index">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tarifa {{row.tipoInsumo.nomUnidadMedida}}</mat-label>
+                            <input matInput [formControlName]="'t'+i"
+                                placeholder="Tarifa {{row.tipoInsumo.nomUnidadMedida}}" type="number"
+                                style="text-align: center;">
+                            <!-- <mat-error *ngIf="formErrors.tarifa">{{formErrors.tarifa}}</mat-error> -->
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="subtotal">
+                    <th mat-header-cell *matHeaderCellDef style="text-align: center;">Subtotal</th>
+                    <td mat-cell *matCellDef="let row" style="text-align: right; padding-right: 30px;">
+                        {{ row.subtotal | number :'1.2-2' }}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="empty" *ngIf="!isLoading && dataSource === null">
+                No existe datos para mostrar en la tabla
+            </div>
+
+            <div *ngIf="isLoading" class="spinerTable">
+                <mat-progress-spinner [diameter]="35" color="primary" mode="indeterminate">
+                </mat-progress-spinner>
+            </div>
+
+            <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
     </form>
 </div>
 <div mat-dialog-actions align="center">

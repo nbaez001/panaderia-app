@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -16,8 +18,8 @@ import com.besoft.panaderia.dao.VentaDao;
 import com.besoft.panaderia.dto.request.DetalleVentaRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.request.array.DetalleVentaArray;
-import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.dto.response.mapper.VentaResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
@@ -27,6 +29,9 @@ import oracle.sql.ARRAY;
 
 @Repository
 public class VentaDaoImpl implements VentaDao {
+
+	Logger log = LoggerFactory.getLogger(VentaDaoImpl.class);
+
 	@Autowired
 	DataSource dataSource;
 
@@ -35,6 +40,7 @@ public class VentaDaoImpl implements VentaDao {
 
 	@Override
 	public OutResponse<VentaResponse> registrarVenta(VentaRequest c) {
+		log.info("[REGISTRAR VENTA][DAO][INICIO]");
 		OutResponse<VentaResponse> outResponse = new OutResponse<>();
 		VentaResponse resp = new VentaResponse();
 
@@ -102,11 +108,14 @@ public class VentaDaoImpl implements VentaDao {
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
 			outResponse.setrResult(resp);
+			log.info("[REGISTRAR VENTA][DAO][EXITO][OUTPUT][" + outResponse.toString() + "]");
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
 			outResponse.setrResult(null);
+			log.info("[REGISTRAR VENTA][DAO][EXCEPCION][" + outResponse.toString() + "]");
 		}
+		log.info("[REGISTRAR VENTA][DAO][FIN]");
 		return outResponse;
 	}
 

@@ -13,16 +13,14 @@ public class HonorarioResponseMapper implements RowMapper<HonorarioResponse> {
 	public HonorarioResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
 		HonorarioResponse p = new HonorarioResponse();
 		p.setId(rs.getLong("ID"));
-		p.getPersonal().setId(rs.getLong("ID"));
+		p.getPersonal().setId(rs.getLong("ID_PERSONAL"));
 		p.getPersonal().getPersona().setNombre(rs.getString("NOMBRE"));
 		p.getPersonal().getPersona().setApePaterno(rs.getString("APE_PATERNO"));
-		p.getPersonal().getPersona().setApePaterno(rs.getString("APE_MATERNO"));
+		p.getPersonal().getPersona().setApeMaterno(rs.getString("APE_MATERNO"));
 		p.setMonto(rs.getDouble("MONTO"));
 		p.setFechaInicio(rs.getDate("FECHA_INICIO"));
 		p.setFechaFin(rs.getDate("FECHA_FIN"));
 		p.setFecha(rs.getDate("FECHA"));
-		p.setMes(rs.getInt("MES"));
-		p.setAnio(rs.getInt("ANIO"));
 		p.setFlgActivo(rs.getInt("FLG_ACTIVO"));
 		p.setIdUsuarioCrea(rs.getLong("ID_USUARIO_CREA"));
 		p.setFecUsuarioCrea(rs.getDate("FEC_USUARIO_CREA"));

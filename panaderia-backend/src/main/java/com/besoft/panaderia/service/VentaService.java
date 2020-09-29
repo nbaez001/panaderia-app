@@ -9,6 +9,8 @@ import com.besoft.panaderia.dto.response.VentaResponse;
 public interface VentaService {
 
 	public OutResponse<VentaResponse> registrarVenta(VentaRequest c);
+	
+	public void imprimirVenta();
 
 	public OutResponse<List<VentaResponse>> listarVenta();
 }

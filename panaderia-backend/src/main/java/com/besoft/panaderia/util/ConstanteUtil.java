@@ -17,5 +17,6 @@ public class ConstanteUtil {
 	public static final String slash_DDMMYY = "dd/MM/yy";
 	public static final String guion_DDMMYYYY = "dd-MM-yyyy";
 	public static final String guion_YYYYMMDD = "yyyy-MM-dd";
+	public static final String guion_yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss";
 
 }

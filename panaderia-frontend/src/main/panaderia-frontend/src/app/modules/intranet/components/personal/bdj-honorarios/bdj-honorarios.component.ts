@@ -12,12 +12,14 @@ import { FormService } from 'src/app/core/services/form.service';
 import { HonorarioBuscarRequest } from '../../../dto/request/honorario-buscar.request';
 import { HonorarioRequest } from '../../../dto/request/honorario.request';
 import { PersonalBuscarRequest } from '../../../dto/request/personal-buscar.request';
+import { FileResponse } from '../../../dto/response/file.response';
 import { HonorarioResponse } from '../../../dto/response/honorario.response';
 import { OutResponse } from '../../../dto/response/out.response';
 import { PersonalResponse } from '../../../dto/response/personal.response';
 import { HonorarioService } from '../../../services/honorario.service';
 import { PersonalService } from '../../../services/personal.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { PdfViewerComponent } from '../../shared/pdf-viewer/pdf-viewer.component';
 import { RegHonorarioComponent } from './reg-honorario/reg-honorario.component';
 
 @Component({
@@ -47,20 +49,16 @@ export class BdjHonorariosComponent implements OnInit {
       header: 'Monto',
       cell: (m: HonorarioResponse) => `${m.monto ? this.decimalPipe.transform(m.monto, '1.2-2') : ''}`
     }, {
-      columnDef: 'mes',
-      header: 'Mes',
-      cell: (m: HonorarioResponse) => `${m.mes ? m.mes : ''}`
-    }, {
       columnDef: 'fechaInicio',
-      header: 'Fecha inicio',
+      header: 'Fecha inicio calculo',
       cell: (m: HonorarioResponse) => `${m.fechaInicio ? this.datePipe.transform(m.fechaInicio, 'dd/MM/yyyy') : ''}`
     }, {
       columnDef: 'fechaFin',
-      header: 'Fecha fin',
+      header: 'Fecha fin calculo',
       cell: (m: HonorarioResponse) => `${m.fechaFin ? this.datePipe.transform(m.fechaFin, 'dd/MM/yyyy') : ''}`
     }, {
       columnDef: 'fecha',
-      header: 'Fecha emision',
+      header: 'Fecha pago',
       cell: (m: HonorarioResponse) => `${m.fecha ? this.datePipe.transform(m.fecha, 'dd/MM/yyyy') : ''}`
     }];
 
@@ -173,7 +171,7 @@ export class BdjHonorariosComponent implements OnInit {
 
   registrar(obj: HonorarioResponse) {
     const dialogRef = this.dialog.open(RegHonorarioComponent, {
-      width: '600px',
+      width: '800px',
       disableClose: false,
       data: {
         titulo: MENSAJES.INTRANET.BANDEJA_HONORARIO.HONORARIO.REGISTRAR.TITLE,
@@ -244,6 +242,38 @@ export class BdjHonorariosComponent implements OnInit {
         )
       }
     });
+  }
+
+  verRecibo(obj: HonorarioResponse): void {
+    this.spinner.show();
+
+    let req = new HonorarioRequest();
+    req.id = obj.id;
+
+    this.honorarioService.reporteHonorario(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        if (data.rCodigo == 0) {
+          const dialogRef = this.dialog.open(PdfViewerComponent, {
+            width: '400px',
+            disableClose: true,
+            data: {
+              titulo: MENSAJES.INTRANET.BANDEJA_HONORARIO.HONORARIO.RESUMEN_HONORARIO.TITLE,
+              objeto: data
+            }
+          });
+
+          dialogRef.afterClosed().subscribe((result) => {
+          });
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.spinner.hide();
+      }, error => {
+        console.error(error);
+        this._snackBar.open(error.statusText, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.spinner.hide();
+      }
+    )
   }
 
 }

@@ -7,7 +7,7 @@ import java.awt.print.PrinterJob;
 public class BillUtil {
 
 	public PageFormat getPageFormat(PrinterJob pj) {
-
+		
 		// 5.7 CENTIMETROS
 		PageFormat pf = pj.defaultPage();
 		Paper paper = pf.getPaper();

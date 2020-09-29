@@ -3,6 +3,8 @@ package com.besoft.panaderia.dto.request;
 import java.util.Date;
 import java.util.List;
 
+import com.besoft.panaderia.dto.response.InsumoResponse;
+
 public class HonorarioRequest {
 	private Long id;
 	private PersonalRequest personal;
@@ -10,15 +12,14 @@ public class HonorarioRequest {
 	private Date fechaInicio;
 	private Date fechaFin;
 	private Date fecha;
-	private Integer mes;
-	private Integer anio;
 	private Integer flgActivo;
 	private Long idUsuarioCrea;
 	private Date fecUsuarioCrea;
 	private Long idUsuarioMod;
 	private Date fecUsuarioMod;
 
-	private List<HonorarioInsumoRequest> listaHonorarioInsumo;
+	private List<InsumoResponse> listaInsumo;
+	private List<HonorarioDetalleRequest> listaHonorarioDetalle;
 
 	public Long getId() {
 		return id;
@@ -68,22 +69,6 @@ public class HonorarioRequest {
 		this.fecha = fecha;
 	}
 
-	public Integer getMes() {
-		return mes;
-	}
-
-	public void setMes(Integer mes) {
-		this.mes = mes;
-	}
-
-	public Integer getAnio() {
-		return anio;
-	}
-
-	public void setAnio(Integer anio) {
-		this.anio = anio;
-	}
-
 	public Integer getFlgActivo() {
 		return flgActivo;
 	}
@@ -124,12 +109,20 @@ public class HonorarioRequest {
 		this.fecUsuarioMod = fecUsuarioMod;
 	}
 
-	public List<HonorarioInsumoRequest> getListaHonorarioInsumo() {
-		return listaHonorarioInsumo;
+	public List<InsumoResponse> getListaInsumo() {
+		return listaInsumo;
 	}
 
-	public void setListaHonorarioInsumo(List<HonorarioInsumoRequest> listaHonorarioInsumo) {
-		this.listaHonorarioInsumo = listaHonorarioInsumo;
+	public void setListaInsumo(List<InsumoResponse> listaInsumo) {
+		this.listaInsumo = listaInsumo;
+	}
+
+	public List<HonorarioDetalleRequest> getListaHonorarioDetalle() {
+		return listaHonorarioDetalle;
+	}
+
+	public void setListaHonorarioDetalle(List<HonorarioDetalleRequest> listaHonorarioDetalle) {
+		this.listaHonorarioDetalle = listaHonorarioDetalle;
 	}
 
 }

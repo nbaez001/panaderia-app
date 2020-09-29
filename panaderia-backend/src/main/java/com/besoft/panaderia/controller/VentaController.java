@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,17 @@ public class VentaController {
 
 	@PostMapping("/registrarVenta")
 	public OutResponse<VentaResponse> registrarVenta(@RequestBody VentaRequest c) {
-		return ventaService.registrarVenta(c);
+		log.info("[REGISTRAR VENTA][CONTROLLER][INICIO]");
+		OutResponse<VentaResponse> out = ventaService.registrarVenta(c);
+		log.info("[REGISTRAR VENTA][CONTROLLER][FIN]");
+		return out;
+	}
+	
+	@GetMapping("/imprimirVenta")
+	public void imprimirVenta() {
+		log.info("[REGISTRAR VENTA][CONTROLLER][INICIO]");
+		ventaService.imprimirVenta();
+		log.info("[REGISTRAR VENTA][CONTROLLER][FIN]");
 	}
 
 	@PostMapping("/listarVenta")

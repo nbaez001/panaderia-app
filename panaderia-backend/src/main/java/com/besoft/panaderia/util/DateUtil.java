@@ -23,6 +23,15 @@ public class DateUtil {
 			return null;
 		}
 	}
+	
+	public static Date parseGuionyyyyMMddHHmmss(String date) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat(ConstanteUtil.guion_yyyyMMddHHmmss);
+		if (date != null && date.toUpperCase() != "NULL") {
+			return sdf.parse(date);
+		} else {
+			return null;
+		}
+	}
 
 	public static String formatGuionDDMMYYYY(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat(ConstanteUtil.guion_DDMMYYYY);

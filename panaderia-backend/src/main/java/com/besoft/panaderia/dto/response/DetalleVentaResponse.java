@@ -74,4 +74,11 @@ public class DetalleVentaResponse {
 		this.flagActivo = flagActivo;
 	}
 
+	@Override
+	public String toString() {
+		return "DetalleVentaResponse [id=" + id + ", idProducto=" + idProducto + ", nomProducto=" + nomProducto
+				+ ", idVenta=" + idVenta + ", cantidad=" + cantidad + ", precio=" + precio + ", subtotal=" + subtotal
+				+ ", flagActivo=" + flagActivo + "]";
+	}
+
 }

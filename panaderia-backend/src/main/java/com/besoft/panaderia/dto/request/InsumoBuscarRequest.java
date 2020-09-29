@@ -7,6 +7,7 @@ public class InsumoBuscarRequest {
 	private Long idPersonal;
 	private Date fecInicio;
 	private Date fecFin;
+	private Integer flgCalHonorario;
 
 	public Long getIdTipoInsumo() {
 		return idTipoInsumo;
@@ -38,6 +39,14 @@ public class InsumoBuscarRequest {
 
 	public void setFecFin(Date fecFin) {
 		this.fecFin = fecFin;
+	}
+
+	public Integer getFlgCalHonorario() {
+		return flgCalHonorario;
+	}
+
+	public void setFlgCalHonorario(Integer flgCalHonorario) {
+		this.flgCalHonorario = flgCalHonorario;
 	}
 
 }

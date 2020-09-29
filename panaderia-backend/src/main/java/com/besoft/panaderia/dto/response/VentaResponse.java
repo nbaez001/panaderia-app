@@ -105,4 +105,12 @@ public class VentaResponse {
 		this.listaDetalleVenta = listaDetalleVenta;
 	}
 
+	@Override
+	public String toString() {
+		return "VentaResponse [id=" + id + ", idComprobante=" + idComprobante + ", serie=" + serie + ", numero="
+				+ numero + ", total=" + total + ", flgActivo=" + flgActivo + ", idUsuarioCrea=" + idUsuarioCrea
+				+ ", fecUsuarioCrea=" + fecUsuarioCrea + ", idUsuarioMod=" + idUsuarioMod + ", fecUsuarioMod="
+				+ fecUsuarioMod + ", listaDetalleVenta=" + listaDetalleVenta + "]";
+	}
+
 }

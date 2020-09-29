@@ -3,4 +3,5 @@ export class InsumoBuscarRequest {
     idPersonal: number;
     fecInicio: Date;
     fecFin: Date;
+    flgCalHonorario: number;
 }

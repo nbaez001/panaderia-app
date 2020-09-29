@@ -28,11 +28,14 @@ import { BdjTipoInsumoComponent } from './components/administracion/bdj-tipo-ins
 import { RegTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/reg-tipo-insumo/reg-tipo-insumo.component';
 import { RegHonorarioComponent } from './components/personal/bdj-honorarios/reg-honorario/reg-honorario.component';
 import { BuscarPersonalComponent } from './components/personal/bdj-honorarios/reg-honorario/buscar-personal/buscar-personal.component';
+import { PdfViewerComponent } from './components/shared/pdf-viewer/pdf-viewer.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 @NgModule({
   entryComponents: [
     ConfirmDialogComponent,
+    PdfViewerComponent,
 
     RegProductoComponent,
     RegMaestraComponent,
@@ -45,6 +48,7 @@ import { BuscarPersonalComponent } from './components/personal/bdj-honorarios/re
   ],
   declarations: [
     ConfirmDialogComponent,
+    PdfViewerComponent,
     RegProductoComponent,
     RegMaestraComponent,
     RegMaestraChildComponent,
@@ -73,6 +77,7 @@ import { BuscarPersonalComponent } from './components/personal/bdj-honorarios/re
     MaterialModule,
     LayoutModule,
     IconModule,
+    NgxExtendedPdfViewerModule,
   ],
   providers: [
     ...SharedService,

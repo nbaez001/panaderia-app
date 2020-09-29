@@ -1,0 +1,11 @@
+.close-button {
+    position: relative;
+    left: 0px;
+    top: 2px;
+    float: right;
+    z-index: 2000;
+}
+
+::ng-deep #toolbarViewerRight {
+    padding-right: 50px !important;
+}

@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.HonorarioBuscarRequest;
+import com.besoft.panaderia.dto.request.HonorarioPeriodoRequest;
 import com.besoft.panaderia.dto.request.HonorarioRequest;
+import com.besoft.panaderia.dto.response.FileResponse;
+import com.besoft.panaderia.dto.response.HonorarioPeriodoResponse;
 import com.besoft.panaderia.dto.response.HonorarioResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.service.HonorarioService;
@@ -46,4 +49,15 @@ public class HonorarioController {
 //	public OutResponse<HonorarioResponse> eliminarHonorario(@RequestBody HonorarioRequest req) {
 //		return honorarioService.eliminarHonorario(req);
 //	}
+
+	@PostMapping("/buscarPeriodoHonorario")
+	public OutResponse<HonorarioPeriodoResponse> buscarPeriodoHonorario(@RequestBody HonorarioPeriodoRequest req) {
+		return honorarioService.buscarPeriodoHonorario(req);
+	}
+
+	@PostMapping("/reporteHonorario")
+	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req) {
+		return honorarioService.reporteHonorario(req);
+	}
+
 }

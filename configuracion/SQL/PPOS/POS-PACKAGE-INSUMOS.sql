@@ -5,6 +5,7 @@ create or replace PACKAGE PCK_PPOS_INSUMO AS
         I_ID_PERSONAL  		IN    NUMBER,
         I_FEC_INICIO   		IN    VARCHAR2,
         I_FEC_FIN     		IN    VARCHAR2,
+		I_FLG_CAL_HONORARIO IN    NUMBER,
         R_LISTA        		OUT   SYS_REFCURSOR,
         R_CODIGO       		OUT   NUMBER,
         R_MENSAJE      		OUT   VARCHAR2
@@ -92,6 +93,7 @@ create or replace PACKAGE BODY PCK_PPOS_INSUMO AS
         I_ID_PERSONAL  		IN    NUMBER,
         I_FEC_INICIO   		IN    VARCHAR2,
         I_FEC_FIN     		IN    VARCHAR2,
+		I_FLG_CAL_HONORARIO IN    NUMBER,
         R_LISTA        		OUT   SYS_REFCURSOR,
         R_CODIGO       		OUT   NUMBER,
         R_MENSAJE      		OUT   VARCHAR2
@@ -136,6 +138,10 @@ create or replace PACKAGE BODY PCK_PPOS_INSUMO AS
 
         IF ( I_FEC_FIN IS NOT NULL ) THEN
             V_SQL := V_SQL || ' AND M.FEC_USUARIO_CREA<=TO_DATE(''' || I_FEC_FIN || ''',''DD/MM/YY'')';
+        END IF;
+		
+		IF ( I_FLG_CAL_HONORARIO IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND M.FLG_CAL_HONORARIO=' || I_FLG_CAL_HONORARIO;
         END IF;
 
         V_SQL := V_SQL||' ORDER BY M.FECHA DESC, P.ID DESC';
@@ -349,3 +355,4 @@ create or replace PACKAGE BODY PCK_PPOS_INSUMO AS
 	END SP_D_TIPO_INSUMO;
 
 END PCK_PPOS_INSUMO;
+/
