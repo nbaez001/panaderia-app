@@ -17,15 +17,12 @@ import org.springframework.stereotype.Repository;
 import com.besoft.panaderia.dao.VentaDao;
 import com.besoft.panaderia.dto.request.DetalleVentaRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
-import com.besoft.panaderia.dto.request.array.DetalleVentaArray;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.dto.response.mapper.VentaResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
 import com.besoft.panaderia.util.DateUtil;
-
-import oracle.sql.ARRAY;
 
 @Repository
 public class VentaDaoImpl implements VentaDao {
@@ -34,10 +31,7 @@ public class VentaDaoImpl implements VentaDao {
 
 	@Autowired
 	DataSource dataSource;
-
-	@Autowired
-	DetalleVentaArray detalleVentaArray;
-
+	
 	@Override
 	public OutResponse<VentaResponse> registrarVenta(VentaRequest c) {
 		log.info("[REGISTRAR VENTA][DAO][INICIO]");
@@ -54,19 +48,17 @@ public class VentaDaoImpl implements VentaDao {
 			SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withSchemaName(ConstanteUtil.BD_SCHEMA)
 					.withCatalogName(ConstanteUtil.BD_PCK_VENTA).withProcedureName("SP_I_VENTA");
 
-			List<DetalleVentaRequest> lDetalle = c.getListaDetalleVenta();
-			ARRAY array = detalleVentaArray.toArray(lDetalle);
-
 			MapSqlParameterSource in = new MapSqlParameterSource();
 			in.addValue("I_ID_COMPROBANTE", c.getIdComprobante(), Types.NUMERIC);
 			in.addValue("I_TOTAL", c.getTotal(), Types.DECIMAL);
 			in.addValue("I_FLG_ACTIVO", c.getFlgActivo(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_CREA", c.getIdUsuarioCrea(), Types.NUMERIC);
 			in.addValue("I_FEC_USUARIO_CREA", DateUtil.formatSlashDDMMYYYY(c.getFecUsuarioCrea()), Types.VARCHAR);
-
-			in.addValue("L_DETALLE_VENTA", array, Types.ARRAY);
-
+			in.addValue("I_DETALLE_VENTA", c.getDetalleVenta(), Types.VARCHAR);
+			log.info("[REGISTRAR VENTA][DAO][INPUT][" + in.toString() + "]");
+			
 			Map<String, Object> out = jdbcCall.execute(in);
+			log.info("[REGISTRAR VENTA][DAO][OUTPUT][" + out.toString() + "]");
 
 			rCodigo = Integer.parseInt(out.get(ConstanteUtil.R_CODIGO).toString());
 			rMensaje = out.get(ConstanteUtil.R_MENSAJE).toString();
@@ -108,7 +100,7 @@ public class VentaDaoImpl implements VentaDao {
 			outResponse.setrCodigo(rCodigo);
 			outResponse.setrMensaje(rMensaje);
 			outResponse.setrResult(resp);
-			log.info("[REGISTRAR VENTA][DAO][EXITO][OUTPUT][" + outResponse.toString() + "]");
+			log.info("[REGISTRAR VENTA][DAO][EXITO][" + outResponse.toString() + "]");
 		} catch (Exception e) {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());

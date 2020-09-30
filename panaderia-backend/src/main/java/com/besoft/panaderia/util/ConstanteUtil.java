@@ -19,4 +19,9 @@ public class ConstanteUtil {
 	public static final String guion_YYYYMMDD = "yyyy-MM-dd";
 	public static final String guion_yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss";
 
+	public static final char separadorPunto = '.';
+	public static final char separadorComa = '.';
+	public static final String formato1Decimal = "0.0";
+	public static final String formato2Decimal = "0.00";
+	
 }

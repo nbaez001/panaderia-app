@@ -19,6 +19,8 @@ import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.service.VentaService;
 import com.besoft.panaderia.util.BillPrintable;
 import com.besoft.panaderia.util.BillUtil;
+import com.besoft.panaderia.util.ConstanteUtil;
+import com.besoft.panaderia.util.NumberUtil;
 
 @Service
 public class VentaServiceImpl implements VentaService {
@@ -33,7 +35,7 @@ public class VentaServiceImpl implements VentaService {
 		log.info("[REGISTRAR VENTA][SERVICE][INICIO]");
 		c.setDetalleVenta(convertirDetalleACadena(c));
 		OutResponse<VentaResponse> out = ventaDao.registrarVenta(c);
-		
+
 		if (out.getrCodigo() == 0) {
 			for (DetalleVentaResponse dv : out.getrResult().getListaDetalleVenta()) {
 				PrinterJob pj = PrinterJob.getPrinterJob();
@@ -85,11 +87,12 @@ public class VentaServiceImpl implements VentaService {
 		String detalleVenta = "";
 		if (v.getListaDetalleVenta().size() > 0) {
 			for (DetalleVentaRequest em : v.getListaDetalleVenta()) {
-				detalleVenta = detalleVenta + ((em.getIdProducto() != null) ? em.getIdProducto() : 0) + ","
-						+ ((em.getCantidad() != null) ? em.getCantidad() : 0.0) + ","
-						+ ((em.getPrecio() != null) ? em.getPrecio() : 0.0) + ","
-						+ ((em.getSubtotal() != null) ? em.getSubtotal() : 0.0) + ","
-						+ ((em.getFlagActivo() != null) ? em.getFlagActivo() : 0) + "|";
+				detalleVenta = detalleVenta 
+						+ ((em.getIdProducto() != null) ? em.getIdProducto() : "0") + ","
+						+ ((em.getCantidad() != null) ? NumberUtil.doubleToString(em.getCantidad(), ConstanteUtil.separadorPunto, ConstanteUtil.formato1Decimal) : "0.0") + "," 
+						+ ((em.getPrecio() != null) ? NumberUtil.doubleToString(em.getPrecio(), ConstanteUtil.separadorPunto, ConstanteUtil.formato2Decimal) : "0.00") + ","
+						+ ((em.getSubtotal() != null) ? NumberUtil.doubleToString(em.getSubtotal(), ConstanteUtil.separadorPunto, ConstanteUtil.formato2Decimal)  : "0.00") + ","
+						+ ((em.getFlagActivo() != null) ? em.getFlagActivo() : "0") + "|";
 
 			}
 			detalleVenta = detalleVenta.substring(0, detalleVenta.length() - 1);

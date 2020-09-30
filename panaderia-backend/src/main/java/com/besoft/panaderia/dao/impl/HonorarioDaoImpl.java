@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -14,35 +16,26 @@ import org.springframework.stereotype.Repository;
 
 import com.besoft.panaderia.dao.HonorarioDao;
 import com.besoft.panaderia.dto.request.HonorarioBuscarRequest;
-import com.besoft.panaderia.dto.request.HonorarioDetalleRequest;
 import com.besoft.panaderia.dto.request.HonorarioPeriodoRequest;
 import com.besoft.panaderia.dto.request.HonorarioRequest;
-import com.besoft.panaderia.dto.request.array.HonorarioDetalleArray;
-import com.besoft.panaderia.dto.request.array.HonorarioInsumoArray;
 import com.besoft.panaderia.dto.response.HonorarioPeriodoResponse;
 import com.besoft.panaderia.dto.response.HonorarioResponse;
-import com.besoft.panaderia.dto.response.InsumoResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.mapper.HonorarioResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
 import com.besoft.panaderia.util.DateUtil;
 
-import oracle.sql.ARRAY;
-
 @Repository
 public class HonorarioDaoImpl implements HonorarioDao {
+
+	Logger log = LoggerFactory.getLogger(HonorarioDaoImpl.class);
 
 	@Autowired
 	DataSource dataSource;
 
-	@Autowired
-	HonorarioInsumoArray honorarioInsumoArray;
-
-	@Autowired
-	HonorarioDetalleArray honorarioDetalleArray;
-
 	@Override
 	public OutResponse<HonorarioResponse> registrarHonorario(HonorarioRequest c) {
+		log.info("[REGISTRAR HONORARIO][DAO][INICIO]");
 		OutResponse<HonorarioResponse> outResponse = new OutResponse<>();
 		HonorarioResponse resp = new HonorarioResponse();
 
@@ -54,12 +47,6 @@ public class HonorarioDaoImpl implements HonorarioDao {
 			SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withSchemaName(ConstanteUtil.BD_SCHEMA)
 					.withCatalogName(ConstanteUtil.BD_PCK_PPOS_HONORARIO).withProcedureName("SP_I_HONORARIO");
 
-			List<InsumoResponse> lInsumo = c.getListaInsumo();
-			ARRAY array = honorarioInsumoArray.toArray(lInsumo);
-
-			List<HonorarioDetalleRequest> lDetalle = c.getListaHonorarioDetalle();
-			ARRAY arrayDetalle = honorarioDetalleArray.toArray(lDetalle);
-
 			MapSqlParameterSource in = new MapSqlParameterSource();
 			in.addValue("I_ID_PERSONAL", c.getPersonal().getId(), Types.NUMERIC);
 			in.addValue("I_MONTO", c.getMonto(), Types.DECIMAL);
@@ -69,11 +56,12 @@ public class HonorarioDaoImpl implements HonorarioDao {
 			in.addValue("I_FLG_ACTIVO", c.getFlgActivo(), Types.NUMERIC);
 			in.addValue("I_ID_USUARIO_CREA", c.getIdUsuarioCrea(), Types.NUMERIC);
 			in.addValue("I_FEC_USUARIO_CREA", DateUtil.formatSlashDDMMYYYY(c.getFecUsuarioCrea()), Types.VARCHAR);
-
-			in.addValue("L_HONORARIO_INSUMO", array, Types.ARRAY);
-			in.addValue("L_HONORARIO_DETALLE", arrayDetalle, Types.ARRAY);
+			in.addValue("I_HONORARIO_INSUMO", c.getHonorarioInsumo(), Types.VARCHAR);
+			in.addValue("I_HONORARIO_DETALLE", c.getHonorarioDetalle(), Types.VARCHAR);
+			log.info("[REGISTRAR HONORARIO][DAO][INPUT][" + in.toString() + "]");
 
 			Map<String, Object> out = jdbcCall.execute(in);
+			log.info("[REGISTRAR HONORARIO][DAO][OUTPUT][" + out.toString() + "]");
 
 			rCodigo = Integer.parseInt(out.get(ConstanteUtil.R_CODIGO).toString());
 			rMensaje = out.get(ConstanteUtil.R_MENSAJE).toString();
@@ -105,6 +93,7 @@ public class HonorarioDaoImpl implements HonorarioDao {
 			outResponse.setrMensaje(e.getMessage());
 			outResponse.setrResult(null);
 		}
+		log.info("[REGISTRAR HONORARIO][DAO][FIN]");
 		return outResponse;
 	}
 

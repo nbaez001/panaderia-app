@@ -21,6 +21,9 @@ public class HonorarioRequest {
 	private List<InsumoResponse> listaInsumo;
 	private List<HonorarioDetalleRequest> listaHonorarioDetalle;
 
+	private String honorarioInsumo;
+	private String honorarioDetalle;
+
 	public Long getId() {
 		return id;
 	}
@@ -123,6 +126,22 @@ public class HonorarioRequest {
 
 	public void setListaHonorarioDetalle(List<HonorarioDetalleRequest> listaHonorarioDetalle) {
 		this.listaHonorarioDetalle = listaHonorarioDetalle;
+	}
+
+	public String getHonorarioInsumo() {
+		return honorarioInsumo;
+	}
+
+	public void setHonorarioInsumo(String honorarioInsumo) {
+		this.honorarioInsumo = honorarioInsumo;
+	}
+
+	public String getHonorarioDetalle() {
+		return honorarioDetalle;
+	}
+
+	public void setHonorarioDetalle(String honorarioDetalle) {
+		this.honorarioDetalle = honorarioDetalle;
 	}
 
 }
