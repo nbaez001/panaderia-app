@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenHonorario" pageWidth="212" pageHeight="566" columnWidth="212" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f7e301cc-1e7b-47c2-9a93-a68a4f1d5d19">
-	<property name="ireport.zoom" value="5.0"/>
-	<property name="ireport.x" value="280"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="idHonorario" class="java.lang.Integer"/>
+	<parameter name="idHonorario" class="java.lang.Long"/>
 	<queryString>
 		<![CDATA[SELECT
 HD.ID AS ID,
@@ -33,35 +33,35 @@ WHERE H.ID = $P{idHonorario}]]>
 	<detail>
 		<band height="13">
 			<textField>
-				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="0" y="0" width="16" height="13"/>
+				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="0" y="0" width="13" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{indice}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="16" y="0" width="71" height="13"/>
+				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="13" y="0" width="76" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TIPO_INSUMO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.0">
-				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="87" y="0" width="32" height="13"/>
+				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="89" y="0" width="30" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="119" y="0" width="46" height="13"/>
+				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="119" y="0" width="42" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TARIFA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="165" y="0" width="46" height="13"/>
+				<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="161" y="0" width="50" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>

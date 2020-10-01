@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DataDialog } from '../../../dto/data-dialog';
 import { OutResponse } from '../../../dto/response/out.response';
 
 @Component({
@@ -11,16 +12,14 @@ export class PdfViewerComponent implements OnInit {
   base64Pdf: any;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: OutResponse<any>,
+    @Inject(MAT_DIALOG_DATA) private data: DataDialog<OutResponse<any>>,
     // @Inject(GenericService) private genericService: GenericService,
   ) {
   }
 
   ngOnInit() {
-    console.log('DATA REQUEST');
-    console.log(this.data.rResult);
     // this.descargarArchivo(this.data.objeto)
-    this.base64Pdf = this.data.rResult.data;
+    this.base64Pdf = this.data.objeto.rResult.data;
   }
 
   // descargarArchivo(req): void {

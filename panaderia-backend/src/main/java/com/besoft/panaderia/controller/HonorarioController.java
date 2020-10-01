@@ -2,6 +2,8 @@ package com.besoft.panaderia.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +58,11 @@ public class HonorarioController {
 	}
 
 	@PostMapping("/reporteHonorario")
-	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req) {
-		return honorarioService.reporteHonorario(req);
+	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req, HttpServletRequest request) {
+		log.info("[REPORTE HONORARIO][CONTROLLER][INICIO]");
+		OutResponse<FileResponse> out = honorarioService.reporteHonorario(req, request);
+		log.info("[REPORTE HONORARIO][CONTROLLER][FIN]");
+		return out;
 	}
 
 }

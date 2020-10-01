@@ -16,6 +16,9 @@ swagger:
       email: "nbaez001@gmail.com"
 api:
   urlApiReniec: "http://perficon.elnazarenovraem.edu.pe/api/soap/persona"
+reportes:
+  resumenHonorario: "D:/APP-POS/reportes/resumenHonorario.jasper"
+  resumenHonorarioDet: "D:/APP-POS/reportes/resumenHonorario_detalle.jasper"
 #security:
 #  oauth2:
 #    resource:

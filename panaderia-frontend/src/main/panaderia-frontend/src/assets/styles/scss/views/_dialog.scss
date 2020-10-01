@@ -58,3 +58,9 @@ mat-dialog-content > * {
 .mat-dialog-content > * {
   font-size: 14px !important;
 }
+
+.dialog-no-padding {
+  .mat-dialog-container {
+    padding: 0;
+  }
+}

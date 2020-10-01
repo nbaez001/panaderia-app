@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="idHonorario" class="java.lang.Integer"/>
+	<parameter name="idHonorario" class="java.lang.Long"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\PROYECTOS\\PANADERIA\\panaderia-app\\panaderia-backend\\src\\main\\resources\\reports\\resumenHonorario_detalle.jasper"]]></defaultValueExpression>
 	</parameter>
@@ -96,28 +96,28 @@ WHERE
 					<textFieldExpression><![CDATA[$F{MONTO}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="0" y="54" width="16" height="13"/>
+					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="1" y="54" width="13" height="13"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["N° "]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="16" y="54" width="71" height="13"/>
+					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="14" y="54" width="73" height="13"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["INSUMO"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="90" y="54" width="32" height="13"/>
+					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="93" y="54" width="30" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["CANT."]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="122" y="54" width="46" height="13"/>
+					<reportElement uuid="0bd31d4e-10d6-4376-ae2d-b863afa5d9e3" x="126" y="54" width="39" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>

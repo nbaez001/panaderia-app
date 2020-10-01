@@ -1,17 +1,21 @@
 package com.besoft.panaderia.service.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.besoft.panaderia.dao.HonorarioDao;
@@ -39,12 +43,21 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 public class HonorarioServiceImpl implements HonorarioService {
 
 	Logger log = LoggerFactory.getLogger(HonorarioServiceImpl.class);
-	
+
 	@Autowired
 	ConexionUtil conexionUtil;
 
 	@Autowired
 	HonorarioDao honorarioDao;
+
+	@Autowired
+	DataSource dataSource;
+
+	@Value("${reportes.resumenHonorario}")
+	String resumenHonorario;
+
+	@Value("${reportes.resumenHonorarioDet}")
+	String resumenHonorarioDet;
 
 	@Override
 	public OutResponse<List<HonorarioResponse>> listarHonorario(HonorarioBuscarRequest req) {
@@ -63,23 +76,30 @@ public class HonorarioServiceImpl implements HonorarioService {
 	}
 
 	@Override
-	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req) {
+	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req, HttpServletRequest request) {
+		log.info("[REPORTE HONORARIO][SERVICE][INICIO]");
 		OutResponse<FileResponse> out = new OutResponse<>();
 
 		JRPdfExporter exporter = new JRPdfExporter();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+//		String applicationPath = request.getServletContext().getRealPath("");
+
 		try {
-			File file = ResourceUtils.getFile("classpath:reports/resumenHonorario.jasper");
-			File fileDet = ResourceUtils.getFile("classpath:reports/resumenHonorario_detalle.jasper");
+//			File file = ResourceUtils.getFile("classpath:reports/resumenHonorario.jrxml");
+//			File fileDet = ResourceUtils.getFile("classpath:reports/resumenHonorario_detalle.jrxml");
 //			String applicationPath = request.getServletContext().getRealPath("");
+//			InputStream in = new FileInputStream(file);
 
 			Map<String, Object> params = new HashMap<>();
 			params.put("idHonorario", req.getId());
-			params.put("SUBREPORT_DIR", fileDet.getAbsolutePath());
+			params.put("SUBREPORT_DIR", resumenHonorarioDet);
+			log.info("[REPORTE HONORARIO][SERVICE][PARAMS-INPUT][" + params.toString() + "]");
 
-			JasperPrint jp = JasperFillManager.fillReport(file.getAbsolutePath(), params, conexionUtil.getConexion());
-			conexionUtil.cerrarConexion();
+//			JasperReport jr = JasperCompileManager.compileReport(file.getAbsolutePath());
+
+			JasperPrint jp = JasperFillManager.fillReport(resumenHonorario, params, dataSource.getConnection());
+//			conexionUtil.cerrarConexion();
 
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, outputStream);
@@ -93,21 +113,23 @@ public class HonorarioServiceImpl implements HonorarioService {
 			out.setrCodigo(0);
 			out.setrMensaje("EXITO");
 			out.setrResult(resp);
-		} catch (JRException | FileNotFoundException e) {
-			System.out.println("Unable to process download");
+			log.info("[REPORTE HONORARIO][SERVICE][EXITO]");
+		} catch (JRException | SQLException e) {
 			out.setrCodigo(500);
 			out.setrMensaje(e.getMessage());
 			out.setrResult(null);
+			log.info("[REPORTE HONORARIO][SERVICE][EXCEPTION]");
+			log.info(ExceptionUtils.getStackTrace(e));
 		}
+		log.info("[REPORTE HONORARIO][SERVICE][FIN]");
 		return out;
 	}
-	
+
 	public void convertirDetalleACadena(HonorarioRequest v) {
 		String honorarioInsumo = "";
 		if (v.getListaInsumo().size() > 0) {
 			for (InsumoResponse em : v.getListaInsumo()) {
-				honorarioInsumo = honorarioInsumo 
-						+ ((em.getId() != null) ? em.getId() : "0") + ","
+				honorarioInsumo = honorarioInsumo + ((em.getId() != null) ? em.getId() : "0") + ","
 						+ ((em.getFlgActivo() != null) ? em.getFlgActivo() : "0") + "|";
 
 			}
@@ -116,16 +138,21 @@ public class HonorarioServiceImpl implements HonorarioService {
 			log.info("[REGISTRAR HONORARIO][SERVICE][CONVERSION HONORARIO INSUMO][" + honorarioInsumo + "]");
 		}
 		v.setHonorarioInsumo(honorarioInsumo);
-		
-		String honorarioDetalle="";
+
+		String honorarioDetalle = "";
 		if (v.getListaHonorarioDetalle().size() > 0) {
 			for (HonorarioDetalleRequest em : v.getListaHonorarioDetalle()) {
-				honorarioDetalle = honorarioDetalle 
+				honorarioDetalle = honorarioDetalle
 						+ ((em.getTipoInsumo().getId() != null) ? em.getTipoInsumo().getId() : "0") + ","
-						+ ((em.getCantidad() != null) ? NumberUtil.doubleToString(em.getCantidad(), ConstanteUtil.separadorPunto, ConstanteUtil.formato1Decimal) : "0.0") + "," 
-						+ ((em.getTarifa() != null) ? NumberUtil.doubleToString(em.getTarifa(), ConstanteUtil.separadorPunto, ConstanteUtil.formato2Decimal) : "0.00") + ","
-						+ ((em.getSubtotal() != null) ? NumberUtil.doubleToString(em.getSubtotal(), ConstanteUtil.separadorPunto, ConstanteUtil.formato2Decimal)  : "0.00") + ","
-						+ ((em.getFlgActivo() != null) ? em.getFlgActivo() : "0") + "|";
+						+ ((em.getCantidad() != null) ? NumberUtil.doubleToString(
+								em.getCantidad(), ConstanteUtil.separadorPunto, ConstanteUtil.formato1Decimal) : "0.0")
+						+ ","
+						+ ((em.getTarifa() != null) ? NumberUtil.doubleToString(
+								em.getTarifa(), ConstanteUtil.separadorPunto, ConstanteUtil.formato2Decimal) : "0.00")
+						+ ","
+						+ ((em.getSubtotal() != null) ? NumberUtil.doubleToString(em.getSubtotal(),
+								ConstanteUtil.separadorPunto, ConstanteUtil.formato2Decimal) : "0.00")
+						+ "," + ((em.getFlgActivo() != null) ? em.getFlgActivo() : "0") + "|";
 
 			}
 			honorarioDetalle = honorarioDetalle.substring(0, honorarioDetalle.length() - 1);
@@ -134,7 +161,7 @@ public class HonorarioServiceImpl implements HonorarioService {
 		}
 		v.setHonorarioDetalle(honorarioDetalle);
 	}
-	
+
 //
 //	public byte[] generateJasperReportPDF(HttpServletRequest httpServletRequest, String jasperReportName,
 //			ByteArrayOutputStream outputStream, Map parametros) {

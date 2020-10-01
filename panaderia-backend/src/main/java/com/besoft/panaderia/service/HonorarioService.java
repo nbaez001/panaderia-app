@@ -2,6 +2,8 @@ package com.besoft.panaderia.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.besoft.panaderia.dto.request.HonorarioBuscarRequest;
@@ -20,5 +22,5 @@ public interface HonorarioService {
 
 	public OutResponse<HonorarioPeriodoResponse> buscarPeriodoHonorario(HonorarioPeriodoRequest req);
 
-	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req);
+	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req, HttpServletRequest request);
 }

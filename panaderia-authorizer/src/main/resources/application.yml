@@ -39,7 +39,7 @@ spring:
   application:
     name: panaderia-authorizer
   datasource:
-    jndi-name: java:/ppsegNoXADS
+    jndi-name: java:/psegNoXADS
     testOnBorrow: true
     testWhileIdle: true
     timeBetweenEvictionRunsMillis: 60000
