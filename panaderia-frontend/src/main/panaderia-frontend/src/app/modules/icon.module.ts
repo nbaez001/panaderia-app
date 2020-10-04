@@ -18,7 +18,8 @@ export class IconModule {
 
   constructor(private domSanitizer: DomSanitizer, public matIconRegistry: MatIconRegistry) {
     this.matIconRegistry
-      .addSvgIcon('excel', this.setIconPath(`${this.path}/icons8-microsoft-excel.svg`));
+      .addSvgIcon('excel', this.setIconPath(`${this.path}/icons8-microsoft-excel.svg`))
+      .addSvgIcon('pdf', this.setIconPath(`${this.path}/archivo-pdf.svg`));
   }
 
   private setIconPath(url: string): SafeResourceUrl {

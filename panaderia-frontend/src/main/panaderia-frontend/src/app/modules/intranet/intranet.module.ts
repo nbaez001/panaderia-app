@@ -30,6 +30,8 @@ import { RegHonorarioComponent } from './components/personal/bdj-honorarios/reg-
 import { BuscarPersonalComponent } from './components/personal/bdj-honorarios/reg-honorario/buscar-personal/buscar-personal.component';
 import { PdfViewerComponent } from './components/shared/pdf-viewer/pdf-viewer.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { BdjRepVentasComponent } from './components/resportes/bdj-rep-ventas/bdj-rep-ventas.component';
+import { BdjRepInsumosComponent } from './components/resportes/bdj-rep-insumos/bdj-rep-insumos.component';
 
 
 @NgModule({
@@ -69,6 +71,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     BdjHonorariosComponent,
     BdjTipoInsumoComponent,
     BuscarPersonalComponent,
+    BdjRepVentasComponent,
+    BdjRepInsumosComponent,
   ],
   imports: [
     CommonModule,

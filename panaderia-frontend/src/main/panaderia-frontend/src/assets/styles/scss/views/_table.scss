@@ -20,7 +20,7 @@
         }
 
         @if map-has-key($props, "padding-right") {
-          padding-right: map-get($props, "padding-right");
+          padding-right: map-get($props, "padding-right") !important;
         }
       }
     }

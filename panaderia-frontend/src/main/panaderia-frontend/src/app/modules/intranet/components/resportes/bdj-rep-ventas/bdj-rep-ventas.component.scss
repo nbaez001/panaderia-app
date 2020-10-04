@@ -1,0 +1,38 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+    max-height: 400px;
+}
+
+@include mat-table-columns(
+    (
+        id: (
+            width: 2rem,
+        ),
+        anio: (
+            width: 4rem,
+        ),
+        mes: (
+            width: 4rem,
+        ),
+        fecha: (
+            width: 7rem,
+        ),
+        nomProducto: (
+            width: 6rem,
+        ),
+        nomUnidadMedida: (
+            width: 6rem,
+        ),
+        cantidad: (
+            width: 6rem,
+            text-align: right,
+            padding-right: 10px,
+        ),
+        suma: (
+            width: 6rem,
+            text-align: right,
+            padding-right: 15px,
+        )
+    )
+);

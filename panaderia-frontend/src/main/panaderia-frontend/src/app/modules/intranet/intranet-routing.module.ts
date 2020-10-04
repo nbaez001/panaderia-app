@@ -9,6 +9,8 @@ import { BdjInsumosPersonalComponent } from './components/personal/bdj-insumos-p
 import { BdjHonorariosComponent } from './components/personal/bdj-honorarios/bdj-honorarios.component';
 import { BdjPersonalComponent } from './components/personal/bdj-personal/bdj-personal.component';
 import { BdjTipoInsumoComponent } from './components/administracion/bdj-tipo-insumo/bdj-tipo-insumo.component';
+import { BdjRepInsumosComponent } from './components/resportes/bdj-rep-insumos/bdj-rep-insumos.component';
+import { BdjRepVentasComponent } from './components/resportes/bdj-rep-ventas/bdj-rep-ventas.component';
 
 
 const intranetRoutes: Routes = [
@@ -73,6 +75,23 @@ const intranetRoutes: Routes = [
             path: 'persona',
             component: BdjPersonalComponent,
             data: { title: 'Personal' }
+          }
+        ]
+      }, {
+        path: 'reportes',
+        children: [
+          {
+            path: '',
+            redirectTo: 'insumos',
+            pathMatch: 'full'
+          }, {
+            path: 'insumos',
+            component: BdjRepInsumosComponent,
+            data: { title: 'Insumos' }
+          }, {
+            path: 'ventas',
+            component: BdjRepVentasComponent,
+            data: { title: 'Ventas' }
           }
         ]
       }
