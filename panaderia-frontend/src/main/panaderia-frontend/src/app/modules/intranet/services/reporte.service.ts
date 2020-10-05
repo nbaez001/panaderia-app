@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ReporteInsumoBuscarRequest } from '../dto/request/reporte-insumo-buscar.request';
 import { ReporteVentaBuscarRequest } from '../dto/request/reporte-venta-buscar.request';
+import { FileResponse } from '../dto/response/file.response';
 import { OutResponse } from '../dto/response/out.response';
 import { ReporteInsumoResponse } from '../dto/response/reporte-insumo.response';
 import { ReporteVentaResponse } from '../dto/response/reporte-venta.response';
@@ -19,5 +20,9 @@ export class ReporteService {
 
   public listarReporteVenta(req: ReporteVentaBuscarRequest): Observable<OutResponse<ReporteVentaResponse[]>> {
     return this.http.post<OutResponse<ReporteVentaResponse[]>>(`${environment.WsPanaderiaBackend}/reporte/listarReporteVenta`, req);
+  }
+
+  public generarReporteInsumoPDF(req: ReporteInsumoBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/reporte/generarReporteInsumoPDF`, req);
   }
 }

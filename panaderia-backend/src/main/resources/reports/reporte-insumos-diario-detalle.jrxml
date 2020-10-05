@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInsumosDetalleDiario" pageWidth="556" pageHeight="842" columnWidth="556" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f7e301cc-1e7b-47c2-9a93-a68a4f1d5d19">
+	<property name="ireport.zoom" value="6.0"/>
+	<property name="ireport.x" value="2395"/>
+	<property name="ireport.y" value="61"/>
+	<parameter name="idTipoInsumo" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nomTipoInsumo" class="java.lang.String"/>
+	<parameter name="idPersonal" class="java.lang.Long"/>
+	<parameter name="fecInicio" class="java.util.Date"/>
+	<parameter name="fecFin" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+(PE.NOMBRE || ' ' || PE.APE_PATERNO || ' ' || PE.APE_MATERNO) AS NOMBRE_COMPLETO,
+I.FECHA AS FECHA,
+SUM(I.CANTIDAD) AS SUMA
+FROM INSUMO I
+INNER JOIN PERSONAL P ON P.ID = I.ID_PERSONAL
+INNER JOIN PERSONA PE ON PE.ID = P.ID_PERSONA
+WHERE I.ID_TIPO_INSUMO = $P{idTipoInsumo} AND (I.ID_PERSONAL = $P{idPersonal} OR $P{idPersonal} = 0) AND I.FECHA>=$P{fecInicio} AND I.FECHA<=$P{fecFin}
+GROUP BY
+(PE.NOMBRE || ' ' || PE.APE_PATERNO || ' ' || PE.APE_MATERNO),
+I.FECHA
+ORDER BY NOMBRE_COMPLETO, I.FECHA DESC]]>
+	</queryString>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String"/>
+	<field name="FECHA" class="java.sql.Timestamp"/>
+	<field name="SUMA" class="java.math.BigDecimal"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{NOMBRE_COMPLETO}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="sumaTipoInsumo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{SUMA}]]></variableExpression>
+	</variable>
+	<group name="sede_calificacion" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<rectangle>
+					<reportElement uuid="d77e4a27-800f-4580-aa06-e1fa006c7a5e" x="392" y="14" width="163" height="14"/>
+				</rectangle>
+				<rectangle>
+					<reportElement uuid="49cf749c-679a-40af-9929-369bff6a7d0f" x="219" y="14" width="173" height="14"/>
+				</rectangle>
+				<rectangle>
+					<reportElement uuid="29807e59-5d4f-48b3-be07-2ef72a7835c3" x="1" y="14" width="25" height="14"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="2c08f057-059f-47b3-8b92-8250fe294a00" x="391" y="14" width="152" height="14" forecolor="#140A0A" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[CANTIDAD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b0e93680-a6e2-4dd5-9b30-9e27ac38daab" x="219" y="14" width="172" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[FECHA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="7a333b50-c81d-4aef-9975-c18994d86996" x="1" y="14" width="25" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[N°]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement uuid="b565dcb8-0cb3-4ae1-a854-d8aa21ff3b1e" x="26" y="14" width="193" height="14"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="49571356-b88b-41ef-8fa8-8eb0af6f8fd8" x="36" y="14" width="183" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[APELLIDOS Y NOMBRES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="49571356-b88b-41ef-8fa8-8eb0af6f8fd8" x="0" y="0" width="55" height="14" backcolor="#C2B4B4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[PRODUCTO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a978c969-fb5d-480d-b585-6dee322f5725" x="55" y="0" width="286" height="14"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{nomTipoInsumo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<textField pattern="###0.0" isBlankWhenNull="true">
+					<reportElement uuid="e0f4792f-0fcd-4535-8a47-f6e2687785da" x="432" y="1" width="111" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaTipoInsumo}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0" isBlankWhenNull="true">
+					<reportElement uuid="e0f4792f-0fcd-4535-8a47-f6e2687785da" x="393" y="1" width="39" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAL :"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12">
+			<rectangle>
+				<reportElement uuid="7df9da89-0106-45c5-968f-a62a6e4a6a7c" x="1" y="0" width="25" height="12"/>
+			</rectangle>
+			<textField pattern="###0">
+				<reportElement uuid="b87527c1-d4a5-4ba7-9e3e-222cde2087c4" x="2" y="1" width="24" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="1d9cd86c-3b1a-416e-b622-e637d7869096" x="219" y="0" width="173" height="12"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="92adab1a-9e3c-462c-a166-478cfd0d6c3e" x="392" y="0" width="163" height="12"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e5de3933-0ec1-4a8d-b395-edc447b6ad22" x="26" y="0" width="193" height="12"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a978c969-fb5d-480d-b585-6dee322f5725" x="36" y="1" width="183" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRE_COMPLETO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="3c5fc2ae-4db1-4a6a-86f4-30a862425302" x="219" y="1" width="172" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="e0f4792f-0fcd-4535-8a47-f6e2687785da" x="393" y="1" width="150" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUMA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

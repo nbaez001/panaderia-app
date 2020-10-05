@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInsumoDiario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f7e301cc-1e7b-47c2-9a93-a68a4f1d5d19">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPersonal" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idTipoInsumo" class="java.lang.Long"/>
+	<parameter name="fecInicio" class="java.util.Date"/>
+	<parameter name="fecFin" class="java.util.Date"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\PROYECTOS\\PANADERIA\\panaderia-app\\panaderia-backend\\src\\main\\resources\\reports\\reporte-insumos-diario-detalle.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="user" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+    A1.ID_TIPO_INSUMO   AS ID_TIPO_INSUMO,
+    A1.NOMBRE           AS NOMBRE
+FROM
+    (
+        SELECT
+            A3.ID_TIPO_INSUMO   AS ID_TIPO_INSUMO,
+            A3.FECHA            AS FECHA,
+            A2.NOMBRE           AS NOMBRE
+        FROM
+            PPOS.INSUMO        A3,
+            PPOS.TIPO_INSUMO   A2
+        WHERE
+            A2.ID = A3.ID_TIPO_INSUMO
+    ) A1
+WHERE
+    A1.FECHA >= $P{fecInicio} AND
+    A1.FECHA <= $P{fecFin} AND
+    (A1.ID_TIPO_INSUMO = $P{idTipoInsumo} OR $P{idTipoInsumo} = 0)]]>
+	</queryString>
+	<field name="ID_TIPO_INSUMO" class="java.lang.Long"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{ID_TIPO_INSUMO}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<group name="sede_calificacion" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<frame>
+					<reportElement uuid="9bfddf75-a481-4e72-a39c-ea20bc6ac242" mode="Opaque" x="-20" y="0" width="597" height="24" forecolor="#B89F7D" backcolor="#F2EBDF"/>
+					<rectangle>
+						<reportElement uuid="5154f0b4-2332-4f65-aed0-9c3b9900a068" mode="Opaque" x="21" y="0" width="36" height="24" backcolor="#736343"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement uuid="0e7d2709-b4f3-4864-839f-adf4a9460032" x="68" y="0" width="508" height="24"/>
+						<textElement verticalAlignment="Middle">
+							<font size="11" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["DETALLE"]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<textField>
+					<reportElement uuid="6cf8ecce-5cbb-4d64-ae37-00673732fa6a" x="1" y="2" width="57" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["USUARIO: "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="ae1e9f15-bbe3-4748-9d5e-197ef76acb32" x="361" y="2" width="51" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["FECHA : "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="e51acb40-8940-40fc-a4be-27e3e8cbebff" x="58" y="2" width="203" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{user}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="e51acb40-8940-40fc-a4be-27e3e8cbebff" x="412" y="2" width="143" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="58" splitType="Stretch">
+			<image>
+				<reportElement uuid="e7858692-fce6-4b15-8999-f91f7418b92f" x="413" y="-136" width="267" height="194"/>
+				<imageExpression><![CDATA["mark.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="45e0603a-6778-4727-908c-81d7b2a49d48" x="1" y="0" width="166" height="48"/>
+				<imageExpression><![CDATA["perficon.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="70f6b386-ac97-4be5-9169-083219fc2e1d" x="137" y="21" width="275" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPORTE DE INSUMOS - DIARIO"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="33">
+			<subreport>
+				<reportElement uuid="87405216-d122-4910-a141-9a384b6fe159" x="1" y="0" width="555" height="33"/>
+				<subreportParameter name="idPersonal">
+					<subreportParameterExpression><![CDATA[$P{idPersonal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecInicio">
+					<subreportParameterExpression><![CDATA[$P{fecInicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="idTipoInsumo">
+					<subreportParameterExpression><![CDATA[$F{ID_TIPO_INSUMO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nomTipoInsumo">
+					<subreportParameterExpression><![CDATA[$F{NOMBRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecFin">
+					<subreportParameterExpression><![CDATA[$P{fecFin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="76e29740-6967-4237-bbb7-04dff0d89858" x="392" y="0" width="80" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f1718ae1-fcef-40df-aa35-7e4dff006517" x="471" y="0" width="38" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

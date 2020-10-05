@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.ReporteInsumoBuscarRequest;
 import com.besoft.panaderia.dto.request.ReporteVentaBuscarRequest;
+import com.besoft.panaderia.dto.response.FileResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ReporteInsumoResponse;
 import com.besoft.panaderia.dto.response.ReporteVentaResponse;
@@ -38,4 +39,10 @@ public class ReporteController {
 	public OutResponse<List<ReporteVentaResponse>> listarReporteVenta(@RequestBody ReporteVentaBuscarRequest req) {
 		return reporteService.listarReporteVenta(req);
 	}
+	
+	@PostMapping("/generarReporteInsumoPDF")
+	public OutResponse<FileResponse> generarReporteInsumoPDF(@RequestBody ReporteInsumoBuscarRequest req) {
+		return reporteService.generarReporteInsumoPDF(req);
+	}
+	
 }

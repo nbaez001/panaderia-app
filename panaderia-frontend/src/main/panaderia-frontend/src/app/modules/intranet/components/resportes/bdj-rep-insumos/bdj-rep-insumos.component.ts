@@ -29,6 +29,10 @@ import { InsumoService } from '../../../services/insumo.service';
 import { OutResponse } from '../../../dto/response/out.response';
 import { PersonalBuscarRequest } from '../../../dto/request/personal-buscar.request';
 import { ReporteInsumoBuscarRequest } from '../../../dto/request/reporte-insumo-buscar.request';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { FileResponse } from '../../../dto/response/file.response';
+import { PdfViewerComponent } from '../../shared/pdf-viewer/pdf-viewer.component';
+import { MENSAJES } from 'src/app/common';
 
 const moment = _rollupMoment || _moment;
 
@@ -112,6 +116,7 @@ export class BdjRepInsumosComponent implements OnInit {
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
     @Inject(PersonalService) private personalService: PersonalService,
+    @Inject(UsuarioService) private usuarioService: UsuarioService,
     @Inject(InsumoService) private insumoService: InsumoService,
     @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(FormService) private formService: FormService,
@@ -316,26 +321,51 @@ export class BdjRepInsumosComponent implements OnInit {
   }
 
   exportarExcel() {
-    this.exportar = true;
+    if (this.formularioGrp.valid) {
+      this.spinner.show();
 
-    setTimeout(() => {
-      this.exportar = false;
-    }, 2000);
-    // const dialogRef = this.dialog.open(RegInsumosPersonalComponent, {
-    //   width: '600px',
-    //   disableClose: false,
-    //   data: {
-    //     titulo: MENSAJES.INTRANET.BANDEJA_INSUMO.INSUMO.REGISTRAR.TITLE,
-    //     objeto: null
-    //   }
-    // });
+      let req = new ReporteInsumoBuscarRequest();
+      req.idTipoReporte = this.formularioGrp.get('tipoReporte').value.id;
+      req.idTipoInsumo = this.formularioGrp.get('tipoInsumo').value.id;
+      req.idPersonal = this.formularioGrp.get('personal').value.id;
+      if (req.idTipoReporte == 1) {
+        req.fecInicio = this.formularioGrp.get('fecInicio').value;
+        req.fecFin = this.formularioGrp.get('fecFin').value;
+      } else {
+        req.fecInicio = this.formularioGrp.get('mesInicio').value;
+        req.fecFin = this.formularioGrp.get('mesFin').value;
+      }
+      req.user = this.usuarioService.getNombre + ' ' + this.usuarioService.getApeMaterno;
+      console.log(req);
 
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result) {
-    //     this.listaReporteInsumoResponse.unshift(result);
-    //     this.cargarDatosTabla();
-    //   }
-    // });
+      this.reporteService.generarReporteInsumoPDF(req).subscribe(
+        (data: OutResponse<FileResponse>) => {
+          if (data.rCodigo == 0) {
+            const dialogRef = this.dialog.open(PdfViewerComponent, {
+              width: '800px',
+              disableClose: true,
+              panelClass: 'dialog-no-padding',
+              data: {
+                titulo: '',
+                objeto: data
+              }
+            });
+
+            dialogRef.afterClosed().subscribe((result) => {
+            });
+          } else {
+            this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+          }
+          this.spinner.hide();
+        }, error => {
+          console.error(error);
+          this._snackBar.open(error.statusText, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+          this.spinner.hide();
+        }
+      )
+    } else {
+      this.formService.getValidationErrors(this.formularioGrp, this.formErrors, true);
+    }
   }
 
   chosenYearHandler(normalizedYear: Moment, ctrlName: string) {

@@ -4,4 +4,5 @@ export class ReporteInsumoBuscarRequest {
     idPersonal: number;
     fecInicio: Date;
     fecFin: Date;
+    user: string;
 }

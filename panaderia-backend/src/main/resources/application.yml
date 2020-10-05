@@ -19,6 +19,10 @@ api:
 reportes:
   resumenHonorario: "D:/APP-POS/reportes/resumenHonorario.jasper"
   resumenHonorarioDet: "D:/APP-POS/reportes/resumenHonorario_detalle.jasper"
+  reporteInsumosMensual: "D:/APP-POS/reportes/reporte-insumos-mensual.jasper"
+  reporteInsumosMensualDetalle: "D:/APP-POS/reportes/reporte-insumos-mensual-detalle.jasper"
+  reporteInsumosDiario: "D:/APP-POS/reportes/reporte-insumos-diario.jasper"
+  reporteInsumosDiarioDetalle: "D:/APP-POS/reportes/reporte-insumos-diario-detalle.jasper"
 #security:
 #  oauth2:
 #    resource:
@@ -56,7 +60,7 @@ spring:
   application:
     name: panaderia-backend
   datasource:
-    jndi-name: java:/PanaderiaNoXADS
+    jndi-name: java:/pposNoXADS
     testOnBorrow: true
     testWhileIdle: true
     timeBetweenEvictionRunsMillis: 60000

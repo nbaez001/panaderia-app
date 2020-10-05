@@ -252,7 +252,6 @@ export class BdjHonorariosComponent implements OnInit {
 
     this.honorarioService.reporteHonorario(req).subscribe(
       (data: OutResponse<FileResponse>) => {
-        console.log(data);
         if (data.rCodigo == 0) {
           const dialogRef = this.dialog.open(PdfViewerComponent, {
             width: '400px',
