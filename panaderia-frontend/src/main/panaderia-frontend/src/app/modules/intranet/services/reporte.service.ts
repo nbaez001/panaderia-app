@@ -14,6 +14,10 @@ export class ReporteService {
 
   constructor(private http: HttpClient) { }
 
+  public validarArchivosReporte(): Observable<any> {
+    return this.http.post<any>(`${environment.WsPanaderiaBackend}/home/validarArchivosReporte`, {});
+  }
+
   public listarReporteInsumo(req: ReporteInsumoBuscarRequest): Observable<OutResponse<ReporteInsumoResponse[]>> {
     return this.http.post<OutResponse<ReporteInsumoResponse[]>>(`${environment.WsPanaderiaBackend}/reporte/listarReporteInsumo`, req);
   }
@@ -25,4 +29,9 @@ export class ReporteService {
   public generarReporteInsumoPDF(req: ReporteInsumoBuscarRequest): Observable<OutResponse<FileResponse>> {
     return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/reporte/generarReporteInsumoPDF`, req);
   }
+
+  public generarReporteVentaPDF(req: ReporteVentaBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/reporte/generarReporteVentaPDF`, req);
+  }
+
 }

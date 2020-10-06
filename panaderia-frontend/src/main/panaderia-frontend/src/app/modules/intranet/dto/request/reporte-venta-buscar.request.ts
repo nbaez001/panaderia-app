@@ -3,4 +3,5 @@ export class ReporteVentaBuscarRequest {
     idProducto: number;
     fecInicio: Date;
     fecFin: Date;
+    user: string;
 }

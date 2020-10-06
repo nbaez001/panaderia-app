@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInsumosDetalleDiario" pageWidth="556" pageHeight="842" columnWidth="556" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f7e301cc-1e7b-47c2-9a93-a68a4f1d5d19">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idProducto" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nomProducto" class="java.lang.String"/>
+	<parameter name="fecInicio" class="java.util.Date"/>
+	<parameter name="fecFin" class="java.util.Date"/>
+	<parameter name="nomUnidadMedida" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+TO_CHAR(V.FEC_USUARIO_CREA,'YYYY') AS ANIO,
+TO_CHAR(V.FEC_USUARIO_CREA,'MM') AS MES,
+UPPER(TO_CHAR(V.FEC_USUARIO_CREA, 'MONTH')) AS NOM_MES,
+SUM(DV.CANTIDAD) AS CANTIDAD,
+SUM(DV.SUBTOTAL) AS MONTO
+FROM VENTA V
+INNER JOIN DETALLE_VENTA DV ON DV.ID_VENTA = V.ID
+INNER JOIN PRODUCTO P ON P.ID = DV.ID_PRODUCTO
+WHERE P.ID = $P{idProducto} AND V.FEC_USUARIO_CREA >= $P{fecInicio} AND V.FEC_USUARIO_CREA < ADD_MONTHS(TO_DATE($P{fecFin},'DD/MM/YY'), 1)
+GROUP BY
+TO_CHAR(V.FEC_USUARIO_CREA,'YYYY'),
+TO_CHAR(V.FEC_USUARIO_CREA,'MM'),
+UPPER(TO_CHAR(V.FEC_USUARIO_CREA, 'MONTH'))
+ORDER BY ANIO DESC, MES DESC]]>
+	</queryString>
+	<field name="ANIO" class="java.lang.String"/>
+	<field name="MES" class="java.lang.String"/>
+	<field name="NOM_MES" class="java.lang.String"/>
+	<field name="CANTIDAD" class="java.math.BigDecimal"/>
+	<field name="MONTO" class="java.math.BigDecimal"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{MES}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="sumaMonto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{MONTO}]]></variableExpression>
+	</variable>
+	<variable name="total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{MONTO}]]></variableExpression>
+	</variable>
+	<group name="sede_calificacion" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<rectangle>
+					<reportElement uuid="d77e4a27-800f-4580-aa06-e1fa006c7a5e" x="424" y="14" width="131" height="14"/>
+				</rectangle>
+				<rectangle>
+					<reportElement uuid="49cf749c-679a-40af-9929-369bff6a7d0f" x="108" y="14" width="81" height="14"/>
+				</rectangle>
+				<rectangle>
+					<reportElement uuid="29807e59-5d4f-48b3-be07-2ef72a7835c3" x="1" y="14" width="25" height="14"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="2c08f057-059f-47b3-8b92-8250fe294a00" x="426" y="14" width="117" height="14" forecolor="#140A0A" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[MONTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b0e93680-a6e2-4dd5-9b30-9e27ac38daab" x="108" y="14" width="80" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[MES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="7a333b50-c81d-4aef-9975-c18994d86996" x="1" y="14" width="25" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[N°]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement uuid="b565dcb8-0cb3-4ae1-a854-d8aa21ff3b1e" x="26" y="14" width="82" height="14"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="49571356-b88b-41ef-8fa8-8eb0af6f8fd8" x="36" y="14" width="72" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[AÑO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="49571356-b88b-41ef-8fa8-8eb0af6f8fd8" x="0" y="0" width="55" height="14" backcolor="#C2B4B4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[PRODUCTO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a978c969-fb5d-480d-b585-6dee322f5725" x="55" y="0" width="164" height="14"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{nomProducto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="49571356-b88b-41ef-8fa8-8eb0af6f8fd8" x="219" y="0" width="70" height="14" backcolor="#C2B4B4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[UNIDAD MEDIDA:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a978c969-fb5d-480d-b585-6dee322f5725" x="289" y="0" width="227" height="14"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{nomUnidadMedida}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement uuid="49cf749c-679a-40af-9929-369bff6a7d0f" x="298" y="14" width="127" height="14"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="b0e93680-a6e2-4dd5-9b30-9e27ac38daab" x="300" y="14" width="126" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[CANTIDAD]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement uuid="49cf749c-679a-40af-9929-369bff6a7d0f" x="188" y="14" width="112" height="14"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="b0e93680-a6e2-4dd5-9b30-9e27ac38daab" x="189" y="14" width="111" height="14" backcolor="#C2B4B4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[NOMBRE MES]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="e0f4792f-0fcd-4535-8a47-f6e2687785da" x="426" y="1" width="117" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaMonto}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0" isBlankWhenNull="true">
+					<reportElement uuid="e0f4792f-0fcd-4535-8a47-f6e2687785da" x="363" y="1" width="62" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAL :"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12">
+			<rectangle>
+				<reportElement uuid="7df9da89-0106-45c5-968f-a62a6e4a6a7c" x="1" y="0" width="25" height="12"/>
+			</rectangle>
+			<textField pattern="###0">
+				<reportElement uuid="b87527c1-d4a5-4ba7-9e3e-222cde2087c4" x="2" y="1" width="24" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="1d9cd86c-3b1a-416e-b622-e637d7869096" x="108" y="0" width="81" height="12"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="92adab1a-9e3c-462c-a166-478cfd0d6c3e" x="424" y="0" width="131" height="12"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e5de3933-0ec1-4a8d-b395-edc447b6ad22" x="26" y="0" width="82" height="12"/>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="a978c969-fb5d-480d-b585-6dee322f5725" x="36" y="1" width="72" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ANIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="3c5fc2ae-4db1-4a6a-86f4-30a862425302" x="108" y="1" width="80" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MES}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="e0f4792f-0fcd-4535-8a47-f6e2687785da" x="426" y="1" width="117" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MONTO}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="1d9cd86c-3b1a-416e-b622-e637d7869096" x="298" y="0" width="127" height="12"/>
+			</rectangle>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="3c5fc2ae-4db1-4a6a-86f4-30a862425302" x="300" y="0" width="126" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="1d9cd86c-3b1a-416e-b622-e637d7869096" x="188" y="0" width="112" height="12"/>
+			</rectangle>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="3c5fc2ae-4db1-4a6a-86f4-30a862425302" x="188" y="0" width="111" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOM_MES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

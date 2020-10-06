@@ -17,12 +17,18 @@ swagger:
 api:
   urlApiReniec: "http://perficon.elnazarenovraem.edu.pe/api/soap/persona"
 reportes:
-  resumenHonorario: "D:/APP-POS/reportes/resumenHonorario.jasper"
-  resumenHonorarioDet: "D:/APP-POS/reportes/resumenHonorario_detalle.jasper"
-  reporteInsumosMensual: "D:/APP-POS/reportes/reporte-insumos-mensual.jasper"
-  reporteInsumosMensualDetalle: "D:/APP-POS/reportes/reporte-insumos-mensual-detalle.jasper"
-  reporteInsumosDiario: "D:/APP-POS/reportes/reporte-insumos-diario.jasper"
-  reporteInsumosDiarioDetalle: "D:/APP-POS/reportes/reporte-insumos-diario-detalle.jasper"
+  pdf:
+    pathReportes: "D:/app-panaderia/"
+    resumenHonorario: "resumenHonorario.jasper"
+    resumenHonorarioDet: "resumenHonorario_detalle.jasper"
+    reporteInsumosMensual: "reporte-insumos-mensual.jasper"
+    reporteInsumosMensualDetalle: "reporte-insumos-mensual-detalle.jasper"
+    reporteInsumosDiario: "reporte-insumos-diario.jasper"
+    reporteInsumosDiarioDetalle: "reporte-insumos-diario-detalle.jasper"
+    reporteVentasMensual: "reporte-ventas-mensual.jasper"
+    reporteVentasMensualDetalle: "reporte-ventas-mensual-detalle.jasper"
+    reporteVentasDiario: "reporte-ventas-diario.jasper"
+    reporteVentasDiarioDetalle: "reporte-ventas-diario-detalle.jasper"
 #security:
 #  oauth2:
 #    resource:

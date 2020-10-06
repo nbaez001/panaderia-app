@@ -17,7 +17,7 @@ public class PanaderiaApplication {
 		log.info("---------Start class Application---------");
 		SpringApplication.run(PanaderiaApplication.class, args);
 	}
-	
+
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();

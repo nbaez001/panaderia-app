@@ -1,7 +1,6 @@
 package com.besoft.panaderia.service.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -53,10 +52,13 @@ public class HonorarioServiceImpl implements HonorarioService {
 	@Autowired
 	DataSource dataSource;
 
-	@Value("${reportes.resumenHonorario}")
+	@Value("${reportes.pdf.pathReportes}")
+	String pathReportes;
+
+	@Value("${reportes.pdf.resumenHonorario}")
 	String resumenHonorario;
 
-	@Value("${reportes.resumenHonorarioDet}")
+	@Value("${reportes.pdf.resumenHonorarioDet}")
 	String resumenHonorarioDet;
 
 	@Override
@@ -93,12 +95,13 @@ public class HonorarioServiceImpl implements HonorarioService {
 
 			Map<String, Object> params = new HashMap<>();
 			params.put("idHonorario", req.getId());
-			params.put("SUBREPORT_DIR", resumenHonorarioDet);
+			params.put("SUBREPORT_DIR", pathReportes + resumenHonorarioDet);
 			log.info("[REPORTE HONORARIO][SERVICE][PARAMS-INPUT][" + params.toString() + "]");
 
 //			JasperReport jr = JasperCompileManager.compileReport(file.getAbsolutePath());
 
-			JasperPrint jp = JasperFillManager.fillReport(resumenHonorario, params, dataSource.getConnection());
+			JasperPrint jp = JasperFillManager.fillReport(pathReportes + resumenHonorario, params,
+					dataSource.getConnection());
 //			conexionUtil.cerrarConexion();
 
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);

@@ -16,7 +16,7 @@
                                     {{tipoReporte.nombre}}
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="formErrors.personal">{{formErrors.tipoReporte}}</mat-error>
+                            <mat-error *ngIf="formErrors.tipoReporte">{{formErrors.tipoReporte}}</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile [ResponsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
@@ -88,8 +88,7 @@
                     <mat-icon>search</mat-icon>
                     <strong> BUSCAR</strong>
                 </button>
-                <button mat-raised-button type="button" [class.spinner]="exportar" [disabled]="exportar"
-                    (click)="exportarExcel()" matTooltip="Exportar a excel">
+                <button mat-raised-button type="button" (click)="exportarExcel()" matTooltip="Exportar a excel">
                     <mat-icon svgIcon="pdf"></mat-icon>
                     <strong> EXPORTAR</strong>
                 </button>

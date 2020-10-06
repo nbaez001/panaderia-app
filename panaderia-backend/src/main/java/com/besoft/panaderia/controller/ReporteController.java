@@ -34,15 +34,20 @@ public class ReporteController {
 	public OutResponse<List<ReporteInsumoResponse>> listarReporteInsumo(@RequestBody ReporteInsumoBuscarRequest req) {
 		return reporteService.listarReporteInsumo(req);
 	}
-	
+
 	@PostMapping("/listarReporteVenta")
 	public OutResponse<List<ReporteVentaResponse>> listarReporteVenta(@RequestBody ReporteVentaBuscarRequest req) {
 		return reporteService.listarReporteVenta(req);
 	}
-	
+
 	@PostMapping("/generarReporteInsumoPDF")
 	public OutResponse<FileResponse> generarReporteInsumoPDF(@RequestBody ReporteInsumoBuscarRequest req) {
 		return reporteService.generarReporteInsumoPDF(req);
 	}
-	
+
+	@PostMapping("/generarReporteVentaPDF")
+	public OutResponse<FileResponse> generarReporteVentaPDF(@RequestBody ReporteVentaBuscarRequest req) {
+		return reporteService.generarReporteVentaPDF(req);
+	}
+
 }

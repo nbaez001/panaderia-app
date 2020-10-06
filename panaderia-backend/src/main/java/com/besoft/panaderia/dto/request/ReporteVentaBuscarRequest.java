@@ -7,6 +7,7 @@ public class ReporteVentaBuscarRequest {
 	private Long idProducto;
 	private Date fecInicio;
 	private Date fecFin;
+	private String user;
 
 	public Integer getIdTipoReporte() {
 		return idTipoReporte;
@@ -38,6 +39,14 @@ public class ReporteVentaBuscarRequest {
 
 	public void setFecFin(Date fecFin) {
 		this.fecFin = fecFin;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 }
