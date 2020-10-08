@@ -13,7 +13,7 @@ import com.besoft.panaderia.dto.response.ReporteVentaResponse;
 
 public interface ReporteService {
 
-	public void copiarReportes();
+	public OutResponse<?> validarReportes();
 	
 	public OutResponse<List<ReporteInsumoResponse>> listarReporteInsumo(@RequestBody ReporteInsumoBuscarRequest req);
 

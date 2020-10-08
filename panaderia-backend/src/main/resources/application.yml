@@ -17,18 +17,20 @@ swagger:
 api:
   urlApiReniec: "http://perficon.elnazarenovraem.edu.pe/api/soap/persona"
 reportes:
-  pdf:
-    pathReportes: "D:/app-panaderia/"
-    resumenHonorario: "resumenHonorario.jasper"
-    resumenHonorarioDet: "resumenHonorario_detalle.jasper"
-    reporteInsumosMensual: "reporte-insumos-mensual.jasper"
-    reporteInsumosMensualDetalle: "reporte-insumos-mensual-detalle.jasper"
-    reporteInsumosDiario: "reporte-insumos-diario.jasper"
-    reporteInsumosDiarioDetalle: "reporte-insumos-diario-detalle.jasper"
-    reporteVentasMensual: "reporte-ventas-mensual.jasper"
-    reporteVentasMensualDetalle: "reporte-ventas-mensual-detalle.jasper"
-    reporteVentasDiario: "reporte-ventas-diario.jasper"
-    reporteVentasDiarioDetalle: "reporte-ventas-diario-detalle.jasper"
+  ruta : "D:/app-panaderia/"
+  files:
+    imagenMark: "reports/mark.png"
+    imagenLogo: "reports/perficon.png"
+    reporteHonorario: "reports/resumen-honorario.jasper"
+    reporteHonorarioDet: "reports/resumen-honorario-detalle.jasper"
+    reporteInsumosMensual: "reports/reporte-insumos-mensual.jasper"
+    reporteInsumosMensualDetalle: "reports/reporte-insumos-mensual-detalle.jasper"
+    reporteInsumosDiario: "reports/reporte-insumos-diario.jasper"
+    reporteInsumosDiarioDetalle: "reports/reporte-insumos-diario-detalle.jasper"
+    reporteVentasMensual: "reports/reporte-ventas-mensual.jasper"
+    reporteVentasMensualDetalle: "reports/reporte-ventas-mensual-detalle.jasper"
+    reporteVentasDiario: "reports/reporte-ventas-diario.jasper"
+    reporteVentasDiarioDetalle: "reports/reporte-ventas-diario-detalle.jasper"
 #security:
 #  oauth2:
 #    resource:

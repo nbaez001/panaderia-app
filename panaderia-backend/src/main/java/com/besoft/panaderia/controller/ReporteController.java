@@ -29,6 +29,11 @@ public class ReporteController {
 
 	@Autowired
 	ReporteService reporteService;
+	
+	@PostMapping("/validarReportes")
+	public OutResponse<?> validarReportes() {
+		return reporteService.validarReportes();
+	}
 
 	@PostMapping("/listarReporteInsumo")
 	public OutResponse<List<ReporteInsumoResponse>> listarReporteInsumo(@RequestBody ReporteInsumoBuscarRequest req) {

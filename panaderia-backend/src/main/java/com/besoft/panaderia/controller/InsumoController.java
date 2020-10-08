@@ -14,9 +14,10 @@ import com.besoft.panaderia.dto.request.InsumoBuscarRequest;
 import com.besoft.panaderia.dto.request.InsumoRequest;
 import com.besoft.panaderia.dto.request.TipoInsumoBuscarRequest;
 import com.besoft.panaderia.dto.request.TipoInsumoRequest;
+import com.besoft.panaderia.dto.response.FileResponse;
+import com.besoft.panaderia.dto.response.InsumoResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.TipoInsumoResponse;
-import com.besoft.panaderia.dto.response.InsumoResponse;
 import com.besoft.panaderia.service.InsumoService;
 
 import io.swagger.annotations.Api;
@@ -48,6 +49,11 @@ public class InsumoController {
 	@PostMapping("/eliminarInsumo")
 	public OutResponse<InsumoResponse> eliminarInsumo(@RequestBody InsumoRequest req) {
 		return insumoService.eliminarInsumo(req);
+	}
+
+	@PostMapping("/reporteXlsxListarInsumo")
+	public OutResponse<FileResponse> reporteXlsxListarInsumo(@RequestBody InsumoBuscarRequest req) {
+		return insumoService.reporteXlsxListarInsumo(req);
 	}
 
 	@PostMapping("/listarTipoInsumo")

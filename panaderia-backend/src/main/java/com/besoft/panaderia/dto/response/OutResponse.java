@@ -5,6 +5,14 @@ public class OutResponse<T> {
 	private String rMensaje;
 	private T rResult;
 
+	public OutResponse() {
+	}
+
+	public OutResponse(Integer rCodigo, String rMensaje) {
+		this.rCodigo = rCodigo;
+		this.rMensaje = rMensaje;
+	}
+
 	public Integer getrCodigo() {
 		return rCodigo;
 	}

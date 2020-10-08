@@ -2,7 +2,6 @@ package com.besoft.panaderia.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -17,9 +16,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.besoft.panaderia.dao.ReporteDao;
@@ -30,6 +27,7 @@ import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ReporteInsumoResponse;
 import com.besoft.panaderia.dto.response.ReporteVentaResponse;
 import com.besoft.panaderia.service.ReporteService;
+import com.besoft.panaderia.util.ReportProperties;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -48,76 +46,49 @@ public class ReporteServiceImpl implements ReporteService {
 	@Autowired
 	ReporteDao reporteDao;
 
-	@Value("${reportes.pdf.pathReportes}")
-	String pathReportes;
+	@Autowired
+	ReportProperties reportProperties;
 
-	@Value("${reportes.pdf.resumenHonorario}")
-	String resumenHonorario;
-
-	@Value("${reportes.pdf.resumenHonorarioDet}")
-	String resumenHonorarioDet;
-
-	@Value("${reportes.pdf.reporteInsumosMensual}")
-	String reporteInsumosMensual;
-
-	@Value("${reportes.pdf.reporteInsumosMensualDetalle}")
-	String reporteInsumosMensualDetalle;
-
-	@Value("${reportes.pdf.reporteInsumosDiario}")
-	String reporteInsumosDiario;
-
-	@Value("${reportes.pdf.reporteInsumosDiarioDetalle}")
-	String reporteInsumosDiarioDetalle;
-
-	@Value("${reportes.pdf.reporteVentasMensual}")
-	String reporteVentasMensual;
-
-	@Value("${reportes.pdf.reporteVentasMensualDetalle}")
-	String reporteVentasMensualDetalle;
-
-	@Value("${reportes.pdf.reporteVentasDiario}")
-	String reporteVentasDiario;
-
-	@Value("${reportes.pdf.reporteVentasDiarioDetalle}")
-	String reporteVentasDiarioDetalle;
-
-	public void copiarReportes() {
-		log.info("[REPORTE][COPIAR REPORTES][INICIO]");
-		File file = new File("D:/app-panaderia");
+	@Override
+	public OutResponse<?> validarReportes() {
+		OutResponse<?> out = new OutResponse<>();
+		log.info("[REPORTE SERVICE][VALIDAR REPORTES][INICIO]");
+		File file = new File(reportProperties.getRuta());
 		if (!file.exists()) {
 			if (file.mkdir()) {
-				crearReportes();
+				out = crearReportes();
 			} else {
-				log.info("[REPORTE][ERROR AL COPIAR ARCHIVOS]");
+				log.info("[REPORTE SERVICE][VALIDAR REPORTES][ERROR AL COPIAR ARCHIVOS]");
+				out.setrCodigo(-1);
+				out.setrMensaje("Error al crear carpeta en: " + reportProperties.getRuta());
 			}
 		} else {
-			crearReportes();
+			out = crearReportes();
 		}
-		log.info("[REPORTE][COPIAR REPORTES][FIN]");
+		log.info("[REPORTE SERVICE][VALIDAR REPORTES][FIN]");
+		return out;
 	}
 
-	public void crearReportes() {
-		File resources;
+	public OutResponse<?> crearReportes() {
+		Map<String, String> map = reportProperties.getFiles();
 		try {
-			resources = ResourceUtils.getFile("classpath:reports");
-			if (resources.exists()) {
-				File files[] = resources.listFiles();
-				for (File original : files) {
-					String name = original.getName();
-					File copied = new File("D:/app-panaderia/" + name);
-					if (!copied.exists()) {
-						InputStream targetStream = new FileInputStream(original);
-
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				File copied = new File(reportProperties.getRuta() + reportProperties.getFiles().get(entry.getKey()));
+				if (!copied.exists()) {
+					InputStream targetStream = this.getClass().getClassLoader()
+							.getResourceAsStream(reportProperties.getFiles().get(entry.getKey()));
+					if (targetStream != null) {
 						FileUtils.copyInputStreamToFile(targetStream, copied);
-						log.info("[REPORTE][EXITO AL COPIAR ARCHIVO]");
+						log.info("[REPORTE SERVICE][VALIDAR REPORTES][GENERADO]["
+								+ reportProperties.getFiles().get(entry.getKey()) + "]");
 					}
 				}
-			} else {
-				log.info("[REPORTE][ERROR RESOURCES NO EXISTE]");
 			}
+			return new OutResponse<>(0, "ARCHIVOS DE REPORTES SE GENERARON CORRECTAMENTE");
 		} catch (IOException e) {
-			log.info("[REPORTE][" + e.getMessage() + "]");
+			log.info("[REPORTE SERVICE][VALIDAR REPORTES][" + e.getMessage() + "]");
 			log.info(ExceptionUtils.getStackTrace(e));
+			return new OutResponse<>(500, e.getMessage());
 		}
 	}
 
@@ -141,22 +112,26 @@ public class ReporteServiceImpl implements ReporteService {
 
 		try {
 			String pathReporte = "";
-			String pathSubReporte = "";
+			String pathReporteDet = "";
 
 			if (req.getIdTipoReporte() == 1L) {
-				pathReporte = pathReportes + reporteInsumosDiario;
-				pathSubReporte = pathReportes + reporteInsumosDiarioDetalle;
+				pathReporte = reportProperties.getRuta() + reportProperties.getFiles().get("reporteInsumosDiario");
+				pathReporteDet = reportProperties.getRuta()
+						+ reportProperties.getFiles().get("reporteInsumosDiarioDetalle");
 			} else {
-				pathReporte = pathReportes + reporteInsumosMensual;
-				pathSubReporte = pathReportes + reporteInsumosMensualDetalle;
+				pathReporte = reportProperties.getRuta() + reportProperties.getFiles().get("reporteInsumosMensual");
+				pathReporteDet = reportProperties.getRuta()
+						+ reportProperties.getFiles().get("reporteInsumosMensualDetalle");
 			}
+//			JasperReport jr = JasperCompileManager.compileReport(fisReporteInsumoDet);
+
 			Map<String, Object> params = new HashMap<>();
 			params.put("idPersonal", req.getIdPersonal());
 			params.put("idTipoInsumo", req.getIdTipoInsumo());
 			params.put("fecInicio", req.getFecInicio());
 			params.put("fecFin", req.getFecFin());
 			params.put("user", req.getUser());
-			params.put("SUBREPORT_DIR", pathSubReporte);
+			params.put("SUBREPORT_DIR", pathReporteDet);
 
 			log.info("[REPORTE HONORARIO][SERVICE][PARAMS-INPUT][" + params.toString() + "]");
 
@@ -196,21 +171,23 @@ public class ReporteServiceImpl implements ReporteService {
 
 		try {
 			String pathReporte = "";
-			String pathSubReporte = "";
+			String pathReporteDet = "";
 
 			if (req.getIdTipoReporte() == 1L) {
-				pathReporte = pathReportes + reporteVentasDiario;
-				pathSubReporte = pathReportes + reporteVentasDiarioDetalle;
+				pathReporte = reportProperties.getRuta() + reportProperties.getFiles().get("reporteVentasDiario");
+				pathReporteDet = reportProperties.getRuta()
+						+ reportProperties.getFiles().get("reporteVentasDiarioDetalle");
 			} else {
-				pathReporte = pathReportes + reporteVentasMensual;
-				pathSubReporte = pathReportes + reporteVentasMensualDetalle;
+				pathReporte = reportProperties.getRuta() + reportProperties.getFiles().get("reporteVentasMensual");
+				pathReporteDet = reportProperties.getRuta()
+						+ reportProperties.getFiles().get("reporteVentasMensualDetalle");
 			}
 			Map<String, Object> params = new HashMap<>();
 			params.put("idProducto", req.getIdProducto());
 			params.put("fecInicio", req.getFecInicio());
 			params.put("fecFin", req.getFecFin());
 			params.put("user", req.getUser());
-			params.put("SUBREPORT_DIR", pathSubReporte);
+			params.put("SUBREPORT_DIR", pathReporteDet);
 
 			log.info("[REPORTE VENTAS][SERVICE][PARAMS-INPUT][" + params.toString() + "]");
 

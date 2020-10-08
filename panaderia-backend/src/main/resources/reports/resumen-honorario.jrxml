@@ -2,10 +2,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenHonorario" pageWidth="226" pageHeight="300" columnWidth="212" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="f7e301cc-1e7b-47c2-9a93-a68a4f1d5d19">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="137"/>
 	<parameter name="idHonorario" class="java.lang.Long"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:\\PROYECTOS\\PANADERIA\\panaderia-app\\panaderia-backend\\src\\main\\resources\\reports\\resumenHonorario_detalle.jasper"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_STR" class="java.io.InputStream" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\PROYECTOS\\PANADERIA\\panaderia-app\\panaderia-backend\\src\\main\\resources\\reports\\resumen-honorario-detalle.jasper"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -205,12 +205,12 @@ WHERE
 	<detail>
 		<band height="12">
 			<subreport>
-				<reportElement uuid="fb3245f2-8277-4477-9ea2-388952d0a9f1" x="0" y="0" width="212" height="12"/>
+				<reportElement uuid="8a42f9a2-6d2e-4e22-a2f7-742fc4729b12" x="0" y="0" width="212" height="12"/>
 				<subreportParameter name="idHonorario">
 					<subreportParameterExpression><![CDATA[$P{idHonorario}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_STR}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

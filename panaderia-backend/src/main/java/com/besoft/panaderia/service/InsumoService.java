@@ -2,13 +2,16 @@ package com.besoft.panaderia.service;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.besoft.panaderia.dto.request.InsumoBuscarRequest;
 import com.besoft.panaderia.dto.request.InsumoRequest;
 import com.besoft.panaderia.dto.request.TipoInsumoBuscarRequest;
 import com.besoft.panaderia.dto.request.TipoInsumoRequest;
+import com.besoft.panaderia.dto.response.FileResponse;
+import com.besoft.panaderia.dto.response.InsumoResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.TipoInsumoResponse;
-import com.besoft.panaderia.dto.response.InsumoResponse;
 
 public interface InsumoService {
 
@@ -19,6 +22,8 @@ public interface InsumoService {
 	public OutResponse<InsumoResponse> modificarInsumo(InsumoRequest req);
 
 	public OutResponse<InsumoResponse> eliminarInsumo(InsumoRequest req);
+
+	public OutResponse<FileResponse> reporteXlsxListarInsumo(@RequestBody InsumoBuscarRequest req);
 
 	public OutResponse<List<TipoInsumoResponse>> listarTipoInsumo(TipoInsumoBuscarRequest req);
 

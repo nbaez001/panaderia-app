@@ -1,6 +1,7 @@
 package com.besoft.panaderia.service.impl;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -52,14 +53,11 @@ public class HonorarioServiceImpl implements HonorarioService {
 	@Autowired
 	DataSource dataSource;
 
-	@Value("${reportes.pdf.pathReportes}")
-	String pathReportes;
+	@Value("${reportes.files.reporteHonorario}")
+	String reporteHonorario;
 
-	@Value("${reportes.pdf.resumenHonorario}")
-	String resumenHonorario;
-
-	@Value("${reportes.pdf.resumenHonorarioDet}")
-	String resumenHonorarioDet;
+	@Value("${reportes.files.reporteHonorarioDet}")
+	String reporteHonorarioDet;
 
 	@Override
 	public OutResponse<List<HonorarioResponse>> listarHonorario(HonorarioBuscarRequest req) {
@@ -85,24 +83,17 @@ public class HonorarioServiceImpl implements HonorarioService {
 		JRPdfExporter exporter = new JRPdfExporter();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-//		String applicationPath = request.getServletContext().getRealPath("");
-
 		try {
-//			File file = ResourceUtils.getFile("classpath:reports/resumenHonorario.jrxml");
-//			File fileDet = ResourceUtils.getFile("classpath:reports/resumenHonorario_detalle.jrxml");
-//			String applicationPath = request.getServletContext().getRealPath("");
-//			InputStream in = new FileInputStream(file);
+			InputStream fisResumenHonorario = this.getClass().getClassLoader().getResourceAsStream(reporteHonorario);
+			InputStream fisResumenHonorarioDet = this.getClass().getClassLoader()
+					.getResourceAsStream(reporteHonorarioDet);
 
 			Map<String, Object> params = new HashMap<>();
 			params.put("idHonorario", req.getId());
-			params.put("SUBREPORT_DIR", pathReportes + resumenHonorarioDet);
+			params.put("SUBREPORT_STR", fisResumenHonorarioDet);
 			log.info("[REPORTE HONORARIO][SERVICE][PARAMS-INPUT][" + params.toString() + "]");
 
-//			JasperReport jr = JasperCompileManager.compileReport(file.getAbsolutePath());
-
-			JasperPrint jp = JasperFillManager.fillReport(pathReportes + resumenHonorario, params,
-					dataSource.getConnection());
-//			conexionUtil.cerrarConexion();
+			JasperPrint jp = JasperFillManager.fillReport(fisResumenHonorario, params, dataSource.getConnection());
 
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, outputStream);

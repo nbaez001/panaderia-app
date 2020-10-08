@@ -7,8 +7,11 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { AutenticacionService } from 'src/app/modules/sesion/services/autenticacion.service';
 import { Oauth2Response } from 'src/app/modules/sesion/dto/request/oauth2-response';
 import { PermisoBuscarRequest } from 'src/app/modules/sesion/dto/request/permiso-buscar.request';
-import { OutResponse } from '../../dto/response/out.response';
+import { OutResponse } from '../../../dto/response/out.response';
 import { PermisoResponse } from 'src/app/modules/sesion/dto/response/permiso.response';
+import { ReporteService } from '../../../services/reporte.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'navbar',
@@ -23,8 +26,11 @@ export class NavbarComponent implements OnInit {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
+    private spinner: NgxSpinnerService,
     @Inject(UsuarioService) public user: UsuarioService,
     @Inject(AutenticacionService) public autenticacionService: AutenticacionService,
+    @Inject(ReporteService) private reporteService: ReporteService,
+    private _snackBar: MatSnackBar,
     private router: Router) { }
 
   ngOnInit() {
@@ -80,5 +86,23 @@ export class NavbarComponent implements OnInit {
     });
     console.log('MENU');
     console.log(this.user.listaPermiso);
+  }
+
+  actualizarReportes(): void {
+    this.spinner.show();
+    this.reporteService.validarArchivosReporte().subscribe(
+      (data: OutResponse<any>) => {
+        if (data.rCodigo == 0) {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['success-snackbar'] });
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.spinner.hide();
+      }, error => {
+        console.error(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.spinner.hide();
+      }
+    )
   }
 }

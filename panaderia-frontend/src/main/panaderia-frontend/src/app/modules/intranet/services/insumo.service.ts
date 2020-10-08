@@ -6,6 +6,7 @@ import { InsumoBuscarRequest } from '../dto/request/insumo-buscar.request';
 import { InsumoRequest } from '../dto/request/insumo.request';
 import { TipoInsumoBuscarRequest } from '../dto/request/tipo-insumo-buscar.request';
 import { TipoInsumoRequest } from '../dto/request/tipo-insumo.request';
+import { FileResponse } from '../dto/response/file.response';
 import { InsumoResponse } from '../dto/response/insumo.response';
 import { OutResponse } from '../dto/response/out.response';
 import { TipoInsumoResponse } from '../dto/response/tipo-insumo.response';
@@ -47,5 +48,9 @@ export class InsumoService {
 
   public eliminarInsumo(req: InsumoRequest): Observable<OutResponse<InsumoResponse>> {
     return this.http.post<OutResponse<InsumoResponse>>(`${environment.WsPanaderiaBackend}/insumo/eliminarInsumo`, req);
+  }
+
+  public reporteXlsxListarInsumo(req: InsumoBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/insumo/reporteXlsxListarInsumo`, req);
   }
 }

@@ -9,7 +9,7 @@
 	<parameter name="idTipoInsumo" class="java.lang.Long"/>
 	<parameter name="fecInicio" class="java.util.Date"/>
 	<parameter name="fecFin" class="java.util.Date"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+	<parameter name="SUBREPORT_STR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\PROYECTOS\\PANADERIA\\panaderia-app\\panaderia-backend\\src\\main\\resources\\reports\\reporte-insumos-mensual-detalle.jasper"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="user" class="java.lang.String"/>
@@ -143,7 +143,7 @@ WHERE
 					<subreportParameterExpression><![CDATA[$P{fecFin}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_STR}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

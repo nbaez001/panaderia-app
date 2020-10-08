@@ -5,7 +5,7 @@ import { IntranetRoutingModule } from './intranet-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { MaterialModule } from '../material.module';
 import { SharedModule } from '../shared.module';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { BdjProductoComponent } from './components/administracion/bdj-producto/bdj-producto.component';
 import { RegProductoComponent } from './components/administracion/bdj-producto/reg-producto/reg-producto.component';

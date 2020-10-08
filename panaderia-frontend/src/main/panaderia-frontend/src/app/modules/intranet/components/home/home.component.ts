@@ -9,17 +9,9 @@ import { ReporteService } from '../../services/reporte.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(@Inject(UsuarioService) private user: UsuarioService,
-    @Inject(ReporteService) private reporteService: ReporteService) { }
+  constructor(@Inject(UsuarioService) private user: UsuarioService,) { }
 
   ngOnInit(): void {
-    this.reporteService.validarArchivosReporte().subscribe(
-      (data: any) => {
-        console.log(data);
-      }, error => {
-        console.log(error);
-      }
-    )
   }
 
 }

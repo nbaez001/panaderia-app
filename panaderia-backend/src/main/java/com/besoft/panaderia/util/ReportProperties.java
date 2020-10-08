@@ -9,14 +9,23 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "reportes")
 public class ReportProperties {
 
-	private Map<String, String> pdf;
+	private String ruta;
+	private Map<String, String> files;
 
-	public Map<String, String> getPdf() {
-		return pdf;
+	public String getRuta() {
+		return ruta;
 	}
 
-	public void setPdf(Map<String, String> pdf) {
-		this.pdf = pdf;
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
+	}
+
+	public Map<String, String> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Map<String, String> files) {
+		this.files = files;
 	}
 
 }

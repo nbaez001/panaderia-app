@@ -6,9 +6,8 @@
     </mat-toolbar>
     <div class="span-usuario">
       <span>
-        TECNICO INFORMATICO
+        Usuario
         <br>
-        (U.A.)
       </span>
     </div>
     <mat-nav-list>
@@ -54,6 +53,7 @@
         <mat-icon>expand_more</mat-icon>
       </button>
       <mat-menu #usuario="matMenu" xPosition="after" [overlapTrigger]="false">
+        <button mat-menu-item (click)="actualizarReportes()">Actualizar reportes</button>
         <button mat-menu-item (click)="salir()">Salir</button>
       </mat-menu>
     </mat-toolbar>

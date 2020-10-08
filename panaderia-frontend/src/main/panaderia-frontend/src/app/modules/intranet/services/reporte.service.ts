@@ -14,8 +14,8 @@ export class ReporteService {
 
   constructor(private http: HttpClient) { }
 
-  public validarArchivosReporte(): Observable<any> {
-    return this.http.post<any>(`${environment.WsPanaderiaBackend}/home/validarArchivosReporte`, {});
+  public validarArchivosReporte(): Observable<OutResponse<any>> {
+    return this.http.post<OutResponse<any>>(`${environment.WsPanaderiaBackend}/reporte/validarReportes`, {});
   }
 
   public listarReporteInsumo(req: ReporteInsumoBuscarRequest): Observable<OutResponse<ReporteInsumoResponse[]>> {
@@ -32,6 +32,31 @@ export class ReporteService {
 
   public generarReporteVentaPDF(req: ReporteVentaBuscarRequest): Observable<OutResponse<FileResponse>> {
     return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/reporte/generarReporteVentaPDF`, req);
+  }
+
+  public convertToBlobFromByte(fResp: FileResponse): Blob {
+    const byteCharacters = atob(fResp.data);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: fResp.type });
+    const resultBlob: any = blob;
+    resultBlob.lastModifiedDate = new Date();
+    resultBlob.name = fResp.nombre;
+
+    return blob;
+  }
+
+  public DownloadBlobFile(blob: Blob): void {
+    console.log(blob);
+    const link = document.createElement('a');
+    link.target = '_blank';
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
   }
 
 }

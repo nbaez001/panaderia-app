@@ -13,12 +13,14 @@ import { InsumoBuscarRequest } from '../../../dto/request/insumo-buscar.request'
 import { InsumoRequest } from '../../../dto/request/insumo.request';
 import { PersonalBuscarRequest } from '../../../dto/request/personal-buscar.request';
 import { TipoInsumoBuscarRequest } from '../../../dto/request/tipo-insumo-buscar.request';
+import { FileResponse } from '../../../dto/response/file.response';
 import { InsumoResponse } from '../../../dto/response/insumo.response';
 import { OutResponse } from '../../../dto/response/out.response';
 import { PersonalResponse } from '../../../dto/response/personal.response';
 import { TipoInsumoResponse } from '../../../dto/response/tipo-insumo.response';
 import { InsumoService } from '../../../services/insumo.service';
 import { PersonalService } from '../../../services/personal.service';
+import { ReporteService } from '../../../services/reporte.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { RegInsumosPersonalComponent } from './reg-insumos-personal/reg-insumos-personal.component';
 
@@ -69,6 +71,7 @@ export class BdjInsumosPersonalComponent implements OnInit {
   constructor(private fb: FormBuilder,
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
+    @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(PersonalService) private personalService: PersonalService,
     @Inject(InsumoService) private insumoService: InsumoService,
     @Inject(FormService) private formService: FormService,
@@ -189,9 +192,29 @@ export class BdjInsumosPersonalComponent implements OnInit {
   exportarExcel() {
     this.exportar = true;
 
-    setTimeout(() => {
-      this.exportar = false;
-    }, 2000);
+    let req = new InsumoBuscarRequest();
+    req.idTipoInsumo = this.formularioGrp.get('tipoInsumo').value.id;
+    req.idPersonal = this.formularioGrp.get('personal').value.id;
+    req.fecInicio = this.formularioGrp.get('fecInicio').value;
+    req.fecFin = this.formularioGrp.get('fecFin').value;
+
+    this.insumoService.reporteXlsxListarInsumo(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        console.log(data);
+        if (data.rCodigo == 0) {
+          let blob = this.reporteService.convertToBlobFromByte(data.rResult);
+          this.reporteService.DownloadBlobFile(blob);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.exportar = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.exportar = false;
+      }
+    );
   }
 
   registrar(obj: InsumoResponse) {
