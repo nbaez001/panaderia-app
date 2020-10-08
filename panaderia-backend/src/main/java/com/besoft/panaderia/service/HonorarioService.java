@@ -23,4 +23,6 @@ public interface HonorarioService {
 	public OutResponse<HonorarioPeriodoResponse> buscarPeriodoHonorario(HonorarioPeriodoRequest req);
 
 	public OutResponse<FileResponse> reporteHonorario(@RequestBody HonorarioRequest req, HttpServletRequest request);
+
+	public OutResponse<FileResponse> reporteXlsxListarHonorario(@RequestBody HonorarioBuscarRequest req);
 }

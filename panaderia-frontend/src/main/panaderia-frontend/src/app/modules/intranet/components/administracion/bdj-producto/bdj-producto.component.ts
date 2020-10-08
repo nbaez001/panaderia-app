@@ -19,6 +19,8 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormService } from 'src/app/core/services/form.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { FileResponse } from '../../../dto/response/file.response';
+import { ReporteService } from '../../../services/reporte.service';
 
 @Component({
   selector: 'app-bdj-producto',
@@ -26,6 +28,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
   styleUrls: ['./bdj-producto.component.scss']
 })
 export class BdjProductoComponent implements OnInit {
+  exportar: boolean = false;
   // listaUnidadMedida: MaestraResponse[] = [];
 
   formularioGrp: FormGroup;
@@ -67,12 +70,11 @@ export class BdjProductoComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private spinner: NgxSpinnerService,
     @Inject(FormService) private formService: FormService,
+    @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(ProductoService) private productoService: ProductoService,) { }
 
   ngOnInit(): void {
-    // this.spinnerService.show();
-
     this.formularioGrp = this.fb.group({
       indicio: ['', []],
       fechaInicio: ['', []],
@@ -97,9 +99,7 @@ export class BdjProductoComponent implements OnInit {
   }
 
   public inicializarVariables(): void {
-    // this.comboUnidadMedida();
     this.buscar();
-    // this.spinnerService.hide();
   }
 
   cargarDatosTabla(): void {
@@ -110,23 +110,6 @@ export class BdjProductoComponent implements OnInit {
       this.dataSource.sort = this.sort;
     }
   }
-
-  // comboUnidadMedida(): void {
-  //   let maestra = new MaestraBuscarRequest();
-  //   maestra.idTabla = TABLAS_MAESTRA.UNIDAD_MEDIDA.ID;
-  //   this.maestraService.listarMaestra(maestra).subscribe(
-  //     (data: OutResponse<MaestraResponse[]>) => {
-  //       if (data.rCodigo == 0) {
-  //         this.listaUnidadMedida = data.result;
-  //       } else {
-  //         this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
-  //       }
-  //     }, error => {
-  //       console.log(error);
-  //       this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
-  //     }
-  //   );
-  // }
 
   buscar(): void {
     let request = new ProductoBuscarRequest();
@@ -167,7 +150,26 @@ export class BdjProductoComponent implements OnInit {
   }
 
   exportarExcel(): void {
+    this.exportar = true;
 
+    let req = new ProductoBuscarRequest();
+
+    this.productoService.reporteXlsxListarProducto(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        if (data.rCodigo == 0) {
+          let blob = this.reporteService.convertToBlobFromByte(data.rResult);
+          this.reporteService.DownloadBlobFile(blob);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.exportar = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.exportar = false;
+      }
+    );
   }
 
   editar(obj: ProductoResponse): void {
@@ -179,7 +181,7 @@ export class BdjProductoComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.listaProductos.splice(index,1);
+        this.listaProductos.splice(index, 1);
         this.listaProductos.unshift(result);
         this.cargarDatosTabla();
       }

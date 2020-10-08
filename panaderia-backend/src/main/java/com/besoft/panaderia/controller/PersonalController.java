@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.PersonalBuscarRequest;
 import com.besoft.panaderia.dto.request.PersonalRequest;
+import com.besoft.panaderia.dto.response.FileResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.PersonalResponse;
 import com.besoft.panaderia.service.PersonalService;
@@ -45,5 +46,10 @@ public class PersonalController {
 	@PostMapping("/eliminarPersonal")
 	public OutResponse<PersonalResponse> eliminarPersonal(@RequestBody PersonalRequest req) {
 		return personalService.eliminarPersonal(req);
+	}
+	
+	@PostMapping("/reporteXlsxListarPersonal")
+	public OutResponse<FileResponse> reporteXlsxListarPersonal(@RequestBody PersonalBuscarRequest req) {
+		return personalService.reporteXlsxListarPersonal(req);
 	}
 }

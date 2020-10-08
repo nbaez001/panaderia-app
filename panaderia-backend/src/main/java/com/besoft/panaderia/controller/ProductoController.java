@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.ProductoBuscarRequest;
 import com.besoft.panaderia.dto.request.ProductoRequest;
+import com.besoft.panaderia.dto.response.FileResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ProductoResponse;
 import com.besoft.panaderia.service.ProductoService;
@@ -46,5 +47,10 @@ public class ProductoController {
 	@PostMapping("/eliminarProducto")
 	public OutResponse<ProductoResponse> eliminarProducto(@RequestBody ProductoRequest req) {
 		return productoService.eliminarProducto(req);
+	}
+	
+	@PostMapping("/reporteXlsxListarProducto")
+	public OutResponse<FileResponse> reporteXlsxListarProducto(@RequestBody ProductoBuscarRequest req) {
+		return productoService.reporteXlsxListarProducto(req);
 	}
 }

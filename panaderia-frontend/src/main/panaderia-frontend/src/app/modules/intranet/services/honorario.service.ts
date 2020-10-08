@@ -39,4 +39,8 @@ export class HonorarioService {
     return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/honorario/reporteHonorario`, req);
   }
 
+  public reporteXlsxListarHonorario(req: HonorarioBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/honorario/reporteXlsxListarHonorario`, req);
+  }
+
 }

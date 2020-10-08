@@ -136,4 +136,59 @@ public class InsumoServiceImpl implements InsumoService {
 	public OutResponse<TipoInsumoResponse> eliminarTipoInsumo(TipoInsumoRequest req) {
 		return insumoDao.eliminarTipoInsumo(req);
 	}
+
+	@Override
+	public OutResponse<FileResponse> reporteXlsxListarTipoInsumo(TipoInsumoBuscarRequest req) {
+		OutResponse<List<TipoInsumoResponse>> out = insumoDao.listarTipoInsumo(req);
+
+		OutResponse<FileResponse> outF = new OutResponse<>();
+		if (out.getrCodigo() == 0) {
+			try {
+				String[] columns = { "Nro", "Codigo", "Nombre", "Unidad Medida", "Observacion" };
+
+				Workbook workbook = new HSSFWorkbook();
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+				Sheet sheet = workbook.createSheet("Tipo Insumo");
+				Row row = sheet.createRow(0);
+
+				for (int i = 0; i < columns.length; i++) {
+					Cell cell = row.createCell(i);
+					cell.setCellValue(columns[i]);
+				}
+
+				int initRow = 1;
+				for (TipoInsumoResponse ir : out.getrResult()) {
+					row = sheet.createRow(initRow);
+					row.createCell(0).setCellValue(initRow);
+					row.createCell(1).setCellValue(ir.getCodigo());
+					row.createCell(2).setCellValue(ir.getNombre());
+					row.createCell(3).setCellValue(ir.getNomUnidadMedida());
+					row.createCell(4).setCellValue(ir.getObservacion());
+
+					initRow++;
+				}
+
+				workbook.write(stream);
+				workbook.close();
+
+				FileResponse resp = new FileResponse();
+				resp.setNombre("Reporte Tipo Insumo.xls");
+				resp.setType("application/vnd.ms-excel");
+				resp.setData(stream.toByteArray());
+
+				outF.setrCodigo(0);
+				outF.setrMensaje("EXITO");
+				outF.setrResult(resp);
+			} catch (IOException e) {
+				log.info(ExceptionUtils.getStackTrace(e));
+				outF.setrCodigo(500);
+				outF.setrMensaje(e.getMessage());
+			}
+		} else {
+			outF.setrCodigo(out.getrCodigo());
+			outF.setrMensaje(out.getrMensaje());
+		}
+		return outF;
+	}
 }

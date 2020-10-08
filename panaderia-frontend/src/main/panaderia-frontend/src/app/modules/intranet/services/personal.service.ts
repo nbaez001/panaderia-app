@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PersonalBuscarRequest } from '../dto/request/personal-buscar.request';
 import { PersonalRequest } from '../dto/request/personal.request';
+import { FileResponse } from '../dto/response/file.response';
 import { OutResponse } from '../dto/response/out.response';
 import { PersonalResponse } from '../dto/response/personal.response';
 
@@ -26,5 +27,9 @@ export class PersonalService {
 
   public eliminarPersonal(req: PersonalRequest): Observable<OutResponse<PersonalResponse>> {
     return this.http.post<OutResponse<PersonalResponse>>(`${environment.WsPanaderiaBackend}/personal/eliminarPersonal`, req);
+  }
+
+  public reporteXlsxListarPersonal(req: PersonalBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/personal/reporteXlsxListarPersonal`, req);
   }
 }

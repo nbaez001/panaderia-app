@@ -65,4 +65,9 @@ public class HonorarioController {
 		return out;
 	}
 
+	@PostMapping("/reporteXlsxListarHonorario")
+	public OutResponse<FileResponse> reporteXlsxListarHonorario(@RequestBody HonorarioBuscarRequest req) {
+		return honorarioService.reporteXlsxListarHonorario(req);
+	}
+
 }

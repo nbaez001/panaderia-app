@@ -51,10 +51,10 @@ export class ReporteService {
     return blob;
   }
 
-  public DownloadBlobFile(blob: Blob): void {
-    console.log(blob);
+  public DownloadBlobFile(blob: any): void {
     const link = document.createElement('a');
-    link.target = '_blank';
+    // link.target = '_blank';
+    link.download = blob.name;
     link.href = window.URL.createObjectURL(blob);
     link.click();
   }

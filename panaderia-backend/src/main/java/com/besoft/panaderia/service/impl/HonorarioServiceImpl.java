@@ -1,6 +1,7 @@
 package com.besoft.panaderia.service.impl;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -11,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +29,7 @@ import com.besoft.panaderia.dto.request.HonorarioBuscarRequest;
 import com.besoft.panaderia.dto.request.HonorarioDetalleRequest;
 import com.besoft.panaderia.dto.request.HonorarioPeriodoRequest;
 import com.besoft.panaderia.dto.request.HonorarioRequest;
+import com.besoft.panaderia.dto.request.InsumoBuscarRequest;
 import com.besoft.panaderia.dto.response.FileResponse;
 import com.besoft.panaderia.dto.response.HonorarioPeriodoResponse;
 import com.besoft.panaderia.dto.response.HonorarioResponse;
@@ -31,6 +38,7 @@ import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.service.HonorarioService;
 import com.besoft.panaderia.util.ConexionUtil;
 import com.besoft.panaderia.util.ConstanteUtil;
+import com.besoft.panaderia.util.DateUtil;
 import com.besoft.panaderia.util.NumberUtil;
 
 import net.sf.jasperreports.engine.JRException;
@@ -156,34 +164,65 @@ public class HonorarioServiceImpl implements HonorarioService {
 		v.setHonorarioDetalle(honorarioDetalle);
 	}
 
-//
-//	public byte[] generateJasperReportPDF(HttpServletRequest httpServletRequest, String jasperReportName,
-//			ByteArrayOutputStream outputStream, Map parametros) {
-//		JRPdfExporter exporter = new JRPdfExporter();
-//		try {
-//			String reportLocation = httpServletRequest.getRealPath("/") + "resources\\jasper\\" + jasperReportName
-//					+ ".jrxml";
-//
-//			InputStream jrxmlInput = new FileInputStream(new File(reportLocation));
-//			// this.getClass().getClassLoader().getResource("data.jrxml").openStream();
-//			JasperDesign design = JRXmlLoader.load(jrxmlInput);
-//			JasperReport jasperReport = JasperCompileManager.compileReport(design);
-//			// System.out.println("Report compiled");
-//
-//			// JasperReport jasperReport =
-//			// JasperCompileManager.compileReport(reportLocation);
-//			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros,
-//					HibernateUtils.currentSession().connection()); // datasource Service
-//
-//			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-//			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, outputStream);
-//			exporter.exportReport();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.out.println("Error in generate Report..." + e);
-//		} finally {
-//		}
-//		return outputStream.toByteArray();
-//	}
+	@Override
+	public OutResponse<FileResponse> reporteXlsxListarHonorario(@RequestBody HonorarioBuscarRequest req) {
+		OutResponse<List<HonorarioResponse>> out = honorarioDao.listarHonorario(req);
+
+		OutResponse<FileResponse> outF = new OutResponse<>();
+		if (out.getrCodigo() == 0) {
+			try {
+				String[] columns = { "Nro", "Personal", "Monto", "Fecha inicio calculo", "Fecha fin calculo", "Fecha" };
+
+				Workbook workbook = new HSSFWorkbook();
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+				Sheet sheet = workbook.createSheet("Honorario personal");
+				Row row = sheet.createRow(0);
+
+				for (int i = 0; i < columns.length; i++) {
+					Cell cell = row.createCell(i);
+					cell.setCellValue(columns[i]);
+				}
+
+				int initRow = 1;
+				for (HonorarioResponse ir : out.getrResult()) {
+					row = sheet.createRow(initRow);
+					row.createCell(0).setCellValue(initRow);
+					row.createCell(1)
+							.setCellValue(ir.getPersonal().getPersona().getNombre() + " "
+									+ ir.getPersonal().getPersona().getApePaterno() + " "
+									+ ((ir.getPersonal().getPersona().getApeMaterno() != null)
+											? ir.getPersonal().getPersona().getApeMaterno()
+											: ""));
+					row.createCell(2).setCellValue(ir.getMonto());
+					row.createCell(3).setCellValue(DateUtil.formatSlashDDMMYYYY(ir.getFechaInicio()));
+					row.createCell(4).setCellValue(DateUtil.formatSlashDDMMYYYY(ir.getFechaFin()));
+					row.createCell(5).setCellValue(DateUtil.formatSlashDDMMYYYY(ir.getFecha()));
+
+					initRow++;
+				}
+
+				workbook.write(stream);
+				workbook.close();
+
+				FileResponse resp = new FileResponse();
+				resp.setNombre("Reporte Honorario.xls");
+				resp.setType("application/vnd.ms-excel");
+				resp.setData(stream.toByteArray());
+
+				outF.setrCodigo(0);
+				outF.setrMensaje("EXITO");
+				outF.setrResult(resp);
+			} catch (IOException e) {
+				log.info(ExceptionUtils.getStackTrace(e));
+				outF.setrCodigo(500);
+				outF.setrMensaje(e.getMessage());
+			}
+		} else {
+			outF.setrCodigo(out.getrCodigo());
+			outF.setrMensaje(out.getrMensaje());
+		}
+		return outF;
+	}
 
 }

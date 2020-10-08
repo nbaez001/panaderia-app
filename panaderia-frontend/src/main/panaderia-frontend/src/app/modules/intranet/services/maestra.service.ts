@@ -7,6 +7,7 @@ import { MaestraResponse } from '../dto/response/maestra.response';
 import { environment } from 'src/environments/environment';
 import { MaestraBuscarRequest } from '../dto/request/maestra-buscar.request';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { FileResponse } from '../dto/response/file.response';
 
 @Injectable()
 export class MaestraService {
@@ -52,5 +53,16 @@ export class MaestraService {
       })
     };
     return this.http.post<OutResponse<MaestraResponse>>(`${environment.WsPanaderiaBackend}/maestra/eliminarMaestra`, request, httpOptions);
+  }
+
+
+  public reporteXlsxListarMaestra(request: MaestraBuscarRequest): Observable<OutResponse<FileResponse>> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json; charset=utf-8',
+        authorization: 'Bearer ' + this.user.access_token
+      })
+    };
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/maestra/reporteXlsxListarMaestra`, request, httpOptions);
   }
 }

@@ -200,7 +200,6 @@ export class BdjInsumosPersonalComponent implements OnInit {
 
     this.insumoService.reporteXlsxListarInsumo(req).subscribe(
       (data: OutResponse<FileResponse>) => {
-        console.log(data);
         if (data.rCodigo == 0) {
           let blob = this.reporteService.convertToBlobFromByte(data.rResult);
           this.reporteService.DownloadBlobFile(blob);

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ProductoBuscarRequest } from '../dto/request/producto-buscar.request';
 import { ProductoRequest } from '../dto/request/producto.request';
+import { FileResponse } from '../dto/response/file.response';
 import { OutResponse } from '../dto/response/out.response';
 import { ProductoResponse } from '../dto/response/producto.response';
 
@@ -25,5 +26,9 @@ export class ProductoService {
 
   public eliminarProducto(req: ProductoRequest): Observable<OutResponse<ProductoResponse>> {
     return this.http.post<OutResponse<ProductoResponse>>(`${environment.WsPanaderiaBackend}/producto/eliminarProducto`, req);
+  }
+
+  public reporteXlsxListarProducto(req: ProductoBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/producto/reporteXlsxListarProducto`, req);
   }
 }

@@ -32,6 +32,10 @@ export class InsumoService {
     return this.http.post<OutResponse<TipoInsumoResponse>>(`${environment.WsPanaderiaBackend}/insumo/eliminarTipoInsumo`, req);
   }
 
+  public reporteXlsxListarTipoInsumo(req: TipoInsumoBuscarRequest): Observable<OutResponse<FileResponse>> {
+    return this.http.post<OutResponse<FileResponse>>(`${environment.WsPanaderiaBackend}/insumo/reporteXlsxListarTipoInsumo`, req);
+  }
+
 
 
   public listarInsumo(req: InsumoBuscarRequest): Observable<OutResponse<InsumoResponse[]>> {

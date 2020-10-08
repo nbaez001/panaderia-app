@@ -44,7 +44,8 @@
                     <mat-icon>add_box</mat-icon>
                     <strong> NUEVO</strong>
                 </button>
-                <button mat-raised-button (click)="exportarExcel()" matTooltip="Exportar a excel">
+                <button mat-raised-button (click)="exportarExcel()" matTooltip="Exportar a excel"
+                    [class.spinner]="exportar" [disabled]="exportar">
                     <mat-icon svgIcon="excel"></mat-icon>
                     <strong>EXPORTAR</strong>
                 </button>

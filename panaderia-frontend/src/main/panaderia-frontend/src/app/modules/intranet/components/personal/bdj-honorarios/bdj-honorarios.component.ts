@@ -18,6 +18,7 @@ import { OutResponse } from '../../../dto/response/out.response';
 import { PersonalResponse } from '../../../dto/response/personal.response';
 import { HonorarioService } from '../../../services/honorario.service';
 import { PersonalService } from '../../../services/personal.service';
+import { ReporteService } from '../../../services/reporte.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { PdfViewerComponent } from '../../shared/pdf-viewer/pdf-viewer.component';
 import { RegHonorarioComponent } from './reg-honorario/reg-honorario.component';
@@ -68,6 +69,7 @@ export class BdjHonorariosComponent implements OnInit {
   constructor(private fb: FormBuilder,
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
+    @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(PersonalService) private personalService: PersonalService,
     @Inject(HonorarioService) private honorarioService: HonorarioService,
     @Inject(FormService) private formService: FormService,
@@ -164,9 +166,26 @@ export class BdjHonorariosComponent implements OnInit {
   exportarExcel() {
     this.exportar = true;
 
-    setTimeout(() => {
-      this.exportar = false;
-    }, 2000);
+    let req = new HonorarioBuscarRequest();
+    req.fecInicio = this.formularioGrp.get('fecInicio').value;
+    req.fecFin = this.formularioGrp.get('fecFin').value;
+
+    this.honorarioService.reporteXlsxListarHonorario(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        if (data.rCodigo == 0) {
+          let blob = this.reporteService.convertToBlobFromByte(data.rResult);
+          this.reporteService.DownloadBlobFile(blob);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.exportar = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.exportar = false;
+      }
+    );
   }
 
   registrar(obj: HonorarioResponse) {

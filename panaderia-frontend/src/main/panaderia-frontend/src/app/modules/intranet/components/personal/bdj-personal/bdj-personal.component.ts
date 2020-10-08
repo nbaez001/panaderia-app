@@ -11,11 +11,13 @@ import { MENSAJES, TABLAS_MAESTRA } from 'src/app/common';
 import { FormService } from 'src/app/core/services/form.service';
 import { MaestraBuscarRequest } from '../../../dto/request/maestra-buscar.request';
 import { PersonalBuscarRequest } from '../../../dto/request/personal-buscar.request';
+import { FileResponse } from '../../../dto/response/file.response';
 import { MaestraResponse } from '../../../dto/response/maestra.response';
 import { OutResponse } from '../../../dto/response/out.response';
 import { PersonalResponse } from '../../../dto/response/personal.response';
 import { MaestraService } from '../../../services/maestra.service';
 import { PersonalService } from '../../../services/personal.service';
+import { ReporteService } from '../../../services/reporte.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { RegPersonalComponent } from './reg-personal/reg-personal.component';
 
@@ -85,6 +87,7 @@ export class BdjPersonalComponent implements OnInit {
   constructor(private fb: FormBuilder,
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
+    @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(PersonalService) private personalService: PersonalService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(FormService) private formService: FormService,
@@ -178,9 +181,27 @@ export class BdjPersonalComponent implements OnInit {
   exportarExcel() {
     this.exportar = true;
 
-    setTimeout(() => {
-      this.exportar = false;
-    }, 2000);
+    let req = new PersonalBuscarRequest();
+    req.idtTipoDocumento = this.formularioGrp.get('tipoDocumento').value ? this.formularioGrp.get('tipoDocumento').value.id : null;
+    req.nroDocumento = this.formularioGrp.get('nroDocumento').value;
+    req.nombre = this.formularioGrp.get('nombre').value;
+
+    this.personalService.reporteXlsxListarPersonal(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        if (data.rCodigo == 0) {
+          let blob = this.reporteService.convertToBlobFromByte(data.rResult);
+          this.reporteService.DownloadBlobFile(blob);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.exportar = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.exportar = false;
+      }
+    );
   }
 
   registrar(obj: PersonalResponse) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.besoft.panaderia.dto.request.MaestraBuscarRequest;
 import com.besoft.panaderia.dto.request.MaestraRequest;
 import com.besoft.panaderia.dto.response.OutResponse;
+import com.besoft.panaderia.dto.response.FileResponse;
 import com.besoft.panaderia.dto.response.MaestraResponse;
 import com.besoft.panaderia.service.MaestraService;
 
@@ -52,5 +53,10 @@ public class MaestraController {
 	@PostMapping("/eliminarMaestra")
 	public OutResponse<MaestraResponse> eliminarMaestra(@RequestBody MaestraRequest req) {
 		return maestraService.eliminarMaestra(req);
+	}
+	
+	@PostMapping("/reporteXlsxListarMaestra")
+	public OutResponse<FileResponse> reporteXlsxListarMaestra(@RequestBody MaestraBuscarRequest req) {
+		return maestraService.reporteXlsxListarMaestra(req);
 	}
 }

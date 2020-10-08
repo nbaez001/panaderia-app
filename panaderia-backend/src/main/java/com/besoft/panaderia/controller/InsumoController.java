@@ -56,6 +56,7 @@ public class InsumoController {
 		return insumoService.reporteXlsxListarInsumo(req);
 	}
 
+	
 	@PostMapping("/listarTipoInsumo")
 	public OutResponse<List<TipoInsumoResponse>> listarTipoInsumo(@RequestBody TipoInsumoBuscarRequest req) {
 		return insumoService.listarTipoInsumo(req);
@@ -74,5 +75,10 @@ public class InsumoController {
 	@PostMapping("/eliminarTipoInsumo")
 	public OutResponse<TipoInsumoResponse> eliminarTipoInsumo(@RequestBody TipoInsumoRequest req) {
 		return insumoService.eliminarTipoInsumo(req);
+	}
+	
+	@PostMapping("/reporteXlsxListarTipoInsumo")
+	public OutResponse<FileResponse> reporteXlsxListarTipoInsumo(@RequestBody TipoInsumoBuscarRequest req) {
+		return insumoService.reporteXlsxListarTipoInsumo(req);
 	}
 }

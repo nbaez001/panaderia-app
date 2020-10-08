@@ -2,8 +2,6 @@ package com.besoft.panaderia.service;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.besoft.panaderia.dto.request.InsumoBuscarRequest;
 import com.besoft.panaderia.dto.request.InsumoRequest;
 import com.besoft.panaderia.dto.request.TipoInsumoBuscarRequest;
@@ -23,8 +21,9 @@ public interface InsumoService {
 
 	public OutResponse<InsumoResponse> eliminarInsumo(InsumoRequest req);
 
-	public OutResponse<FileResponse> reporteXlsxListarInsumo(@RequestBody InsumoBuscarRequest req);
+	public OutResponse<FileResponse> reporteXlsxListarInsumo(InsumoBuscarRequest req);
 
+	
 	public OutResponse<List<TipoInsumoResponse>> listarTipoInsumo(TipoInsumoBuscarRequest req);
 
 	public OutResponse<TipoInsumoResponse> registrarTipoInsumo(TipoInsumoRequest req);
@@ -32,4 +31,6 @@ public interface InsumoService {
 	public OutResponse<TipoInsumoResponse> modificarTipoInsumo(TipoInsumoRequest req);
 
 	public OutResponse<TipoInsumoResponse> eliminarTipoInsumo(TipoInsumoRequest req);
+	
+	public OutResponse<FileResponse> reporteXlsxListarTipoInsumo(TipoInsumoBuscarRequest req);
 }

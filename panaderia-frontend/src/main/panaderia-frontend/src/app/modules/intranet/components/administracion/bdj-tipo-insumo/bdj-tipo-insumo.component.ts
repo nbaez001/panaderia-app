@@ -10,10 +10,12 @@ import { MENSAJES } from 'src/app/common';
 import { FormService } from 'src/app/core/services/form.service';
 import { TipoInsumoBuscarRequest } from '../../../dto/request/tipo-insumo-buscar.request';
 import { TipoInsumoRequest } from '../../../dto/request/tipo-insumo.request';
+import { FileResponse } from '../../../dto/response/file.response';
 import { OutResponse } from '../../../dto/response/out.response';
 import { TipoInsumoResponse } from '../../../dto/response/tipo-insumo.response';
 import { InsumoService } from '../../../services/insumo.service';
 import { MaestraService } from '../../../services/maestra.service';
+import { ReporteService } from '../../../services/reporte.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { RegTipoInsumoComponent } from './reg-tipo-insumo/reg-tipo-insumo.component';
 
@@ -23,6 +25,7 @@ import { RegTipoInsumoComponent } from './reg-tipo-insumo/reg-tipo-insumo.compon
   styleUrls: ['./bdj-tipo-insumo.component.scss']
 })
 export class BdjTipoInsumoComponent implements OnInit {
+  exportar: boolean = false;
   formularioGrp: FormGroup;
   formErrors: any;
 
@@ -61,6 +64,7 @@ export class BdjTipoInsumoComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private spinner: NgxSpinnerService,
     @Inject(FormService) private formService: FormService,
+    @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(InsumoService) private insumoService: InsumoService,) { }
 
@@ -142,7 +146,26 @@ export class BdjTipoInsumoComponent implements OnInit {
   }
 
   exportarExcel(): void {
+    this.exportar = true;
 
+    let req = new TipoInsumoBuscarRequest();
+
+    this.insumoService.reporteXlsxListarTipoInsumo(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        if (data.rCodigo == 0) {
+          let blob = this.reporteService.convertToBlobFromByte(data.rResult);
+          this.reporteService.DownloadBlobFile(blob);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.exportar = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.exportar = false;
+      }
+    );
   }
 
   editar(obj: TipoInsumoResponse): void {

@@ -14,6 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MaestraService } from '../../../services/maestra.service';
 import { FormService } from 'src/app/core/services/form.service';
+import { FileResponse } from '../../../dto/response/file.response';
+import { ReporteService } from '../../../services/reporte.service';
 
 @Component({
   selector: 'app-bdj-maestra',
@@ -77,6 +79,7 @@ export class BdjMaestraComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     public dialog: MatDialog,
+    @Inject(ReporteService) private reporteService: ReporteService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(FormService) private formService: FormService,
     private _snackBar: MatSnackBar,
@@ -149,10 +152,27 @@ export class BdjMaestraComponent implements OnInit {
 
   exportarExcel() {
     this.exportar = true;
+    let req = new MaestraBuscarRequest();
+    req.fecInicio = this.formularioGrp.get('fecInicio').value;
+    req.fecFin = this.formularioGrp.get('fecFin').value;
+    req.idMaestra = 0;
 
-    setTimeout(() => {
-      this.exportar = false;
-    }, 2000);
+    this.maestraService.reporteXlsxListarMaestra(req).subscribe(
+      (data: OutResponse<FileResponse>) => {
+        if (data.rCodigo == 0) {
+          let blob = this.reporteService.convertToBlobFromByte(data.rResult);
+          this.reporteService.DownloadBlobFile(blob);
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        }
+        this.exportar = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.exportar = false;
+      }
+    );
   }
 
   regMaestra(obj: MaestraResponse) {
