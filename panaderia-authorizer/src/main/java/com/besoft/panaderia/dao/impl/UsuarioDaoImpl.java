@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public OutResponse<UsuarioResponse> buscarUsuario(String username) {
+		log.info("[BUSCAR USUARIO][DAO][INICIO]");
 		OutResponse<UsuarioResponse> outResponse = new OutResponse<>();
 		UsuarioResponse user = null;
 		List<RolResponse> listaRol = null;
@@ -50,8 +52,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
 			in.addValue("I_USERNAME", username, Types.VARCHAR);
+			log.info("[BUSCAR USUARIO][DAO][INPUT][" + in.toString() + "]");
 
 			Map<String, Object> out = jdbcCall.execute(in);
+			log.info("[BUSCAR USUARIO][DAO][OUTPUT][" + out.toString() + "]");
 
 			rCodigo = Integer.parseInt(out.get(ConstanteUtil.R_CODIGO).toString());
 			rMensaje = out.get(ConstanteUtil.R_MENSAJE).toString();
@@ -80,8 +84,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
 			outResponse.setrResult(null);
-			log.info("[AUTENTICACION][DAO][EXCEPCION][" + e.getMessage() + "]");
+			log.info("[BUSCAR USUARIO][DAO][EXCEPCION][" + ExceptionUtils.getStackTrace(e) + "]");
 		}
+		log.info("[BUSCAR USUARIO][DAO][FIN]");
 		return outResponse;
 	}
 

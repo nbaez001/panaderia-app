@@ -17,11 +17,8 @@ import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ProductoResponse;
 import com.besoft.panaderia.service.ProductoService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/producto")
-@Api(value = "API Producto")
 public class ProductoController {
 
 	Logger log = LoggerFactory.getLogger(ProductoController.class);

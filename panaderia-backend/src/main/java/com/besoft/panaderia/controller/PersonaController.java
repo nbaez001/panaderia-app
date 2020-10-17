@@ -13,11 +13,8 @@ import com.besoft.panaderia.dto.api.response.ApiOutResponse;
 import com.besoft.panaderia.dto.api.response.ApiPersonaResponse;
 import com.besoft.panaderia.service.PersonaService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/persona")
-@Api(value = "API Persona")
 public class PersonaController {
 	Logger log = LoggerFactory.getLogger(ProductoController.class);
 

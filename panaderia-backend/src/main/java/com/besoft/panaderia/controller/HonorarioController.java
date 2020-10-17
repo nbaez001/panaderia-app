@@ -21,11 +21,8 @@ import com.besoft.panaderia.dto.response.HonorarioResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.service.HonorarioService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/honorario")
-@Api(value = "API Honorario")
 public class HonorarioController {
 	Logger log = LoggerFactory.getLogger(HonorarioController.class);
 

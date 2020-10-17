@@ -17,11 +17,8 @@ import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.PersonalResponse;
 import com.besoft.panaderia.service.PersonalService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/personal")
-@Api(value = "API Personal")
 public class PersonalController {
 	Logger log = LoggerFactory.getLogger(PersonalController.class);
 

@@ -25,7 +25,9 @@ public class PermisoController {
 
 	@PostMapping("/listarPermiso")
 	public OutResponse<List<PermisoResponse>> listarPermiso(@RequestBody PermisoBuscarRequest req) {
+		log.info("[LISTAR PERMISO][CONTROLLER][INICIO]");
 		OutResponse<List<PermisoResponse>> out = permisoService.listarPermiso(req);
+		log.info("[LISTAR PERMISO][CONTROLLER][FIN]");
 		return out;
 	}
 }

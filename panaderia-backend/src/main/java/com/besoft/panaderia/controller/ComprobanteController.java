@@ -12,15 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.ComprobanteBuscarRequest;
 import com.besoft.panaderia.dto.request.ComprobanteRequest;
-import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.ComprobanteResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.service.ComprobanteService;
-
-import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/comprobante")
-@Api(value = "API Comprobante")
 public class ComprobanteController {
 
 	Logger log = LoggerFactory.getLogger(ComprobanteController.class);

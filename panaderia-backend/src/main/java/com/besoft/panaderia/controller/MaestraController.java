@@ -12,16 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.besoft.panaderia.dto.request.MaestraBuscarRequest;
 import com.besoft.panaderia.dto.request.MaestraRequest;
-import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.FileResponse;
 import com.besoft.panaderia.dto.response.MaestraResponse;
+import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.service.MaestraService;
-
-import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/maestra")
-@Api(value = "API Maestra")
 public class MaestraController {
 
 	Logger log = LoggerFactory.getLogger(MaestraController.class);

@@ -67,4 +67,10 @@ public class PermisoResponse {
 		this.listaPermiso = listaPermiso;
 	}
 
+	@Override
+	public String toString() {
+		return "PermisoResponse [id=" + id + ", idPadre=" + idPadre + ", nombre=" + nombre + ", ruta=" + ruta
+				+ ", icono=" + icono + ", orden=" + orden + ", listaPermiso=" + listaPermiso + "]";
+	}
+
 }

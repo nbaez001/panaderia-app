@@ -30,6 +30,7 @@ public class PermisoDaoImpl implements PermisoDao {
 
 	@Override
 	public OutResponse<List<PermisoResponse>> listarPermiso(PermisoBuscarRequest req) {
+		log.info("[LISTAR PERMISO][DAO][INICIO]");
 		OutResponse<List<PermisoResponse>> outResponse = new OutResponse<>();
 		List<PermisoResponse> listaPermiso = null;
 
@@ -42,8 +43,10 @@ public class PermisoDaoImpl implements PermisoDao {
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
 			in.addValue("I_ID_USUARIO", req.getIdUsuario(), Types.NUMERIC);
+			log.info("[LISTAR PERMISO][DAO][INPUT][" + in.toString() + "]");
 
 			Map<String, Object> out = jdbcCall.execute(in);
+			log.info("[LISTAR PERMISO][DAO][OUTPUT][" + out.toString() + "]");
 
 			rCodigo = Integer.parseInt(out.get(ConstanteUtil.R_CODIGO).toString());
 			rMensaje = out.get(ConstanteUtil.R_MENSAJE).toString();
@@ -63,8 +66,9 @@ public class PermisoDaoImpl implements PermisoDao {
 			outResponse.setrCodigo(500);
 			outResponse.setrMensaje(e.getMessage());
 			outResponse.setrResult(null);
-			log.info("[AUTENTICACION][DAO][EXCEPCION][" + e.getMessage() + "]");
+			log.info("[LISTAR PERMISO][DAO][EXCEPCION][" + e.getMessage() + "]");
 		}
+		log.info("[LISTAR PERMISO][DAO][FIN]");
 		return outResponse;
 	}
 }

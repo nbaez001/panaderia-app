@@ -133,7 +133,7 @@
 			<properties>
 				<spring.profiles.active>prd</spring.profiles.active>
 				<logging.level>INFO</logging.level>
-				<packaging.type>jar</packaging.type>
+				<packaging.type>war</packaging.type>
 			</properties>
 			<dependencies>
 				<dependency>

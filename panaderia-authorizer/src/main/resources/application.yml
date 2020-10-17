@@ -50,7 +50,6 @@ spring:
     max-wait: 8000
 ---
 server:
-  port: 8082
   servlet:
     context-path: /panaderia-authorizer
 spring:

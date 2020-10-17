@@ -17,12 +17,9 @@ import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
 import com.besoft.panaderia.service.VentaService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/venta")
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080", "http://localhost" })
-@Api(value = "API Venta")
 public class VentaController {
 
 	Logger log = LoggerFactory.getLogger(VentaController.class);

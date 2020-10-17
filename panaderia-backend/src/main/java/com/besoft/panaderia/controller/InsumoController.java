@@ -20,11 +20,8 @@ import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.TipoInsumoResponse;
 import com.besoft.panaderia.service.InsumoService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/insumo")
-@Api(value = "API Insumo")
 public class InsumoController {
 	Logger log = LoggerFactory.getLogger(InsumoController.class);
 

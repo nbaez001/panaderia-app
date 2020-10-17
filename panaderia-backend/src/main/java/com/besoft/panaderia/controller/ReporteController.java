@@ -18,11 +18,8 @@ import com.besoft.panaderia.dto.response.ReporteInsumoResponse;
 import com.besoft.panaderia.dto.response.ReporteVentaResponse;
 import com.besoft.panaderia.service.ReporteService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/reporte")
-@Api(value = "API Reporte")
 public class ReporteController {
 
 	Logger log = LoggerFactory.getLogger(ReporteController.class);

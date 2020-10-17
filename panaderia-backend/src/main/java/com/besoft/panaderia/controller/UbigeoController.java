@@ -20,11 +20,8 @@ import com.besoft.panaderia.dto.response.PaisResponse;
 import com.besoft.panaderia.dto.response.ProvinciaResponse;
 import com.besoft.panaderia.service.UbigeoService;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/ubigeo")
-@Api(value = "API Ubigeo")
 public class UbigeoController {
 	Logger log = LoggerFactory.getLogger(UbigeoController.class);
 
