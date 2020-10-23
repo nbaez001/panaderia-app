@@ -42,7 +42,7 @@ export class RegProductoComponent implements OnInit {
   ngOnInit() {
     this.formularioGrp = this.fb.group({
       unidadMedida: ['', [Validators.required]],
-      nombre: ['', [Validators.required, Validators.maxLength(10)]],
+      nombre: ['', [Validators.required, Validators.maxLength(15)]],
       precio: ['', [Validators.required]],
     });
     this.formErrors = this.formService.buildFormErrors(this.formularioGrp, this.formErrors);

@@ -27,14 +27,20 @@
 .venta {
     float: left;
     width: 45%;
-    height: 60% !important;
+    height: auto !important;
 }
 
 .det-venta {
     width: 55%;
-    height: 90% !important;
+    height: auto !important;
     display: inline-block;
     mat-card {
-        height: 90% !important;
+        height: 70% !important;
     }
+}
+
+.lista-venta {
+    float: left;
+    width: 100%;
+    height: auto !important;
 }

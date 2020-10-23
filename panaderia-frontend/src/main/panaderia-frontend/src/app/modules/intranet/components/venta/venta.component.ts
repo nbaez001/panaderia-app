@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +13,8 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ComprobanteBuscarRequest } from '../../dto/request/comprobante-buscar.request';
 import { DetalleVentaRequest } from '../../dto/request/detalle-venta.request';
 import { ProductoBuscarRequest } from '../../dto/request/producto-buscar.request';
+import { ReporteVentaBuscarRequest } from '../../dto/request/reporte-venta-buscar.request';
+import { VentaBuscarRequest } from '../../dto/request/venta-buscar.request';
 import { VentaRequest } from '../../dto/request/venta.request';
 import { ComprobanteResponse } from '../../dto/response/comprobante.response';
 import { OutResponse } from '../../dto/response/out.response';
@@ -20,6 +22,7 @@ import { ProductoResponse } from '../../dto/response/producto.response';
 import { VentaResponse } from '../../dto/response/venta.response';
 import { ComprobanteService } from '../../services/comprobante.service';
 import { ProductoService } from '../../services/producto.service';
+import { ReporteService } from '../../services/reporte.service';
 import { VentaService } from '../../services/venta.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
@@ -59,6 +62,32 @@ export class VentaComponent implements OnInit {
       cell: (m: DetalleVentaRequest) => (m.subtotal != null) ? `S/. ${this.decimalPipe.transform(m.subtotal, '1.2-2')}` : ''
     }];
 
+  montoTotal: number;
+  listaVentaResponse: VentaResponse[];
+  displayedColumns2: string[];
+  dataSource2: MatTableDataSource<VentaResponse>;
+  isLoading2: boolean = false;
+
+  columnsGrilla2 = [
+    {
+      columnDef: 'numeroVenta',
+      header: 'Numero venta',
+      cell: (m: VentaResponse) => `${m.serie ? m.serie : ''}-${m.numero ? m.numero : ''}`
+    }, {
+      columnDef: 'total',
+      header: 'Total',
+      cell: (m: VentaResponse) => `${m.total ? 'S/.' + this.decimalPipe.transform(m.total, '1.2-2') : ''}`
+    }, {
+      columnDef: 'fecha',
+      header: 'Fecha',
+      cell: (m: VentaResponse) => `${m.fecUsuarioCrea ? this.datePipe.transform(m.fecUsuarioCrea, 'dd/MM/yyyy') : ''}`
+    }];
+
+  listaTipoReporte: any[] = [{ id: 1, nombre: 'DIARIO' }, { id: 2, nombre: 'MENSUAL' }];
+
+  @ViewChild(MatPaginator) paginator2: MatPaginator;
+  @ViewChild(MatSort) sort2: MatSort;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -68,12 +97,14 @@ export class VentaComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private dialog: MatDialog,
     private decimalPipe: DecimalPipe,
+    private datePipe: DatePipe,
     // @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(FormService) private formService: FormService,
     @Inject(UsuarioService) private user: UsuarioService,
     @Inject(ProductoService) private productoService: ProductoService,
     @Inject(VentaService) private ventaService: VentaService,
     @Inject(ComprobanteService) private comprobanteService: ComprobanteService,
+    @Inject(ReporteService) private reporteService: ReporteService,
     private _snackBar: MatSnackBar) { }
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -114,7 +145,9 @@ export class VentaComponent implements OnInit {
 
   inicializarVariables(): void {
     this.definirTabla();
+    this.definirTabla2();
     this.comboComprobante();
+    this.listaVentas();
   }
 
   definirTabla(): void {
@@ -130,6 +163,60 @@ export class VentaComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.listaDetalleVenta);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  definirTabla2(): void {
+    this.displayedColumns2 = [];
+    this.columnsGrilla2.forEach(c => {
+      this.displayedColumns2.push(c.columnDef);
+    });
+    this.displayedColumns2.unshift('id');
+    this.displayedColumns2.push('opt');
+  }
+
+  public cargarDatosTabla2(): void {
+    if (this.listaVentaResponse.length > 0) {
+      this.dataSource2 = new MatTableDataSource(this.listaVentaResponse);
+      this.dataSource2.paginator = this.paginator2;
+      this.dataSource2.sort = this.sort2;
+      this.calcularMontoTotal(this.listaVentaResponse);
+    }
+  }
+
+  calcularMontoTotal(list: VentaResponse[]): void {
+    this.montoTotal = 0.0;
+    list.forEach(el => {
+      this.montoTotal += el.total;
+    })
+  }
+
+  listaVentas(): void {
+    this.isLoading2 = true;
+
+    let req = new VentaBuscarRequest();
+    req.fecInicio = new Date();
+    req.fecFin = new Date();
+
+    console.log(req);
+
+    this.ventaService.listarVenta(req).subscribe(
+      (data: OutResponse<VentaResponse[]>) => {
+        console.log(data);
+        if (data.rCodigo == 0) {
+          this.listaVentaResponse = data.rResult;
+        } else {
+          this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+          this.listaVentaResponse = [];
+        }
+        this.cargarDatosTabla2();
+        this.isLoading2 = false;
+      },
+      error => {
+        console.log(error);
+        this._snackBar.open(error.statusText, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['error-snackbar'] });
+        this.isLoading2 = false;
+      }
+    );
   }
 
   private comboComprobante(): void {
@@ -253,6 +340,9 @@ export class VentaComponent implements OnInit {
 
                   this.limpiarTodo();
                   this.comboComprobante();
+
+                  this.listaVentaResponse.unshift(data.rResult);
+                  this.cargarDatosTabla2();
                 } else {
                   console.log(data.rMensaje);
                   this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
@@ -311,6 +401,40 @@ export class VentaComponent implements OnInit {
     } else {
       this.focusProductoControl();
     }
+  }
+
+  imprimir(row: VentaResponse): void {
+    this.pendConfirmacion = true;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      disableClose: true,
+      data: {
+        titulo: MENSAJES.INTRANET.MSG_CONFIRMACION,
+        objeto: null
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 1) {
+        let req = new VentaRequest();
+        req.id = row.id;
+
+        this.ventaService.imprimirTicketVenta(req).subscribe(
+          (data: OutResponse<any>) => {
+            if (data.rCodigo == 0) {
+              this._snackBar.open('IMPRESION EXITOSA', null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['success-snackbar'] });
+            } else {
+              console.log(data.rMensaje);
+              this._snackBar.open(data.rMensaje, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+            }
+          }, error => {
+            console.log(error);
+            this._snackBar.open(error, null, { duration: 5000, horizontalPosition: 'right', verticalPosition: 'top', panelClass: ['warning-snackbar'] });
+          }
+        )
+      }
+      this.pendConfirmacion = false;
+    });
   }
 
 }

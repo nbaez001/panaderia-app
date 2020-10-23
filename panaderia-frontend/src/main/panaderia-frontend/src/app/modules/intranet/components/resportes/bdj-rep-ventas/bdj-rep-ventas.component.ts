@@ -41,7 +41,7 @@ import { PdfViewerComponent } from '../../shared/pdf-viewer/pdf-viewer.component
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
-export class BdjRepVentasComponent implements OnInit {
+export class BdjRepVentasComponent implements OnInit { 
   exportar = false;
   mesFinM: Date;
 

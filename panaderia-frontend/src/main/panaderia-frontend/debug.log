@@ -3,3 +3,4 @@
 [0924/214513.103:ERROR:process_reader_win.cc(151)] SuspendThread: Acceso denegado. (0x5)
 [0924/214513.103:ERROR:process_reader_win.cc(151)] SuspendThread: Acceso denegado. (0x5)
 [0924/214513.103:ERROR:exception_snapshot_win.cc(99)] thread ID 6220 not found in process
+[1019/142849.432:ERROR:directory_reader_win.cc(43)] FindFirstFile: El sistema no puede encontrar la ruta especificada. (0x3)
