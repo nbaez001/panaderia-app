@@ -16,10 +16,12 @@ import org.springframework.stereotype.Repository;
 
 import com.besoft.panaderia.dao.VentaDao;
 import com.besoft.panaderia.dto.request.DetalleVentaRequest;
+import com.besoft.panaderia.dto.request.VentaBuscarRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
+import com.besoft.panaderia.dto.response.mapper.DetalleVentaResponseMapper;
 import com.besoft.panaderia.dto.response.mapper.VentaResponseMapper;
 import com.besoft.panaderia.util.ConstanteUtil;
 import com.besoft.panaderia.util.DateUtil;
@@ -31,7 +33,7 @@ public class VentaDaoImpl implements VentaDao {
 
 	@Autowired
 	DataSource dataSource;
-	
+
 	@Override
 	public OutResponse<VentaResponse> registrarVenta(VentaRequest c) {
 		log.info("[REGISTRAR VENTA][DAO][INICIO]");
@@ -56,7 +58,7 @@ public class VentaDaoImpl implements VentaDao {
 			in.addValue("I_FEC_USUARIO_CREA", DateUtil.formatSlashDDMMYYYY(c.getFecUsuarioCrea()), Types.VARCHAR);
 			in.addValue("I_DETALLE_VENTA", c.getDetalleVenta(), Types.VARCHAR);
 			log.info("[REGISTRAR VENTA][DAO][INPUT][" + in.toString() + "]");
-			
+
 			Map<String, Object> out = jdbcCall.execute(in);
 			log.info("[REGISTRAR VENTA][DAO][OUTPUT][" + out.toString() + "]");
 
@@ -112,7 +114,7 @@ public class VentaDaoImpl implements VentaDao {
 	}
 
 	@Override
-	public OutResponse<List<VentaResponse>> listarVenta() {
+	public OutResponse<List<VentaResponse>> listarVenta(VentaBuscarRequest req) {
 		OutResponse<List<VentaResponse>> outResponse = new OutResponse<>();
 
 		List<VentaResponse> lista = new ArrayList<>();
@@ -126,6 +128,8 @@ public class VentaDaoImpl implements VentaDao {
 					.returningResultSet(ConstanteUtil.R_LISTA, new VentaResponseMapper());
 
 			MapSqlParameterSource in = new MapSqlParameterSource();
+			in.addValue("I_FEC_INICIO", DateUtil.formatSlashDDMMYYYY(req.getFecInicio()), Types.VARCHAR);
+			in.addValue("I_FEC_FIN", DateUtil.formatSlashDDMMYYYY(req.getFecFin()), Types.VARCHAR);
 
 			Map<String, Object> out = jdbcCall.execute(in);
 
@@ -145,6 +149,52 @@ public class VentaDaoImpl implements VentaDao {
 			outResponse.setrMensaje(e.getMessage());
 			outResponse.setrResult(null);
 		}
+		return outResponse;
+	}
+
+	@Override
+	public OutResponse<List<DetalleVentaResponse>> imprimirTicketVenta(VentaRequest c) {
+		log.info("[IMPRIMIR TICKET VENTA][DAO][INICIO]");
+		OutResponse<List<DetalleVentaResponse>> outResponse = new OutResponse<>();
+		List<DetalleVentaResponse> ldvr = new ArrayList<>();
+
+		Integer rCodigo = 0;
+		String rMensaje = "";
+
+		Long id = 0L;
+		try {
+			SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withSchemaName(ConstanteUtil.BD_SCHEMA)
+					.withCatalogName(ConstanteUtil.BD_PCK_VENTA).withProcedureName("SP_L_DETALLE_VENTA")
+					.returningResultSet(ConstanteUtil.R_LISTA, new DetalleVentaResponseMapper());
+
+			MapSqlParameterSource in = new MapSqlParameterSource();
+			in.addValue("I_ID_VENTA", c.getId(), Types.NUMERIC);
+
+			log.info("[IMPRIMIR TICKET VENTA][DAO][INPUT][" + in.toString() + "]");
+
+			Map<String, Object> out = jdbcCall.execute(in);
+			log.info("[IMPRIMIR TICKET VENTA][DAO][OUTPUT][" + out.toString() + "]");
+
+			rCodigo = Integer.parseInt(out.get(ConstanteUtil.R_CODIGO).toString());
+			rMensaje = out.get(ConstanteUtil.R_MENSAJE).toString();
+
+			if (rCodigo == 0) {// CONSULTA CORRECTA
+				ldvr = (List<DetalleVentaResponse>) out.get(ConstanteUtil.R_LISTA);
+			} else {
+				ldvr = null;
+			}
+			outResponse.setrCodigo(rCodigo);
+			outResponse.setrMensaje(rMensaje);
+			outResponse.setrResult(ldvr);
+			log.info("[IMPRIMIR TICKET VENTA][DAO][EXITO][" + outResponse.toString() + "]");
+		} catch (Exception e) {
+			outResponse.setrCodigo(500);
+			outResponse.setrMensaje(e.getMessage());
+			outResponse.setrResult(null);
+			log.info("[IMPRIMIR TICKET VENTA][DAO][EXCEPCION][" + outResponse.toString() + "]");
+		}
+		log.info("[IMPRIMIR TICKET VENTA][DAO][FIN]");
+
 		return outResponse;
 	}
 }

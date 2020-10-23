@@ -15,6 +15,15 @@ CREATE OR REPLACE PACKAGE PCK_PPOS_VENTA AS
     );
 
     PROCEDURE SP_L_VENTA (
+		I_FEC_INICIO      	  IN      VARCHAR2,
+		I_FEC_FIN      		  IN      VARCHAR2,
+        R_LISTA               OUT     SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    );
+	
+	PROCEDURE SP_L_DETALLE_VENTA (
+		I_ID_VENTA      	  IN      NUMBER,
         R_LISTA               OUT     SYS_REFCURSOR,
         R_CODIGO              OUT     NUMBER,
         R_MENSAJE             OUT     VARCHAR2
@@ -107,6 +116,8 @@ CREATE OR REPLACE PACKAGE BODY PCK_PPOS_VENTA AS
 	END SP_I_VENTA;
 
     PROCEDURE SP_L_VENTA (
+		I_FEC_INICIO      	  IN      VARCHAR2,
+		I_FEC_FIN      		  IN      VARCHAR2,
         R_LISTA               OUT     SYS_REFCURSOR,
         R_CODIGO              OUT     NUMBER,
         R_MENSAJE             OUT     VARCHAR2
@@ -124,8 +135,17 @@ CREATE OR REPLACE PACKAGE BODY PCK_PPOS_VENTA AS
 		C.ID_USUARIO_MOD,
 		C.FEC_USUARIO_MOD
         FROM VENTA C
-        WHERE 1=1
-		ORDER BY C.ID DESC';
+        WHERE 1=1';
+		
+		IF ( I_FEC_INICIO IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND C.FEC_USUARIO_CREA>=TO_DATE(''' || I_FEC_INICIO || ''',''DD/MM/YY'')';
+        END IF;
+
+        IF ( I_FEC_FIN IS NOT NULL ) THEN
+            V_SQL := V_SQL || ' AND C.FEC_USUARIO_CREA<=TO_DATE(''' || I_FEC_FIN || ''',''DD/MM/YY'')';
+        END IF;
+
+		V_SQL := V_SQL||' ORDER BY C.ID DESC';
 
         OPEN R_LISTA FOR V_SQL;
 
@@ -137,6 +157,37 @@ CREATE OR REPLACE PACKAGE BODY PCK_PPOS_VENTA AS
             R_CODIGO := SQLCODE;
             R_MENSAJE := SQLERRM;
     END SP_L_VENTA;
+	
+	PROCEDURE SP_L_DETALLE_VENTA (
+		I_ID_VENTA      	  IN      NUMBER,
+        R_LISTA               OUT     SYS_REFCURSOR,
+        R_CODIGO              OUT     NUMBER,
+        R_MENSAJE             OUT     VARCHAR2
+    ) AS
+        V_SQL VARCHAR2(30000);
+    BEGIN
+        OPEN R_LISTA FOR 
+			SELECT
+			C.ID,
+			C.ID_VENTA,
+			C.ID_PRODUCTO,
+			(SELECT P.NOMBRE FROM PRODUCTO P WHERE P.ID=C.ID_PRODUCTO) AS NOM_PRODUCTO,
+			C.ID_PRODUCTO,
+			C.CANTIDAD,
+			C.PRECIO,
+			C.SUBTOTAL,
+			C.FLG_ACTIVO
+			FROM DETALLE_VENTA C
+			WHERE C.ID=I_ID_VENTA;
+
+        R_CODIGO := SQLCODE;
+        R_MENSAJE := SQLERRM;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            R_CODIGO := SQLCODE;
+            R_MENSAJE := SQLERRM;
+    END SP_L_DETALLE_VENTA;
 
 END PCK_PPOS_VENTA;
 /

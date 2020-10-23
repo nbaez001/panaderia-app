@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.besoft.panaderia.dto.request.VentaBuscarRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.response.OutResponse;
 import com.besoft.panaderia.dto.response.VentaResponse;
@@ -34,17 +35,18 @@ public class VentaController {
 		log.info("[REGISTRAR VENTA][CONTROLLER][FIN]");
 		return out;
 	}
-	
-	@GetMapping("/imprimirVenta")
-	public void imprimirVenta() {
-		log.info("[REGISTRAR VENTA][CONTROLLER][INICIO]");
-		ventaService.imprimirVenta();
-		log.info("[REGISTRAR VENTA][CONTROLLER][FIN]");
+
+	@PostMapping("/imprimirTicketVenta")
+	public OutResponse<?> imprimirTicketVenta(@RequestBody VentaRequest c) {
+		log.info("[IMPRIMIR TICKET VENTA][CONTROLLER][INICIO]");
+		OutResponse<?> out = ventaService.imprimirTicketVenta(c);
+		log.info("[IMPRIMIR TICKET VENTA][CONTROLLER][FIN]");
+		return out;
 	}
 
 	@PostMapping("/listarVenta")
-	public OutResponse<List<VentaResponse>> listarVenta() {
-		return ventaService.listarVenta();
+	public OutResponse<List<VentaResponse>> listarVenta(@RequestBody VentaBuscarRequest req) {
+		return ventaService.listarVenta(req);
 	}
 
 //	@PostMapping("/decargarComprobante")

@@ -22,14 +22,6 @@ spring:
     url: "jdbc:oracle:thin:@192.168.8.115:1521:orcl"
     password: "1234"
     username: "pseg"
-    testOnBorrow: true
-    testWhileIdle: true
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 30000
-    validationQuery: SELECT 1 FROM DUAL
-    max-active: 15
-    max-idle: 10
-    max-wait: 8000
     hikari:
       maximum-pool-size: 5
       connection-timeout: 60000
@@ -40,14 +32,6 @@ spring:
     name: panaderia-authorizer
   datasource:
     jndi-name: java:/psegNoXADS
-    testOnBorrow: true
-    testWhileIdle: true
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 30000
-    validationQuery: SELECT 1 FROM DUAL
-    max-active: 15
-    max-idle: 10
-    max-wait: 8000
 ---
 server:
   servlet:
@@ -61,14 +45,6 @@ spring:
     url: "jdbc:oracle:thin:@localhost:1521:orcl"
     password: "1234"
     username: "pseg"
-    testOnBorrow: true
-    testWhileIdle: true
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 30000
-    validationQuery: SELECT 1 FROM DUAL
-    max-active: 15
-    max-idle: 10
-    max-wait: 8000
     hikari:
       maximum-pool-size: 5
       connection-timeout: 60000

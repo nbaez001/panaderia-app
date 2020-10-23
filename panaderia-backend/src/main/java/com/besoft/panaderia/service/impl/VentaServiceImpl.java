@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.besoft.panaderia.dao.VentaDao;
 import com.besoft.panaderia.dto.request.DetalleVentaRequest;
+import com.besoft.panaderia.dto.request.VentaBuscarRequest;
 import com.besoft.panaderia.dto.request.VentaRequest;
 import com.besoft.panaderia.dto.response.DetalleVentaResponse;
 import com.besoft.panaderia.dto.response.OutResponse;
@@ -55,32 +56,31 @@ public class VentaServiceImpl implements VentaService {
 	}
 
 	@Override
-	public void imprimirVenta() {
-		log.info("[REGISTRAR VENTA][SERVICE][INICIO]");
-		DetalleVentaResponse dv = new DetalleVentaResponse();
-		dv.setCantidad(14.0);
-		dv.setFlagActivo(1);
-		dv.setId(1L);
-		dv.setIdProducto(1L);
-		dv.setNomProducto("CHAPLA");
-		dv.setPrecio(0.2);
-		dv.setSubtotal(7.0);
-
-		PrinterJob pj = PrinterJob.getPrinterJob();
-		BillPrintable printable = new BillPrintable(dv);
-		pj.setPrintable(printable, new BillUtil().getPageFormat(pj));
-		try {
-			pj.print();
-		} catch (PrinterException ex) {
-			log.info("[REGISTRAR VENTA][SERVICE][EXCEPTION]");
-			log.info(ExceptionUtils.getStackTrace(ex));
+	public OutResponse<?> imprimirTicketVenta(VentaRequest c) {
+		log.info("[IMPRIMIR TICKET VENTA][SERVICE][INICIO]");
+		
+		OutResponse<List<DetalleVentaResponse>> out = ventaDao.imprimirTicketVenta(c);
+		if (out.getrCodigo() == 0) {
+			for (DetalleVentaResponse dv : out.getrResult()) {
+				PrinterJob pj = PrinterJob.getPrinterJob();
+				BillPrintable printable = new BillPrintable(dv);
+				pj.setPrintable(printable, new BillUtil().getPageFormat(pj));
+				try {
+					pj.print();
+				} catch (PrinterException ex) {
+					log.info("[IMPRIMIR TICKET VENTA][SERVICE][EXCEPTION]");
+					log.info(ExceptionUtils.getStackTrace(ex));
+				}
+			}
 		}
-		log.info("[REGISTRAR VENTA][SERVICE][FIN]");
+		
+		log.info("[IMPRIMIR TICKET VENTA][SERVICE][FIN]");
+		return out;
 	}
 
 	@Override
-	public OutResponse<List<VentaResponse>> listarVenta() {
-		return ventaDao.listarVenta();
+	public OutResponse<List<VentaResponse>> listarVenta(VentaBuscarRequest req) {
+		return ventaDao.listarVenta(req);
 	}
 
 	public String convertirDetalleACadena(VentaRequest v) {

@@ -61,10 +61,10 @@ public class BillPrintable implements Printable {
 				g2d.drawString("-------------------------------------", 8, y);
 				y += 20;
 				g2d.setFont(new Font("TimesRoman", Font.BOLD, 25));
-				g2d.drawString(" S/.", 8, y);
+				g2d.drawString(" S/.", 10, y);
 				y += 20;
 				g2d.setFont(new Font("TimesRoman", Font.BOLD, 50));
-				g2d.drawString("   " + dv.getSubtotal(), 8, y);
+				g2d.drawString("   " + dv.getSubtotal(), 10, y);
 				y += 25;
 				g2d.setFont(new Font("TimesRoman", Font.BOLD, 25));
 				g2d.drawString("   " + dv.getNomProducto(), 8, y);
